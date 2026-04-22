@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>byline. — digital files worth reading</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;600;700;800&family=Caveat:wght@500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#fdf8f4;--surface:#fef5ee;--rose:#e8a4a4;--rose-dk:#c97070;
+      --ink:#1a1108;--sand:#e8ddd0;--sage:#a8b89a;--butter:#f5e6c8;
+      --mid:#8a7060;--border:rgba(26,17,8,.1);--accent:#d4606a;
+    }
+    ::selection{background:var(--rose);color:var(--ink)}
+    body{cursor:none;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+
+    /* CURSOR */
+    .cursor{width:12px;height:12px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .18s,height .18s,background .18s;mix-blend-mode:multiply}
+    .cursor.grow{width:38px;height:38px;background:var(--rose)}
+
+    /* ════════ REVIEW POPUP ════════ */
+    .rp-overlay{display:none;position:fixed;inset:0;background:rgba(26,17,8,.4);backdrop-filter:blur(6px);z-index:500;align-items:flex-end;justify-content:center;padding-bottom:2rem}
+    .rp-overlay.open{display:flex;animation:rpFadeIn .3s ease both}
+    @keyframes rpFadeIn{from{opacity:0}to{opacity:1}}
+
+    .rp-card{
+      background:var(--bg);
+      border:1.5px solid var(--border);
+      border-radius:28px;
+      width:min(520px,95vw);
+      padding:2.2rem 2rem 2rem;
+      position:relative;
+      animation:rpSlideUp .45s cubic-bezier(.34,1.3,.64,1) both;
+      overflow:hidden;
+    }
+    @keyframes rpSlideUp{from{opacity:0;transform:translateY(60px) scale(.95)}to{opacity:1;transform:none}}
+
+    /* confetti strips behind card */
+    .rp-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:4px;
+      background:linear-gradient(90deg,var(--rose),var(--accent),var(--butter),var(--sage),var(--rose));
+      background-size:300%;
+      animation:shimmerStrip 3s linear infinite;
+    }
+    @keyframes shimmerStrip{from{background-position:0%}to{background-position:300%}}
+
+    .rp-close{position:absolute;top:1.1rem;right:1.1rem;width:32px;height:32px;border-radius:50%;background:var(--sand);border:none;cursor:none;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .3s}
+    .rp-close:hover{background:var(--rose);transform:rotate(90deg)}
+
+    .rp-emoji{font-size:2.8rem;display:block;margin-bottom:.8rem;animation:rpBounce .6s cubic-bezier(.34,1.56,.64,1) .3s both}
+    @keyframes rpBounce{from{transform:scale(0) rotate(-15deg)}to{transform:scale(1) rotate(0deg)}}
+
+    .rp-tag{display:inline-flex;align-items:center;gap:.35rem;background:var(--butter);border:1.5px solid rgba(212,96,106,.25);border-radius:100px;padding:.25rem .85rem;font-family:'Caveat',cursive;font-size:.92rem;color:var(--accent);margin-bottom:.75rem;animation:wobble 3s ease-in-out 1.5s infinite}
+    @keyframes wobble{0%,100%{transform:rotate(0)}30%{transform:rotate(-1.5deg)}70%{transform:rotate(1.5deg)}}
+
+    .rp-title{font-family:'Instrument Serif',serif;font-size:1.7rem;line-height:1.15;margin-bottom:.5rem}
+    .rp-title em{font-style:italic;color:var(--accent)}
+
+    .rp-body{font-family:'DM Sans',sans-serif;font-size:.92rem;color:var(--mid);line-height:1.6;margin-bottom:1.2rem}
+
+    /* promo preview pill */
+    .rp-promo-preview{
+      display:flex;align-items:center;gap:.75rem;
+      background:linear-gradient(135deg,var(--butter),rgba(245,230,200,.5));
+      border:1.5px dashed rgba(212,96,106,.35);
+      border-radius:16px;padding:.9rem 1.1rem;
+      margin-bottom:1.4rem;
+    }
+    .rp-promo-icon{font-size:1.4rem;flex-shrink:0}
+    .rp-promo-text strong{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);display:block;margin-bottom:.2rem}
+    .rp-promo-text span{font-family:'Caveat',cursive;font-size:.92rem;color:var(--mid)}
+
+    /* purchased files list */
+    .rp-files{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.4rem}
+    .rp-file-chip{display:flex;align-items:center;gap:.35rem;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:.32rem .75rem;font-family:'Caveat',cursive;font-size:.85rem;color:var(--mid)}
+    .rp-file-chip .fchip-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);flex-shrink:0}
+
+    .rp-actions{display:flex;gap:.75rem;flex-wrap:wrap}
+    .rp-write-btn{flex:1;background:var(--ink);color:var(--bg);border:none;border-radius:100px;padding:.85rem 1.5rem;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:none;transition:transform .22s cubic-bezier(.34,1.56,.64,1),background .2s;text-align:center}
+    .rp-write-btn:hover{transform:scale(1.04);background:var(--accent)}
+    .rp-skip-btn{background:transparent;border:1.5px solid var(--border);color:var(--mid);border-radius:100px;padding:.82rem 1.2rem;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;cursor:none;white-space:nowrap;transition:all .2s}
+    .rp-skip-btn:hover{border-color:var(--ink);color:var(--ink)}
+
+    /* PROMO CODE REVEAL */
+    .rp-code-wrap{display:none;text-align:center;padding:.5rem 0}
+    .rp-code-label{font-family:'Caveat',cursive;font-size:1rem;color:var(--mid);margin-bottom:.6rem}
+    .rp-code-box{
+      display:inline-flex;align-items:center;gap:1rem;
+      background:var(--ink);color:var(--bg);
+      border-radius:16px;padding:.9rem 1.4rem;
+      font-family:'Syne',monospace;font-size:1.4rem;font-weight:800;
+      letter-spacing:.22em;text-transform:uppercase;
+      cursor:none;transition:transform .2s;
+      margin-bottom:.6rem;
+    }
+    .rp-code-box:hover{transform:scale(1.03)}
+    .rp-copy-btn{background:var(--rose);color:var(--ink);border:none;border-radius:8px;padding:.3rem .7rem;font-family:'Syne',sans-serif;font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;cursor:none;transition:background .2s}
+    .rp-copy-btn:hover{background:var(--accent);color:#fff}
+    .rp-code-note{font-family:'Caveat',cursive;font-size:.88rem;color:var(--mid)}
+    .rp-done-btn{display:inline-block;margin-top:1rem;background:var(--sage);color:var(--ink);border:none;border-radius:100px;padding:.7rem 1.8rem;font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:none;transition:transform .2s}
+    .rp-done-btn:hover{transform:scale(1.05)}
+
+    /* TICKER */
+    .ticker{background:var(--ink);padding:.42rem 0;overflow:hidden;white-space:nowrap}
+    .ticker-track{display:inline-flex;animation:tick 32s linear infinite}
+    .ticker-track span{font-family:'Syne',sans-serif;font-size:.67rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:0 2rem;color:var(--bg)}
+    .ticker-track .sep{color:var(--rose)}
+    @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    /* HEADER */
+    header{padding:1.1rem clamp(1.5rem,5vw,4rem);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1.5px solid var(--border);background:rgba(253,248,244,.92);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;gap:2rem}
+    .nav-left a{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);text-decoration:none;position:relative;transition:color .2s}
+    .nav-left a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:var(--accent);transition:width .25s}
+    .nav-left a:hover{color:var(--ink)}.nav-left a:hover::after{width:100%}
+    .logo{text-align:center;animation:popIn .6s cubic-bezier(.34,1.56,.64,1) both}
+    @keyframes popIn{from{opacity:0;transform:scale(.8) translateY(-10px)}to{opacity:1;transform:none}}
+    .logo-mark{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(1.8rem,3.5vw,2.4rem);letter-spacing:-.03em;line-height:1}
+    .logo-mark span{color:var(--accent)}
+    .logo-tag{font-family:'Caveat',cursive;font-size:.88rem;color:var(--mid)}
+    .nav-right{display:flex;justify-content:flex-end}
+    .cart-pill{background:var(--ink);color:var(--bg);border:none;border-radius:100px;padding:.55rem 1.3rem;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:none;display:flex;align-items:center;gap:.6rem;transition:transform .25s cubic-bezier(.34,1.56,.64,1),background .2s}
+    .cart-pill:hover{transform:scale(1.07);background:var(--accent)}
+    #cart-count{background:var(--rose);color:var(--ink);border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+    #cart-count.bump{transform:scale(1.6)}
+
+    /* HERO */
+    .hero{padding:3.5rem clamp(1.5rem,5vw,4rem) 3rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;border-bottom:1.5px solid var(--border);position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(232,164,164,.28) 0%,transparent 65%);top:-120px;right:-80px;border-radius:50%;pointer-events:none;animation:hpulse 5s ease-in-out infinite}
+    @keyframes hpulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.1);opacity:.5}}
+    .hero-left{animation:su .7s cubic-bezier(.4,0,.2,1) .1s both}
+    @keyframes su{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+    .hero-pill{display:inline-flex;align-items:center;gap:.4rem;background:var(--butter);border:1.5px solid rgba(212,96,106,.3);border-radius:100px;padding:.3rem .9rem;font-family:'Caveat',cursive;font-size:1rem;color:var(--accent);margin-bottom:1.2rem;animation:wobble 3s ease-in-out 1.2s infinite}
+    @keyframes wobble{0%,100%{transform:rotate(0)}25%{transform:rotate(-1.5deg)}75%{transform:rotate(1.5deg)}}
+    .hero-title{font-family:'Instrument Serif',serif;font-size:clamp(3rem,6vw,5.2rem);line-height:.93;letter-spacing:-.03em;margin-bottom:1.2rem}
+    .hero-title em{font-style:italic;color:var(--accent);display:block}
+    .hero-desc{font-size:1rem;color:var(--mid);line-height:1.65;max-width:380px}
+    .hero-right{display:grid;grid-template-columns:1fr 1fr;gap:1rem;animation:su .7s cubic-bezier(.4,0,.2,1) .22s both}
+    .stat-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:1.5rem;text-align:center;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
+    .stat-card:hover{transform:translateY(-5px) rotate(-1deg);box-shadow:0 14px 36px rgba(26,17,8,.1)}
+    .stat-card:nth-child(even){transform:translateY(14px)}
+    .stat-card:nth-child(even):hover{transform:translateY(8px) rotate(1deg)}
+    .stat-num{font-family:'Instrument Serif',serif;font-size:2.6rem;line-height:1}
+    .stat-lbl{font-family:'Caveat',cursive;font-size:.92rem;color:var(--mid);margin-top:.3rem}
+
+    /* ════════ CAROUSEL ════════ */
+    .carousel-section{padding:2.5rem 0 2.5rem clamp(1.5rem,5vw,4rem);border-bottom:1.5px solid var(--border)}
+    .sec-head{display:flex;justify-content:space-between;align-items:center;padding-right:clamp(1.5rem,5vw,4rem);margin-bottom:1.5rem}
+    .eyebrow{font-family:'Caveat',cursive;font-size:1.15rem;color:var(--rose-dk);display:flex;align-items:center;gap:.4rem}
+    .arr-row{display:flex;gap:.5rem}
+    .arr{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:var(--surface);cursor:none;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+    .arr:hover{background:var(--ink);color:var(--bg);transform:scale(1.1);border-color:var(--ink)}
+    .c-wrap{overflow:hidden;position:relative}
+    .c-wrap::after{content:'';position:absolute;top:0;right:0;bottom:0;width:80px;background:linear-gradient(to right,transparent,var(--bg));pointer-events:none;z-index:2}
+    .c-track{display:flex;gap:1.5rem;overflow-x:auto;scroll-behavior:smooth;padding:1rem .5rem 2rem;scrollbar-width:none;cursor:grab;user-select:none}
+    .c-track::-webkit-scrollbar{display:none}
+    .c-track.grabbing{cursor:grabbing}
+
+    /* ════════ BOOK CARD ════════ */
+    .book-card{flex:0 0 210px;display:flex;flex-direction:column;gap:.85rem;animation:su .5s cubic-bezier(.4,0,.2,1) both}
+    .book-cover-wrap{position:relative;width:210px;height:285px;perspective:800px}
+    .book-cover{width:100%;height:100%;border-radius:3px 12px 12px 3px;position:relative;overflow:hidden;transform-style:preserve-3d;transform:rotateY(-8deg) rotateX(2deg);transition:transform .4s cubic-bezier(.34,1.2,.64,1),box-shadow .4s;box-shadow:-6px 6px 0 rgba(26,17,8,.12),-12px 12px 24px rgba(26,17,8,.2),4px 4px 12px rgba(26,17,8,.1)}
+    .book-card:hover .book-cover{transform:rotateY(-2deg) rotateX(0deg) translateY(-6px);box-shadow:-3px 3px 0 rgba(26,17,8,.1),-6px 6px 32px rgba(26,17,8,.25),8px 8px 20px rgba(26,17,8,.12)}
+    .book-cover::before{content:'';position:absolute;left:0;top:0;bottom:0;width:16px;background:rgba(0,0,0,.18);z-index:10;border-radius:3px 0 0 3px}
+    .book-cover::after{content:'';position:absolute;right:-3px;top:2px;bottom:2px;width:5px;background:repeating-linear-gradient(to bottom,#ede8e0 0px,#ede8e0 1px,#d8d0c8 1px,#d8d0c8 2px);border-radius:0 2px 2px 0;z-index:10}
+    .bc-inner{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;padding:1.1rem .9rem 1rem 1.3rem;justify-content:space-between}
+    .bc-label{font-family:'Syne',sans-serif;font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.18em;opacity:.65;padding:.22rem .55rem;border:1px solid rgba(255,255,255,.22);border-radius:100px;display:inline-block;align-self:flex-start}
+    .bc-title{font-family:'Playfair Display',serif;font-size:.95rem;line-height:1.25;font-weight:700;color:rgba(255,255,255,.95);text-shadow:0 2px 8px rgba(0,0,0,.4);flex:1;display:flex;align-items:center;padding:.4rem 0}
+    .bc-author{font-family:'Caveat',cursive;font-size:.8rem;color:rgba(255,255,255,.65)}
+    .bc-rule{height:1px;background:rgba(255,255,255,.2);margin:.25rem 0}
+    .bc-brand{font-family:'Syne',sans-serif;font-size:.52rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+    .card-info{padding:0 .2rem}
+    .ctype{display:inline-flex;align-items:center;gap:.3rem;border-radius:100px;padding:.22rem .75rem;font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.45rem}
+    .ctype.journalism{background:rgba(168,184,154,.22);color:#5a7050;border:1px solid rgba(168,184,154,.4)}
+    .ctype.powerpoint{background:rgba(232,164,164,.22);color:var(--rose-dk);border:1px solid rgba(232,164,164,.4)}
+    .ctitle{font-family:'Instrument Serif',serif;font-size:1.02rem;line-height:1.25;margin-bottom:.3rem}
+    .crating{display:flex;align-items:center;gap:.3rem;margin-bottom:.3rem}
+    .stars{color:#e8a030;font-size:.75rem;letter-spacing:.05rem}
+    .rcount{font-family:'Caveat',cursive;font-size:.82rem;color:var(--mid)}
+    .cpages{font-family:'Caveat',cursive;font-size:.85rem;color:var(--mid);margin-bottom:.5rem}
+    .cbot{display:flex;align-items:center;justify-content:space-between}
+    .cprice{font-family:'Instrument Serif',serif;font-size:1.45rem}
+    .add-btn{background:var(--ink);color:var(--bg);border:none;border-radius:100px;padding:.46rem 1rem;font-family:'Syne',sans-serif;font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;cursor:none;transition:transform .22s cubic-bezier(.34,1.56,.64,1),background .2s}
+    .add-btn:hover{transform:scale(1.1);background:var(--accent)}
+    .add-btn.added{background:#a8b89a;color:var(--ink)}
+
+    /* ════════ FILTER ════════ */
+    .filter-bar{padding:1.2rem clamp(1.5rem,5vw,4rem);display:flex;gap:.6rem;align-items:center;border-bottom:1.5px solid var(--border);flex-wrap:wrap}
+    .filter-lbl{font-family:'Caveat',cursive;font-size:1.05rem;color:var(--mid);margin-right:.3rem}
+    .chip{background:transparent;border:1.5px solid var(--border);border-radius:100px;padding:.38rem 1.1rem;font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;cursor:none;color:var(--mid);transition:all .22s cubic-bezier(.34,1.56,.64,1)}
+    .chip:hover,.chip.active{background:var(--ink);color:var(--bg);border-color:var(--ink);transform:scale(1.06)}
+
+    /* ════════ PRODUCT MODAL ════════ */
+    .modal-bg{display:none;position:fixed;inset:0;background:rgba(26,17,8,.5);backdrop-filter:blur(10px);z-index:400;align-items:flex-start;justify-content:center;overflow-y:auto;padding:2rem 1rem}
+    .modal-bg.open{display:flex;animation:fadeIn .25s}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .product-modal{background:var(--bg);border:1.5px solid var(--border);border-radius:28px;width:min(860px,100%);margin:auto;overflow:hidden;animation:popUp .35s cubic-bezier(.34,1.56,.64,1)}
+    @keyframes popUp{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+
+    /* Modal top section */
+    .modal-top{display:grid;grid-template-columns:280px 1fr;min-height:360px}
+    .modal-cover-col{position:relative;padding:2.5rem 2rem;display:flex;align-items:center;justify-content:center;background:var(--surface);border-right:1.5px solid var(--border)}
+    .modal-book{width:170px;height:230px;border-radius:3px 12px 12px 3px;overflow:hidden;position:relative;transform:rotateY(-6deg);box-shadow:-5px 5px 0 rgba(26,17,8,.1),-10px 10px 20px rgba(26,17,8,.18);flex-shrink:0}
+    .modal-book::before{content:'';position:absolute;left:0;top:0;bottom:0;width:13px;background:rgba(0,0,0,.18);z-index:10;border-radius:3px 0 0 3px}
+    .modal-book::after{content:'';position:absolute;right:-2px;top:2px;bottom:2px;width:4px;background:repeating-linear-gradient(to bottom,#ede8e0 0px,#ede8e0 1px,#d8d0c8 1px,#d8d0c8 2px);z-index:10}
+    .modal-info-col{padding:2rem 2.5rem;display:flex;flex-direction:column;gap:1rem;overflow-y:auto}
+    .modal-close{position:absolute;top:1.2rem;right:1.2rem;width:34px;height:34px;border-radius:50%;background:var(--sand);border:none;cursor:none;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .3s;z-index:5}
+    .modal-close:hover{background:var(--rose);transform:rotate(90deg)}
+    .modal-type{display:inline-flex;align-items:center;gap:.3rem;border-radius:100px;padding:.22rem .75rem;font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+    .modal-type.journalism{background:rgba(168,184,154,.22);color:#5a7050;border:1px solid rgba(168,184,154,.4)}
+    .modal-type.powerpoint{background:rgba(232,164,164,.22);color:var(--rose-dk);border:1px solid rgba(232,164,164,.4)}
+    .modal-title{font-family:'Instrument Serif',serif;font-size:1.7rem;line-height:1.2}
+    .modal-rating-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+    .modal-stars{color:#e8a030;font-size:1rem;letter-spacing:.06rem}
+    .modal-avg{font-family:'Instrument Serif',serif;font-size:1.2rem;font-weight:700}
+    .modal-rcount{font-family:'Caveat',cursive;font-size:.9rem;color:var(--mid)}
+    .modal-desc{font-size:.9rem;color:var(--mid);line-height:1.65}
+    .modal-meta-row{display:flex;gap:1.2rem;flex-wrap:wrap}
+    .meta-chip{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.4rem .8rem;font-family:'Caveat',cursive;font-size:.9rem;color:var(--mid)}
+    .modal-price{font-family:'Instrument Serif',serif;font-size:2.4rem}
+    .modal-add{background:var(--ink);color:var(--bg);border:none;border-radius:100px;padding:.9rem 2rem;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:none;transition:transform .22s cubic-bezier(.34,1.56,.64,1),background .2s;align-self:flex-start}
+    .modal-add:hover{transform:scale(1.05);background:var(--accent)}
+    .modal-add.added{background:#a8b89a;color:var(--ink)}
+
+    /* ════════ PREVIEW STRIP ════════ */
+    .preview-strip{border-top:1.5px solid var(--border);padding:1.5rem 2.5rem}
+    .preview-label{font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--mid);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+    .preview-label span{background:var(--butter);color:var(--accent);border-radius:100px;padding:.15rem .6rem;font-size:.6rem}
+    .preview-scroll{display:flex;gap:1rem;overflow-x:auto;padding-bottom:1rem;scrollbar-width:thin;scrollbar-color:var(--sand) transparent;cursor:grab}
+    .preview-scroll::-webkit-scrollbar{height:4px}
+    .preview-scroll::-webkit-scrollbar-track{background:transparent}
+    .preview-scroll::-webkit-scrollbar-thumb{background:var(--sand);border-radius:2px}
+    .preview-scroll.grabbing{cursor:grabbing}
+    .preview-page{flex:0 0 auto;border-radius:12px;overflow:hidden;border:1.5px solid var(--border);transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s;position:relative}
+    .preview-page:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 12px 30px rgba(26,17,8,.12)}
+    .preview-page .blur-mask{position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to bottom,transparent,rgba(253,248,244,.96));z-index:3;display:flex;align-items:flex-end;justify-content:center;padding-bottom:.5rem;border-radius:0 0 10px 10px}
+    .blur-mask span{font-family:'Caveat',cursive;font-size:.78rem;color:var(--mid);background:var(--bg);border:1px solid var(--border);border-radius:100px;padding:.2rem .6rem}
+    .pg-num{position:absolute;top:.5rem;right:.6rem;font-family:'Syne',sans-serif;font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--mid);background:rgba(253,248,244,.8);padding:.15rem .4rem;border-radius:4px;z-index:4}
+
+    /* Fake page content - journalism */
+    .fp-journalism{background:#fefcf8;width:160px;height:210px;padding:1rem .9rem;font-family:'Playfair Display',serif}
+    .fp-headline{font-size:.72rem;font-weight:700;line-height:1.2;color:#1a1108;margin-bottom:.4rem}
+    .fp-byline{font-family:'Syne',sans-serif;font-size:.48rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--rose-dk);margin-bottom:.45rem}
+    .fp-rule{height:1px;background:#1a1108;margin:.3rem 0}
+    .fp-col{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:.4rem}
+    .fp-line{height:3px;background:rgba(26,17,8,.12);border-radius:2px;margin-bottom:.25rem}
+    .fp-line.dark{background:rgba(26,17,8,.22)}
+    .fp-drop-cap{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;float:left;margin-right:.2rem;line-height:1;color:#1a1108}
+    .fp-img-placeholder{background:linear-gradient(135deg,var(--sand),var(--butter));border-radius:4px;height:45px;margin:.4rem 0;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-family:'Caveat',cursive;color:var(--mid)}
+    .fp-pullquote{border-left:2.5px solid var(--accent);padding:.2rem .4rem;margin:.4rem 0;font-style:italic;font-size:.5rem;line-height:1.4;color:var(--accent)}
+
+    /* Fake page content - slide */
+    .fp-slide{width:190px;height:115px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:1rem 1.1rem;position:relative;overflow:hidden}
+    .fp-slide-title{font-family:'Playfair Display',serif;font-size:.75rem;font-weight:700;line-height:1.2;margin-bottom:.3rem;position:relative;z-index:1}
+    .fp-slide-bullets{display:flex;flex-direction:column;gap:.2rem;position:relative;z-index:1}
+    .fp-bullet{display:flex;align-items:center;gap:.3rem;font-family:'DM Sans',sans-serif;font-size:.42rem;color:rgba(255,255,255,.8)}
+    .fp-bullet::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;flex-shrink:0}
+    .fp-slide-num{position:absolute;bottom:.4rem;right:.6rem;font-family:'Syne',sans-serif;font-size:.45rem;font-weight:700;opacity:.4}
+    .fp-slide-bar{position:absolute;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,.3)}
+    .fp-slide-bar-fill{height:100%;background:rgba(255,255,255,.7)}
+    .fp-chart-row{display:flex;align-items:flex-end;gap:.2rem;height:30px;margin-top:.3rem;position:relative;z-index:1}
+    .fp-bar{width:12px;border-radius:2px 2px 0 0;background:rgba(255,255,255,.6)}
+
+    /* ════════ REVIEWS ════════ */
+    .reviews-section{border-top:1.5px solid var(--border);padding:1.5rem 2.5rem 2rem}
+    .reviews-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;gap:.8rem}
+    .reviews-title{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.3rem}
+    .write-review-btn{background:transparent;border:1.5px solid var(--border);border-radius:100px;padding:.42rem 1rem;font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;cursor:none;color:var(--mid);transition:all .2s cubic-bezier(.34,1.56,.64,1)}
+    .write-review-btn:hover{background:var(--ink);color:var(--bg);border-color:var(--ink);transform:scale(1.05)}
+    .reviews-list{display:flex;flex-direction:column;gap:.9rem;max-height:260px;overflow-y:auto;padding-right:.3rem;scrollbar-width:thin;scrollbar-color:var(--sand) transparent}
+    .review-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1rem 1.2rem;animation:su .3s both}
+    .review-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem;gap:.5rem;flex-wrap:wrap}
+    .reviewer-name{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.05em}
+    .review-stars{color:#e8a030;font-size:.8rem}
+    .review-date{font-family:'Caveat',cursive;font-size:.8rem;color:var(--mid)}
+    .review-text{font-size:.875rem;color:var(--mid);line-height:1.6}
+    .review-tag{display:inline-block;margin-top:.5rem;background:var(--butter);border-radius:100px;padding:.15rem .6rem;font-family:'Caveat',cursive;font-size:.78rem;color:var(--accent)}
+    .no-reviews{text-align:center;padding:2rem;font-family:'Caveat',cursive;font-size:1rem;color:var(--mid)}
+
+    /* Rating bars */
+    .rating-breakdown{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.2rem;margin-bottom:1rem}
+    .rb-title{font-family:'Instrument Serif',serif;font-size:1rem;margin-bottom:.8rem}
+    .rb-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem}
+    .rb-stars{font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;color:var(--mid);width:36px;text-align:right}
+    .rb-bar-wrap{flex:1;height:7px;background:var(--sand);border-radius:100px;overflow:hidden}
+    .rb-bar-fill{height:100%;background:linear-gradient(90deg,var(--rose),#e8a030);border-radius:100px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+    .rb-cnt{font-family:'Caveat',cursive;font-size:.78rem;color:var(--mid);width:20px}
+
+    /* Write review form */
+    .review-form{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.2rem;margin-top:.9rem;animation:su .3s both}
+    .rf-title{font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--mid);margin-bottom:.8rem}
+    .star-picker{display:flex;gap:.3rem;margin-bottom:.8rem}
+    .sp-star{font-size:1.4rem;cursor:none;transition:transform .2s;color:rgba(26,17,8,.15)}
+    .sp-star.lit{color:#e8a030}
+    .sp-star:hover{transform:scale(1.2)}
+    .rf-input{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:.65rem .9rem;font-family:'DM Sans',sans-serif;font-size:.875rem;color:var(--ink);width:100%;outline:none;margin-bottom:.7rem;transition:border-color .2s}
+    .rf-input:focus{border-color:var(--accent)}
+    .rf-textarea{resize:vertical;min-height:72px}
+    .rf-submit{background:var(--ink);color:var(--bg);border:none;border-radius:100px;padding:.6rem 1.4rem;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:none;transition:transform .22s cubic-bezier(.34,1.56,.64,1),background .2s}
+    .rf-submit:hover{transform:scale(1.05);background:var(--accent)}
+
+    /* GRID SECTION */
+    .grid-section{padding:2.5rem clamp(1.5rem,5vw,4rem)}
+    .grid-eyebrow{font-family:'Caveat',cursive;font-size:1.1rem;color:var(--rose-dk);margin-bottom:1.5rem}
+    .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem}
+    .pcard{background:var(--surface);border:1.5px solid var(--border);border-radius:22px;padding:1.5rem;display:flex;flex-direction:column;gap:.85rem;cursor:none;overflow:hidden;position:relative;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;animation:su .5s cubic-bezier(.4,0,.2,1) both}
+    .pcard.hidden{display:none}
+    .pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--rose),var(--accent),var(--butter),var(--rose));background-size:200%;opacity:0;transition:opacity .3s}
+    .pcard:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(26,17,8,.11)}
+    .pcard:hover::before{opacity:1;animation:shimmer 1.8s linear infinite}
+    @keyframes shimmer{from{background-position:0%}to{background-position:200%}}
+    .pcard-cover-wrap{width:100%;height:155px;border-radius:12px;overflow:hidden;position:relative;flex-shrink:0}
+    .pcard-cover-inner{width:100%;height:100%}
+    .view-overlay{position:absolute;inset:0;background:rgba(26,17,8,0);display:flex;align-items:center;justify-content:center;opacity:0;transition:all .25s;z-index:20;border-radius:12px;cursor:none;border:none}
+    .pcard:hover .view-overlay{opacity:1;background:rgba(26,17,8,.35)}
+    .view-overlay span{background:var(--bg);color:var(--ink);border-radius:100px;padding:.4rem 1rem;font-family:'Syne',sans-serif;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;transform:translateY(6px);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+    .pcard:hover .view-overlay span{transform:translateY(0)}
+    .pcard-title{font-family:'Instrument Serif',serif;font-size:1.08rem;line-height:1.25}
+    .pcard-rating{display:flex;align-items:center;gap:.35rem}
+    .ps{color:#e8a030;font-size:.72rem}
+    .pr{font-family:'Caveat',cursive;font-size:.82rem;color:var(--mid)}
+    .pcard-pages{font-family:'Caveat',cursive;font-size:.85rem;color:var(--mid)}
+    .pcard-bot{display:flex;align-items:center;justify-content:space-between;padding-top:.7rem;border-top:1px dashed var(--sand);margin-top:auto}
+    .pcard-price{font-family:'Instrument Serif',serif;font-size:1.6rem}
+    .padd{background:var(--ink);color:var(--bg);border:none;border-radius:100px;padding:.46rem 1.1rem;font-family:'Syne',sans-serif;font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;cursor:none;transition:transform .22s cubic-bezier(.34,1.56,.64,1),background .2s}
+    .padd:hover{transform:scale(1.1);background:var(--accent)}
+    .padd.added{background:#a8b89a;color:var(--ink)}
+
+    /* CART */
+    .overlay{display:none;position:fixed;inset:0;background:rgba(26,17,8,.3);backdrop-filter:blur(5px);z-index:200}
+    .overlay.open{display:block;animation:fadeIn .2s}
+    .cart-drawer{position:fixed;top:0;right:0;bottom:0;width:min(400px,100vw);background:var(--bg);border-left:1.5px solid var(--border);z-index:201;transform:translateX(105%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;border-radius:20px 0 0 20px;box-shadow:-20px 0 60px rgba(26,17,8,.12)}
+    .cart-drawer.open{transform:translateX(0)}
+    .dhead{padding:1.5rem 1.75rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+    .dhead h3{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.6rem}
+    .xbtn{width:36px;height:36px;border-radius:50%;background:var(--sand);border:none;cursor:none;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .3s}
+    .xbtn:hover{background:var(--rose);transform:rotate(90deg)}
+    .cbody{flex:1;overflow-y:auto;padding:1.5rem 1.75rem}
+    .empty-msg{text-align:center;padding:4rem 1rem;font-family:'Caveat',cursive;font-size:1.2rem;color:var(--mid)}
+    .empty-msg span{display:block;font-size:3rem;margin-bottom:.5rem}
+    .ci{display:grid;grid-template-columns:1fr auto;gap:.5rem;padding:1rem 0;border-bottom:1px dashed var(--sand)}
+    .ci-name{font-family:'Instrument Serif',serif;font-size:1rem;line-height:1.3}
+    .ci-meta{font-family:'Caveat',cursive;font-size:.85rem;color:var(--mid)}
+    .ci-rm{font-family:'Caveat',cursive;font-size:.85rem;color:var(--rose-dk);background:none;border:none;cursor:none;margin-top:.2rem;display:block}
+    .ci-rm:hover{color:var(--accent)}
+    .ci-price{font-family:'Instrument Serif',serif;font-size:1.2rem}
+    .dfooter{padding:1.5rem 1.75rem;border-top:1.5px solid var(--border)}
+    .total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem}
+    .total-lbl{font-family:'Caveat',cursive;font-size:1.1rem;color:var(--mid)}
+    .total-amt{font-family:'Instrument Serif',serif;font-size:2.2rem}
+    .go-btn{width:100%;background:var(--ink);color:var(--bg);border:none;border-radius:100px;padding:1rem;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:none;transition:transform .22s cubic-bezier(.34,1.56,.64,1),background .2s}
+    .go-btn:hover{transform:scale(1.03);background:var(--accent)}
+
+    footer{margin-top:4rem;border-top:1.5px solid var(--border);padding:2rem clamp(1.5rem,5vw,4rem);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+    .fl{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.3rem;color:var(--mid)}
+    footer p{font-family:'Caveat',cursive;font-size:.95rem;color:var(--mid)}
+    footer a{color:var(--mid);text-decoration:none;transition:color .2s}
+    footer a:hover{color:var(--accent)}
+
+    @media(max-width:700px){
+      .hero{grid-template-columns:1fr}.hero-right{display:none}
+      header{grid-template-columns:1fr auto}.nav-left{display:none}
+      .modal-top{grid-template-columns:1fr}.modal-cover-col{display:none}
+    }
+  </style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+
+<!-- TICKER -->
+<div class="ticker"><div class="ticker-track" id="ttrack"></div></div>
+
+<!-- HEADER -->
+<header>
+  <nav class="nav-left">
+    <a href="shop.html">shop</a>
+    <a href="admin.html">admin</a>
+  </nav>
+  <div class="logo">
+    <div class="logo-mark">by<span>line</span>.</div>
+    <div class="logo-tag">digital downloads ✦</div>
+  </div>
+  <div class="nav-right">
+    <button class="cart-pill" onclick="openCart()">✦ cart <span id="cart-count">0</span></button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-pill">✦ for the girls who write</div>
+    <h1 class="hero-title">Stories.<br>Slides.<br><em>Yours now.</em></h1>
+    <p class="hero-desc">Premium journalism pieces & presentation decks — zipped, paid, and in your inbox before you finish your latte.</p>
+  </div>
+  <div class="hero-right">
+    <div class="stat-card"><div class="stat-num">6+</div><div class="stat-lbl">digital files</div></div>
+    <div class="stat-card"><div class="stat-num">⚡</div><div class="stat-lbl">instant delivery</div></div>
+    <div class="stat-card"><div class="stat-num">4.9★</div><div class="stat-lbl">avg rating</div></div>
+    <div class="stat-card"><div class="stat-num">.zip</div><div class="stat-lbl">ready to open</div></div>
+  </div>
+</section>
+
+<!-- CAROUSEL -->
+<section class="carousel-section">
+  <div class="sec-head">
+    <div class="eyebrow">✦ browse the collection</div>
+    <div class="arr-row">
+      <button class="arr" onclick="scrollC(-1)">←</button>
+      <button class="arr" onclick="scrollC(1)">→</button>
+    </div>
+  </div>
+  <div class="c-wrap">
+    <div class="c-track" id="ctrack"></div>
+  </div>
+</section>
+
+<!-- FILTER + GRID -->
+<div class="filter-bar">
+  <span class="filter-lbl">show me →</span>
+  <button class="chip active" onclick="filterP('all',this)">All</button>
+  <button class="chip" onclick="filterP('journalism',this)">📰 Journalism</button>
+  <button class="chip" onclick="filterP('powerpoint',this)">📊 Slides</button>
+</div>
+<section class="grid-section">
+  <div class="grid-eyebrow">✦ all files</div>
+  <div class="pgrid" id="pgrid"></div>
+</section>
+
+<!-- PRODUCT MODAL (preview + reviews) -->
+<div class="modal-bg" id="modal-bg" onclick="closeMaybe(event)">
+  <div class="product-modal" id="product-modal">
+    <!-- Top: cover + info -->
+    <div class="modal-top">
+      <div class="modal-cover-col">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <div class="modal-book" id="modal-book"></div>
+      </div>
+      <div class="modal-info-col">
+        <span class="modal-type" id="modal-type-badge"></span>
+        <div class="modal-title" id="modal-title-text"></div>
+        <div class="modal-rating-row">
+          <div class="modal-stars" id="modal-stars-disp"></div>
+          <div class="modal-avg" id="modal-avg-disp"></div>
+          <div class="modal-rcount" id="modal-rcount-disp"></div>
+        </div>
+        <div class="modal-desc" id="modal-desc-text"></div>
+        <div class="modal-meta-row" id="modal-meta-row"></div>
+        <div class="modal-price" id="modal-price-disp"></div>
+        <button class="modal-add" id="modal-add-btn"></button>
+      </div>
+    </div>
+
+    <!-- Preview pages -->
+    <div class="preview-strip">
+      <div class="preview-label">📄 file preview <span>first 3 pages — blurred after p.2</span></div>
+      <div class="preview-scroll" id="preview-scroll"></div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="reviews-section">
+      <div class="reviews-header">
+        <div class="reviews-title">what readers say ✦</div>
+        <button class="write-review-btn" onclick="toggleReviewForm()" id="write-btn">+ write a review</button>
+      </div>
+      <div class="rating-breakdown" id="rating-breakdown"></div>
+      <div id="review-form-wrap" style="display:none"></div>
+      <div class="reviews-list" id="reviews-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CART -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cdrawer">
+  <div class="dhead"><h3>your cart ✦</h3><button class="xbtn" onclick="closeCart()">×</button></div>
+  <div class="cbody" id="cbody"><div class="empty-msg"><span>🛍️</span>nothing here yet!</div></div>
+  <div class="dfooter">
+    <div class="total-row"><span class="total-lbl">total</span><span class="total-amt" id="ctotal">$0</span></div>
+    <button class="go-btn" onclick="goCheckout()">checkout & get files →</button>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">byline.</div>
+  <p>digital files only · no physical shipping 🤍</p>
+  <p><a href="admin.html">admin portal</a></p>
+</footer>
+
+<!-- ═══════════════════════════════════
+     REVIEW POPUP
+════════════════════════════════════ -->
+<div class="rp-overlay" id="rp-overlay">
+  <div class="rp-card" id="rp-card">
+    <button class="rp-close" onclick="closeReviewPopup()">×</button>
+
+    <!-- DEFAULT STATE: invite to review -->
+    <div id="rp-invite">
+      <span class="rp-emoji">🎁</span>
+      <div class="rp-tag">✦ exclusive offer for buyers</div>
+      <div class="rp-title">Loved what you got?<br><em>Get rewarded for it.</em></div>
+      <p class="rp-body">You've purchased files from byline. — leave an honest review and unlock a <strong>promo code for your next order</strong>. Takes less than a minute!</p>
+
+      <div class="rp-promo-preview">
+        <div class="rp-promo-icon">🏷️</div>
+        <div class="rp-promo-text">
+          <strong>get ₱200 off your next purchase</strong>
+          <span>posted after you submit your review — instantly revealed!</span>
+        </div>
+      </div>
+
+      <div id="rp-files-list" class="rp-files"></div>
+
+      <div class="rp-actions">
+        <button class="rp-write-btn" onclick="openReviewFromPopup()">✦ write my review & get code</button>
+        <button class="rp-skip-btn" onclick="closeReviewPopup()">maybe later</button>
+      </div>
+    </div>
+
+    <!-- REVIEW FORM STATE -->
+    <div id="rp-form" style="display:none">
+      <span class="rp-emoji">✍️</span>
+      <div class="rp-title" style="font-size:1.4rem;margin-bottom:.4rem">Write your review</div>
+      <p class="rp-body" style="margin-bottom:1rem">Pick a file you bought and share your honest thoughts — your code unlocks right after!</p>
+
+      <!-- product selector -->
+      <div style="margin-bottom:.85rem">
+        <div style="font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--mid);margin-bottom:.4rem">which file are you reviewing? *</div>
+        <select id="rp-product-select" style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:.68rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);width:100%;outline:none;cursor:none"></select>
+      </div>
+
+      <!-- star picker -->
+      <div style="margin-bottom:.85rem">
+        <div style="font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--mid);margin-bottom:.45rem">your rating *</div>
+        <div id="rp-stars" style="display:flex;gap:.4rem">
+          <span class="sp-star" data-n="1" onclick="rpPickStar(1)">★</span>
+          <span class="sp-star" data-n="2" onclick="rpPickStar(2)">★</span>
+          <span class="sp-star" data-n="3" onclick="rpPickStar(3)">★</span>
+          <span class="sp-star" data-n="4" onclick="rpPickStar(4)">★</span>
+          <span class="sp-star" data-n="5" onclick="rpPickStar(5)">★</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom:.75rem">
+        <div style="font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--mid);margin-bottom:.4rem">your name *</div>
+        <input id="rp-name" type="text" placeholder="e.g. Maria S." style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:.68rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);width:100%;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"/>
+      </div>
+
+      <div style="margin-bottom:.75rem">
+        <div style="font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--mid);margin-bottom:.4rem">your review *</div>
+        <textarea id="rp-text" rows="3" placeholder="What did you love about it? How did you use it?" style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:.68rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);width:100%;outline:none;resize:vertical;transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      </div>
+
+      <div style="margin-bottom:1.2rem">
+        <div style="font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--mid);margin-bottom:.4rem">one-word tag <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></div>
+        <input id="rp-tag-inp" type="text" placeholder="e.g. inspiring" style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:.68rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);width:100%;outline:none;transition:border-color .2s" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"/>
+      </div>
+
+      <div class="rp-actions">
+        <button class="rp-write-btn" onclick="rpSubmitReview()">post review & reveal code ✦</button>
+        <button class="rp-skip-btn" onclick="showRpInvite()">← back</button>
+      </div>
+    </div>
+
+    <!-- PROMO CODE REVEAL STATE -->
+    <div id="rp-reveal" style="display:none;text-align:center;padding:.5rem 0">
+      <span class="rp-emoji" style="animation:none">🎉</span>
+      <div class="rp-title" style="font-size:1.5rem;margin-bottom:.5rem">your code is ready!</div>
+      <p class="rp-body" style="text-align:center;margin-bottom:1.2rem">Thank you for your review — here's your exclusive promo code for your next byline. purchase!</p>
+      <div class="rp-code-label">copy & save your code</div>
+      <div class="rp-code-box" id="rp-code-display">
+        <span id="rp-code-text">BYLINE200</span>
+        <button class="rp-copy-btn" onclick="copyCode()" id="rp-copy-btn">copy</button>
+      </div>
+      <div class="rp-code-note">✦ saves ₱200 off your next order · valid for 30 days · one use only</div>
+      <br>
+      <button class="rp-done-btn" onclick="closeReviewPopup()">done — keep shopping ✦</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ─── CURRENCY ───
+const peso = n => '₱' + Number(n).toLocaleString('en-PH', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+// ─── CURSOR ───
+const cur = document.getElementById('cursor');
+document.addEventListener('mousemove', e => { cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
+function bc() {
+  document.querySelectorAll('button,a,.book-card,.pcard,.sp-star,.preview-page').forEach(el => {
+    el.addEventListener('mouseenter', () => cur.classList.add('grow'));
+    el.addEventListener('mouseleave', () => cur.classList.remove('grow'));
+  });
+}
+
+// ─── TICKER ───
+const tI = ['📰 Journalism Files','✦','📊 PowerPoint Decks','✦','⚡ Instant Delivery','✦','⭐ 4.9 Avg Rating','✦','100% Original','✦','by byline.','✦'];
+document.getElementById('ttrack').innerHTML = [...tI,...tI].map(t=>`<span${t==='✦'?' class="sep"':''}>${t}</span>`).join('');
+
+// ─── COVER DESIGNS ───
+const CD = {
+  1:{bg:'linear-gradient(135deg,#2d4a3e 0%,#1a2d26 60%,#0d1a14 100%)',motifColor:'rgba(168,212,180,.15)',label:'Investigation'},
+  2:{bg:'linear-gradient(160deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)',motifColor:'rgba(100,160,255,.15)',label:'Feature'},
+  3:{bg:'linear-gradient(160deg,#3d1f08 0%,#7a3a1a 45%,#c4622a 100%)',motifColor:'rgba(255,200,100,.15)',label:'Long-Form'},
+  4:{bg:'linear-gradient(135deg,#1c1410 0%,#3d2b1a 50%,#5c3d22 100%)',motifColor:'rgba(212,160,80,.15)',label:'Masterclass'},
+  5:{bg:'linear-gradient(150deg,#1a0a1a 0%,#3d1040 55%,#6b2060 100%)',motifColor:'rgba(220,120,200,.15)',label:'Template'},
+  6:{bg:'linear-gradient(145deg,#0a1628 0%,#132040 55%,#1e3a60 100%)',motifColor:'rgba(80,200,255,.15)',label:'Guide'}
+};
+
+function buildCover(p, w='100%', h='100%') {
+  const d = CD[p.id] || CD[1];
+  const short = p.title.length>38 ? p.title.substring(0,38)+'…' : p.title;
+  return `<div style="width:${w};height:${h};background:${d.bg};position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 65% 35%,${d.motifColor} 0%,transparent 60%)"></div>
+    <div class="bc-inner">
+      <span class="bc-label" style="color:rgba(255,255,255,.8)">${d.label}</span>
+      <div class="bc-title">${short}</div>
+      <div>
+        <div class="bc-author">byline. originals</div>
+        <div class="bc-rule"></div>
+        <div class="bc-brand">byline. digital</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── PREVIEW PAGES DATA ───
+const PREVIEWS = {
+  1: [ // Mental Health - journalism
+    {type:'j', page:1, headline:'The Hidden Crisis: Mental Health in Schools', sub:'An investigation into a system failing its students', col1Lines:8, col2Lines:7, dropCap:'A', pullquote:'"One in five students experiences a mental health condition, yet fewer than half receive care."', hasImg:true, blur:false},
+    {type:'j', page:2, headline:'Part I: The Invisible Weight', sub:'', col1Lines:9, col2Lines:8, dropCap:'W', pullquote:'"Teachers describe classrooms where anxiety is the new normal."', hasImg:false, blur:false},
+    {type:'j', page:3, headline:'Data & Methodology', sub:'', col1Lines:7, col2Lines:6, dropCap:'O', pullquote:'', hasImg:true, blur:true},
+    {type:'j', page:4, headline:'Voices from the Hallway', sub:'', col1Lines:8, col2Lines:7, dropCap:'S', pullquote:'', hasImg:false, blur:true},
+  ],
+  2: [
+    {type:'j', page:1, headline:'Tech Giants & Antitrust: A Deep Dive', sub:'How Silicon Valley rewrote the rules of competition', col1Lines:8, col2Lines:7, dropCap:'I', pullquote:'"The five largest tech firms now control more than $8 trillion in market value."', hasImg:true, blur:false},
+    {type:'j', page:2, headline:'Part I: The Monopoly Machine', sub:'', col1Lines:9, col2Lines:8, dropCap:'F', pullquote:'"Regulators in Brussels, Washington, and London are finally asking the same questions."', hasImg:false, blur:false},
+    {type:'j', page:3, headline:'Case Study: Search & Advertising', sub:'', col1Lines:7, col2Lines:6, dropCap:'G', pullquote:'', hasImg:true, blur:true},
+    {type:'j', page:4, headline:'What Comes Next', sub:'', col1Lines:8, col2Lines:7, dropCap:'T', pullquote:'', hasImg:false, blur:true},
+  ],
+  3: [
+    {type:'j', page:1, headline:'Climate Migration: The Untold Story', sub:'Field reports from the frontlines of a warming world', col1Lines:8, col2Lines:7, dropCap:'T', pullquote:'"By 2050, an estimated 200 million people could be displaced by climate change."', hasImg:true, blur:false},
+    {type:'j', page:2, headline:'Mekong Delta: Rising Waters', sub:'', col1Lines:9, col2Lines:8, dropCap:'H', pullquote:'"She has farmed this land for forty years. Next year, she will leave."', hasImg:false, blur:false},
+    {type:'j', page:3, headline:'The Numbers Behind the Narrative', sub:'', col1Lines:7, col2Lines:6, dropCap:'C', pullquote:'', hasImg:true, blur:true},
+    {type:'j', page:4, headline:'Paths Forward', sub:'', col1Lines:8, col2Lines:7, dropCap:'I', pullquote:'', hasImg:false, blur:true},
+  ],
+  4: [ // PowerPoint slides
+    {type:'s', page:1, bg:'linear-gradient(135deg,#1c1410,#3d2b1a)', title:'Executive Leadership Masterclass', bullets:['45 slides · C-Suite ready','Evidence-based frameworks','Editable templates included'], accent:'#d4a055', barPct:100, bars:null},
+    {type:'s', page:2, bg:'linear-gradient(135deg,#2a1f14,#4a3020)', title:'Module 1: Decision Frameworks', bullets:['OODA Loop methodology','Risk vs reward matrix','Real-world case studies'], accent:'#d4a055', barPct:20, bars:null},
+    {type:'s', page:3, bg:'linear-gradient(135deg,#1c1410,#3d2b1a)', title:'Team Dynamics Model', bullets:null, accent:'#d4a055', barPct:40, bars:[60,85,40,70,90]},
+    {type:'s', page:4, bg:'linear-gradient(135deg,#2a1f14,#4a3020)', title:'Strategic Communication', bullets:['Message architecture','Stakeholder mapping','Influence & persuasion'], accent:'#d4a055', barPct:60, bars:null},
+  ],
+  5: [
+    {type:'s', page:1, bg:'linear-gradient(150deg,#1a0a1a,#3d1040)', title:'Startup Pitch Deck Pro', bullets:['30 investor-ready slides','Built-in story arc','Editable in PowerPoint'], accent:'#c878d8', barPct:100, bars:null},
+    {type:'s', page:2, bg:'linear-gradient(150deg,#250d28,#4a1a50)', title:'Slide 3 · The Problem', bullets:['Define the pain point','Market gap analysis','Why now?'], accent:'#c878d8', barPct:10, bars:null},
+    {type:'s', page:3, bg:'linear-gradient(150deg,#1a0a1a,#3d1040)', title:'Market Opportunity', bullets:null, accent:'#c878d8', barPct:30, bars:[45,75,60,90,55]},
+    {type:'s', page:4, bg:'linear-gradient(150deg,#250d28,#4a1a50)', title:'Go-To-Market Strategy', bullets:['Phase 1: Early adopters','Phase 2: Scale','Phase 3: Expansion'], accent:'#c878d8', barPct:50, bars:null},
+  ],
+  6: [
+    {type:'s', page:1, bg:'linear-gradient(145deg,#0a1628,#1e3a60)', title:'Data Journalism Fundamentals', bullets:['55 slides + Excel templates','For journalists & comms pros','Includes real datasets'], accent:'#50c8ff', barPct:100, bars:null},
+    {type:'s', page:2, bg:'linear-gradient(145deg,#0d1e38,#254870)', title:'Chapter 1: Finding the Story', bullets:['Where to find public data','Cleaning messy datasets','Spotting the narrative'], accent:'#50c8ff', barPct:15, bars:null},
+    {type:'s', page:3, bg:'linear-gradient(145deg,#0a1628,#1e3a60)', title:'Visualizing Data', bullets:null, accent:'#50c8ff', barPct:35, bars:[50,80,65,45,90]},
+    {type:'s', page:4, bg:'linear-gradient(145deg,#0d1e38,#254870)', title:'Tools & Templates', bullets:['Excel chart templates','Datawrapper walkthrough','Case study: COVID data'], accent:'#50c8ff', barPct:55, bars:null},
+  ]
+};
+
+function renderPreviewPage(pg, idx) {
+  const blurred = pg.blur;
+  if (pg.type === 'j') {
+    const linesCol1 = Array(pg.col1Lines).fill(0).map((_,i) => `<div class="fp-line${i===0?' dark':''}"></div>`).join('');
+    const linesCol2 = Array(pg.col2Lines).fill(0).map((_,i) => `<div class="fp-line${i===0?' dark':''}"></div>`).join('');
+    return `<div class="preview-page" style="${blurred?'filter:blur(3px)':''}">
+      <div class="pg-num">p.${pg.page}</div>
+      <div class="fp-journalism">
+        <div class="fp-headline">${pg.headline}</div>
+        ${pg.sub?`<div class="fp-byline">${pg.sub}</div>`:''}
+        <div class="fp-rule"></div>
+        ${pg.hasImg ? `<div class="fp-img-placeholder">📸 photo</div>` : ''}
+        <div class="fp-col">
+          <div>
+            <div class="fp-drop-cap">${pg.dropCap}</div>
+            ${linesCol1}
+            ${pg.pullquote?`<div class="fp-pullquote">${pg.pullquote}</div>`:''}
+          </div>
+          <div>${linesCol2}</div>
+        </div>
+      </div>
+      ${blurred?`<div class="blur-mask"><span>🔒 buy to read</span></div>`:''}
+    </div>`;
+  } else {
+    const barsHtml = pg.bars ? `<div class="fp-chart-row">${pg.bars.map(h=>`<div class="fp-bar" style="height:${h}%;background:${pg.accent}"></div>`).join('')}</div>` : '';
+    const bulletsHtml = pg.bullets ? `<div class="fp-slide-bullets">${pg.bullets.map(b=>`<div class="fp-bullet" style="color:rgba(255,255,255,.75)">${b}</div>`).join('')}</div>` : '';
+    return `<div class="preview-page">
+      <div class="pg-num" style="background:rgba(0,0,0,.3);color:rgba(255,255,255,.5)">p.${pg.page}</div>
+      <div class="fp-slide" style="background:${pg.bg}">
+        <div class="fp-slide-bar"><div class="fp-slide-bar-fill" style="width:${pg.barPct}%;background:${pg.accent}"></div></div>
+        <div class="fp-slide-title" style="color:#fff">${pg.title}</div>
+        ${bulletsHtml}${barsHtml}
+        <div class="fp-slide-num" style="color:rgba(255,255,255,.35)">${pg.page} / ${PREVIEWS[currentProdId]?.length||4}</div>
+      </div>
+      ${blurred?`<div class="blur-mask"><span>🔒 buy to read</span></div>`:''}
+    </div>`;
+  }
+}
+
+// ─── REVIEWS DATA ───
+const defaultReviews = {
+  1: [
+    {name:'Aaliya M.',stars:5,text:'Incredibly well-researched. I used this as supplemental reading for my journalism class and my students were blown away by the structure and depth.',tag:'used in class',date:'March 2025'},
+    {name:'Priya T.',stars:5,text:'This piece made me rethink how I write investigative features. The interview transcripts are woven in so naturally. Worth every penny.',tag:'inspiring',date:'Feb 2025'},
+    {name:'Jordan K.',stars:4,text:'Really solid long-form piece. Data is well-cited and the narrative flows beautifully. Minor note: could use a few more charts.',tag:'well-written',date:'Jan 2025'},
+    {name:'Simone R.',stars:5,text:'Purchased this for personal development as a student journalist. The way sources are balanced is a masterclass in fairness.',tag:'must-read',date:'Dec 2024'},
+  ],
+  2: [
+    {name:'Fatima A.',stars:5,text:'Perfect for my media law research paper. The antitrust analysis is nuanced and goes beyond what you find in mainstream articles.',tag:'academic',date:'March 2025'},
+    {name:'Leila C.',stars:4,text:'Dense but rewarding. I had to read it twice to absorb everything. The section on EU regulations is particularly insightful.',tag:'detailed',date:'Feb 2025'},
+    {name:'Rania P.',stars:5,text:'Used this for a presentation on Big Tech — my professor asked where I found such a thorough source. Highly recommend!',tag:'presentation gold',date:'Jan 2025'},
+  ],
+  3: [
+    {name:'Nadia S.',stars:5,text:'The field reporting is visceral and human. I cried at the Mekong Delta section. This is journalism at its best.',tag:'emotionally powerful',date:'April 2025'},
+    {name:'Blessing O.',stars:5,text:'Assigned this to my senior students for Earth Day. The writing is accessible without dumbing down the science.',tag:'classroom ready',date:'March 2025'},
+    {name:'Chloe W.',stars:4,text:'Beautiful storytelling. I wish there were more photos included, but the writing more than compensates.',tag:'vivid writing',date:'Feb 2025'},
+    {name:'Tamsin B.',stars:5,text:'One of the best pieces I\'ve read on climate change. It centers the human story without ignoring the data.',tag:'balanced',date:'Jan 2025'},
+  ],
+  4: [
+    {name:'Aisha R.',stars:5,text:'The decision framework slides alone were worth the price. I adapted them for a PD session with my department heads and got amazing feedback.',tag:'PD approved',date:'March 2025'},
+    {name:'Karen L.',stars:5,text:'Clean design, very editable. Used slides 12–18 for a board presentation. The audience loved how professional it looked.',tag:'board-ready',date:'Feb 2025'},
+    {name:'Denise M.',stars:4,text:'Really comprehensive. A few slides felt a bit dense, but overall this is a fantastic resource for any leadership curriculum.',tag:'comprehensive',date:'Jan 2025'},
+  ],
+  5: [
+    {name:'Sofia B.',stars:5,text:'Literally got my first investor meeting using this template. The story arc on slides 4–8 is perfect. A must-buy for any founder.',tag:'investor approved',date:'March 2025'},
+    {name:'Tara V.',stars:5,text:'Clean, modern, and so easy to customize. I swapped out the colors in 20 minutes and it looked like a $5,000 designer made it.',tag:'easy to edit',date:'Feb 2025'},
+    {name:'Yasmin D.',stars:4,text:'Great starting point. I added my own sections but the core structure saved me so much time.',tag:'time saver',date:'Dec 2024'},
+  ],
+  6: [
+    {name:'Joy F.',stars:5,text:'This is exactly what was missing from journalism programs. The Excel templates alone are worth 10x the price.',tag:'essential resource',date:'April 2025'},
+    {name:'Morgan A.',stars:5,text:'I\'m a teacher who had zero data skills. After going through this deck, I now create charts for all my news unit assignments. Game changer.',tag:'beginner-friendly',date:'March 2025'},
+    {name:'Zara K.',stars:4,text:'Very practical. I appreciated the real dataset examples. Would love a follow-up deck on R or Python for journalists.',tag:'practical',date:'Feb 2025'},
+  ]
+};
+
+function getReviews(id) {
+  const stored = JSON.parse(localStorage.getItem(`reviews_${id}`) || 'null');
+  return stored || defaultReviews[id] || [];
+}
+function saveReview(id, rev) {
+  const reviews = getReviews(id);
+  reviews.unshift(rev);
+  localStorage.setItem(`reviews_${id}`, JSON.stringify(reviews));
+}
+function avgRating(reviews) {
+  if (!reviews.length) return 0;
+  return reviews.reduce((s,r)=>s+r.stars,0)/reviews.length;
+}
+function starStr(n) { return '★'.repeat(Math.round(n)) + '☆'.repeat(5-Math.round(n)); }
+
+// ─── PRODUCTS ───
+function getProds() {
+  const s = localStorage.getItem('pressroom_products');
+  if (s) return JSON.parse(s);
+  return [
+    {id:1,title:"The Hidden Crisis: Mental Health in Schools",description:"An in-depth investigative piece exploring the growing mental health epidemic in public schools, with exclusive interviews and data analysis.",type:"journalism",price:650,fileName:"mental_health_schools.zip",fileSize:"2.4 MB",pages:"18 pages"},
+    {id:2,title:"Tech Giants & Antitrust: A Deep Dive",description:"Comprehensive feature examining how Silicon Valley monopolies reshape regulatory landscapes across three continents.",type:"journalism",price:850,fileName:"tech_antitrust.zip",fileSize:"1.8 MB",pages:"24 pages"},
+    {id:3,title:"Climate Migration: The Untold Story",description:"Award-winning long-form piece documenting climate refugees from Southeast Asia with original field reporting.",type:"journalism",price:1000,fileName:"climate_migration.zip",fileSize:"5.1 MB",pages:"32 pages"},
+    {id:4,title:"Executive Leadership Masterclass Deck",description:"Professional 45-slide deck for C-suite training. Covers decision frameworks, team dynamics & strategic communication.",type:"powerpoint",price:1400,fileName:"leadership_deck.zip",fileSize:"12.3 MB",pages:"45 slides"},
+    {id:5,title:"Startup Pitch Deck Template Pro",description:"Polished investor-ready pitch template with 30 slides, editable charts, and built-in storytelling structure.",type:"powerpoint",price:1950,fileName:"pitch_deck_pro.zip",fileSize:"8.7 MB",pages:"30 slides"},
+    {id:6,title:"Data Journalism Fundamentals",description:"A guide to data-driven storytelling with Excel and chart templates for journalists and communicators.",type:"powerpoint",price:1200,fileName:"data_journalism.zip",fileSize:"15.2 MB",pages:"55 slides"}
+  ];
+}
+
+let cart = JSON.parse(localStorage.getItem('pressroom_cart')||'[]');
+const saveCart = () => localStorage.setItem('pressroom_cart', JSON.stringify(cart));
+let currentProdId = null;
+let selectedStars = 0;
+let showForm = false;
+
+// ─── CAROUSEL ───
+function renderCarousel() {
+  const track = document.getElementById('ctrack');
+  track.innerHTML = '';
+  getProds().forEach((p, i) => {
+    const reviews = getReviews(p.id);
+    const avg = avgRating(reviews);
+    const inCart = !!cart.find(c=>c.id===p.id);
+    const d = document.createElement('div');
+    d.className = 'book-card';
+    d.style.animationDelay = (i*.08)+'s';
+    d.innerHTML = `
+      <div class="book-cover-wrap">
+        <div class="book-cover" onclick="openModal(${p.id})">${buildCover(p)}</div>
+      </div>
+      <div class="card-info">
+        <div class="ctype ${p.type}">${p.type==='journalism'?'📰 journalism':'📊 slides'}</div>
+        <div class="ctitle">${p.title.length>42?p.title.substring(0,42)+'…':p.title}</div>
+        <div class="crating"><span class="stars">${starStr(avg)}</span><span class="rcount">(${reviews.length})</span></div>
+        <div class="cpages">✦ ${p.pages}</div>
+        <div class="cbot">
+          <span class="cprice">${peso(p.price)}</span>
+          <button class="add-btn${inCart?' added':''}" onclick="addToCart(${p.id})">${inCart?'✓ added!':'+ add'}</button>
+        </div>
+      </div>`;
+    track.appendChild(d);
+  });
+  setupDrag(track);
+  bc();
+}
+function scrollC(dir) { document.getElementById('ctrack').scrollBy({left:dir*280,behavior:'smooth'}); }
+function setupDrag(el) {
+  let isDown=false,sx,sl;
+  el.addEventListener('mousedown',e=>{isDown=true;el.classList.add('grabbing');sx=e.pageX-el.offsetLeft;sl=el.scrollLeft});
+  el.addEventListener('mouseleave',()=>{isDown=false;el.classList.remove('grabbing')});
+  el.addEventListener('mouseup',()=>{isDown=false;el.classList.remove('grabbing')});
+  el.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();el.scrollLeft=sl-(e.pageX-el.offsetLeft-sx)*1.5});
+}
+
+// ─── GRID ───
+function renderGrid(filter='all') {
+  const grid = document.getElementById('pgrid');
+  grid.innerHTML = '';
+  getProds().forEach((p,i) => {
+    if (filter!=='all' && p.type!==filter) return;
+    const reviews = getReviews(p.id);
+    const avg = avgRating(reviews);
+    const inCart = !!cart.find(c=>c.id===p.id);
+    const d = document.createElement('div');
+    d.className = 'pcard';
+    d.style.animationDelay = (i*.06)+'s';
+    d.innerHTML = `
+      <div class="pcard-cover-wrap">
+        <div class="pcard-cover-inner">${buildCover(p,'100%','100%')}</div>
+        <button class="view-overlay" onclick="openModal(${p.id})"><span>preview + reviews ✦</span></button>
+      </div>
+      <div class="ctype ${p.type}">${p.type==='journalism'?'📰 journalism':'📊 slides'}</div>
+      <div class="pcard-title">${p.title}</div>
+      <div class="pcard-rating"><span class="ps">${starStr(avg)}</span><span class="pr">${avg.toFixed(1)} · ${reviews.length} reviews</span></div>
+      <div class="pcard-pages">✦ ${p.pages} · ${p.fileSize}</div>
+      <div class="pcard-bot">
+        <span class="pcard-price">${peso(p.price)}</span>
+        <button class="padd${inCart?' added':''}" onclick="addToCart(${p.id})">${inCart?'✓ added!':'+ add'}</button>
+      </div>`;
+    grid.appendChild(d);
+  });
+  bc();
+}
+function filterP(type,btn){document.querySelectorAll('.chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderGrid(type);}
+
+// ─── MODAL ───
+function openModal(id) {
+  currentProdId = id;
+  selectedStars = 0;
+  showForm = false;
+  const p = getProds().find(x=>x.id===id);
+  if (!p) return;
+  const reviews = getReviews(id);
+  const avg = avgRating(reviews);
+  const inCart = !!cart.find(c=>c.id===id);
+
+  document.getElementById('modal-book').innerHTML = buildCover(p,'100%','100%');
+  const typeBadge = document.getElementById('modal-type-badge');
+  typeBadge.textContent = p.type==='journalism'?'📰 journalism':'📊 slides';
+  typeBadge.className = `modal-type ${p.type}`;
+  document.getElementById('modal-title-text').textContent = p.title;
+  document.getElementById('modal-stars-disp').textContent = starStr(avg);
+  document.getElementById('modal-avg-disp').textContent = avg.toFixed(1);
+  document.getElementById('modal-rcount-disp').textContent = `(${reviews.length} reviews)`;
+  document.getElementById('modal-desc-text').textContent = p.description;
+  document.getElementById('modal-meta-row').innerHTML = `
+    <div class="meta-chip">✦ ${p.pages}</div>
+    <div class="meta-chip">📦 ${p.fileSize}</div>
+    <div class="meta-chip">${p.type==='journalism'?'📰 article':'📊 presentation'}</div>`;
+  document.getElementById('modal-price-disp').textContent = peso(p.price);
+  const addBtn = document.getElementById('modal-add-btn');
+  addBtn.textContent = inCart?'✓ already in cart!':'+ add to cart';
+  addBtn.className = 'modal-add'+(inCart?' added':'');
+  addBtn.onclick = () => { addToCart(id); addBtn.textContent='✓ added!'; addBtn.classList.add('added'); };
+
+  // Preview pages
+  const ps = document.getElementById('preview-scroll');
+  const pgs = PREVIEWS[id] || [];
+  ps.innerHTML = pgs.map((pg,i) => renderPreviewPage(pg,i)).join('');
+  setupDrag(ps);
+
+  // Rating breakdown
+  renderRatingBreakdown(reviews);
+
+  // Reviews list
+  renderReviewsList(reviews);
+
+  document.getElementById('write-btn').textContent = '+ write a review';
+  document.getElementById('review-form-wrap').style.display = 'none';
+  document.getElementById('modal-bg').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  bc();
+}
+
+function renderRatingBreakdown(reviews) {
+  const counts = [0,0,0,0,0];
+  reviews.forEach(r => { if (r.stars>=1&&r.stars<=5) counts[r.stars-1]++; });
+  const max = Math.max(...counts,1);
+  document.getElementById('rating-breakdown').innerHTML = `
+    <div class="rb-title">rating breakdown</div>
+    ${[5,4,3,2,1].map(n=>`
+      <div class="rb-row">
+        <div class="rb-stars">${n}★</div>
+        <div class="rb-bar-wrap"><div class="rb-bar-fill" style="width:${(counts[n-1]/max)*100}%"></div></div>
+        <div class="rb-cnt">${counts[n-1]}</div>
+      </div>`).join('')}`;
+  setTimeout(()=>{document.querySelectorAll('.rb-bar-fill').forEach(b=>{b.style.transition='width 1s cubic-bezier(.4,0,.2,1)'});},50);
+}
+
+function renderReviewsList(reviews) {
+  const list = document.getElementById('reviews-list');
+  if (!reviews.length) { list.innerHTML = '<div class="no-reviews">no reviews yet — be the first! 🤍</div>'; return; }
+  list.innerHTML = reviews.map(r=>`
+    <div class="review-card">
+      <div class="review-top">
+        <div>
+          <div class="reviewer-name">${r.name}</div>
+          <div class="review-date">${r.date}</div>
+        </div>
+        <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+      </div>
+      <div class="review-text">${r.text}</div>
+      ${r.tag?`<span class="review-tag">${r.tag}</span>`:''}
+    </div>`).join('');
+}
+
+function toggleReviewForm() {
+  showForm = !showForm;
+  const wrap = document.getElementById('review-form-wrap');
+  const btn = document.getElementById('write-btn');
+  if (showForm) {
+    btn.textContent = '✕ cancel';
+    selectedStars = 0;
+    wrap.style.display = 'block';
+    wrap.innerHTML = `
+      <div class="review-form">
+        <div class="rf-title">leave your review ✦</div>
+        <div class="star-picker" id="star-picker">
+          ${[1,2,3,4,5].map(n=>`<span class="sp-star" data-n="${n}" onclick="pickStar(${n})">★</span>`).join('')}
+        </div>
+        <input class="rf-input" id="rf-name" placeholder="your name (e.g. Aaliya M.)" />
+        <textarea class="rf-input rf-textarea" id="rf-text" placeholder="share your thoughts about this file…"></textarea>
+        <input class="rf-input" id="rf-tag" placeholder="one-word tag, optional (e.g. inspiring)" />
+        <button class="rf-submit" onclick="submitReview()">post review ✦</button>
+      </div>`;
+    bc();
+  } else {
+    btn.textContent = '+ write a review';
+    wrap.style.display = 'none';
+  }
+}
+
+function pickStar(n) {
+  selectedStars = n;
+  document.querySelectorAll('.sp-star').forEach(s => {
+    const sn = parseInt(s.dataset.n);
+    s.classList.toggle('lit', sn<=n);
+  });
+}
+
+function submitReview() {
+  const name = document.getElementById('rf-name').value.trim();
+  const text = document.getElementById('rf-text').value.trim();
+  const tag = document.getElementById('rf-tag').value.trim();
+  if (!name) { alert('add your name!'); return; }
+  if (!text) { alert('write something about the file!'); return; }
+  if (!selectedStars) { alert('pick a star rating!'); return; }
+  const now = new Date();
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const rev = { name, stars: selectedStars, text, tag: tag||null, date: `${months[now.getMonth()]} ${now.getFullYear()}` };
+  saveReview(currentProdId, rev);
+  const reviews = getReviews(currentProdId);
+  renderRatingBreakdown(reviews);
+  renderReviewsList(reviews);
+  toggleReviewForm();
+  renderCarousel();
+  renderGrid();
+  // Update star display in modal
+  const avg = avgRating(reviews);
+  document.getElementById('modal-stars-disp').textContent = starStr(avg);
+  document.getElementById('modal-avg-disp').textContent = avg.toFixed(1);
+  document.getElementById('modal-rcount-disp').textContent = `(${reviews.length} reviews)`;
+}
+
+function closeMaybe(e) { if(e.target===document.getElementById('modal-bg')) closeModal(); }
+function closeModal() { document.getElementById('modal-bg').classList.remove('open'); document.body.style.overflow=''; }
+
+// ─── CART ───
+function addToCart(id) {
+  const p = getProds().find(x=>x.id===id);
+  if (!p||cart.find(c=>c.id===id)) return;
+  cart.push(p); saveCart(); updateCart(); renderCarousel(); renderGrid();
+  const cnt = document.getElementById('cart-count');
+  cnt.classList.add('bump'); setTimeout(()=>cnt.classList.remove('bump'),400);
+}
+function removeFromCart(id) { cart=cart.filter(c=>c.id!==id); saveCart(); updateCart(); renderCarousel(); renderGrid(); }
+function updateCart() {
+  document.getElementById('cart-count').textContent = cart.length;
+  document.getElementById('ctotal').textContent = peso(cart.reduce((s,i)=>s+Number(i.price),0));
+  const body = document.getElementById('cbody');
+  if (!cart.length) { body.innerHTML='<div class="empty-msg"><span>🛍️</span>nothing here yet!</div>'; return; }
+  body.innerHTML = cart.map(item=>`
+    <div class="ci">
+      <div>
+        <div class="ci-name">${item.title}</div>
+        <div class="ci-meta">${item.type} · ${item.fileSize}</div>
+        <button class="ci-rm" onclick="removeFromCart(${item.id})">remove</button>
+      </div>
+      <div class="ci-price">${peso(Number(item.price))}</div>
+    </div>`).join('');
+  bc();
+}
+function openCart(){document.getElementById('overlay').classList.add('open');document.getElementById('cdrawer').classList.add('open')}
+function closeCart(){document.getElementById('overlay').classList.remove('open');document.getElementById('cdrawer').classList.remove('open')}
+function goCheckout(){if(!cart.length)return;window.location.href='checkout.html'}
+
+// ─── REVIEW POPUP ───
+let rpSelectedStars = 0;
+
+function checkAndShowReviewPopup() {
+  
+
+  // Don't show if already dismissed this session
+  if (sessionStorage.getItem('rp_dismissed')) return;
+
+  // Don't show if already left a review this session
+  if (sessionStorage.getItem('rp_reviewed')) return;
+
+  // Check if user has any unreviewed purchased products
+  const purchasedIds = [...new Set(orders.flatMap(o => (o.items || []).map(i => i.id)))];
+  const alreadyReviewedThisSession = JSON.parse(sessionStorage.getItem('rp_session_reviews') || '[]');
+  const unreviewedIds = purchasedIds.filter(id => !alreadyReviewedThisSession.includes(id));
+  if (!unreviewedIds.length) return;
+
+  // Build the purchased files list in popup
+  const allProds = getProds();
+  const purchasedProds = allProds.filter(p => unreviewedIds.includes(p.id));
+
+  const filesList = document.getElementById('rp-files-list');
+  filesList.innerHTML = purchasedProds.map(p => `
+    <div class="rp-file-chip">
+      <div class="fchip-dot"></div>
+      ${p.title.length > 30 ? p.title.substring(0, 30) + '…' : p.title}
+    </div>`).join('');
+
+  // Populate product selector in form
+  const sel = document.getElementById('rp-product-select');
+  sel.innerHTML = purchasedProds.map(p =>
+    `<option value="${p.id}">${p.title.substring(0, 50)}${p.title.length > 50 ? '…' : ''}</option>`
+  ).join('');
+
+  // Show popup after a delay (feels natural, not jarring)
+  setTimeout(() => {
+    document.getElementById('rp-overlay').classList.add('open');
+    bc();
+  }, 4000);
+}
+
+function closeReviewPopup() {
+  document.getElementById('rp-overlay').classList.remove('open');
+  sessionStorage.setItem('rp_dismissed', '1');
+}
+
+function openReviewFromPopup() {
+  showRpForm();
+}
+
+function showRpInvite() {
+  document.getElementById('rp-invite').style.display = 'block';
+  document.getElementById('rp-form').style.display = 'none';
+  document.getElementById('rp-reveal').style.display = 'none';
+}
+
+function showRpForm() {
+  document.getElementById('rp-invite').style.display = 'none';
+  document.getElementById('rp-form').style.display = 'block';
+  document.getElementById('rp-reveal').style.display = 'none';
+  rpSelectedStars = 0;
+  document.querySelectorAll('#rp-stars .sp-star').forEach(s => s.classList.remove('lit'));
+}
+
+function rpPickStar(n) {
+  rpSelectedStars = n;
+  document.querySelectorAll('#rp-stars .sp-star').forEach(s => {
+    s.classList.toggle('lit', parseInt(s.dataset.n) <= n);
+  });
+}
+
+function rpSubmitReview() {
+  const name = document.getElementById('rp-name').value.trim();
+  const text = document.getElementById('rp-text').value.trim();
+  const tag  = document.getElementById('rp-tag-inp').value.trim();
+  const productId = parseInt(document.getElementById('rp-product-select').value);
+
+  if (!rpSelectedStars) { alert('please pick a star rating! ⭐'); return; }
+  if (!name) { alert('add your name!'); return; }
+  if (!text || text.length < 10) { alert('write a bit more about the file!'); return; }
+
+  // Generate a unique promo code per session
+  const codes = ['BYLINE200', 'PRESS200', 'BYLOVE200', 'BYSTAR200', 'WRITE200'];
+  const code = codes[Math.floor(Math.random() * codes.length)];
+
+  // Save the review
+  const now = new Date();
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  saveReview(productId, {
+    name,
+    stars: rpSelectedStars,
+    text,
+    tag: tag || null,
+    date: `${months[now.getMonth()]} ${now.getFullYear()}`
+  });
+
+  // Mark as reviewed this session
+  const done = JSON.parse(sessionStorage.getItem('rp_session_reviews') || '[]');
+  done.push(productId);
+  sessionStorage.setItem('rp_session_reviews', JSON.stringify(done));
+  sessionStorage.setItem('rp_reviewed', '1');
+
+  // Update code display
+  document.getElementById('rp-code-text').textContent = code;
+
+  // Show reveal
+  document.getElementById('rp-form').style.display = 'none';
+  document.getElementById('rp-reveal').style.display = 'block';
+
+  // Refresh product UI
+  renderCarousel();
+  renderGrid();
+
+  // If modal for that product is open, refresh it
+  if (currentProdId === productId) {
+    const reviews = getReviews(productId);
+    renderRatingBreakdown(reviews);
+    renderReviewsList(reviews);
+    const avg = avgRating(reviews);
+    if (document.getElementById('modal-stars-disp')) {
+      document.getElementById('modal-stars-disp').textContent = starStr(avg);
+      document.getElementById('modal-avg-disp').textContent = avg.toFixed(1);
+      document.getElementById('modal-rcount-disp').textContent = `(${reviews.length} reviews)`;
+    }
+  }
+
+  bc();
+}
+
+function copyCode() {
+  const code = document.getElementById('rp-code-text').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('rp-copy-btn');
+    btn.textContent = '✓ copied!';
+    btn.style.background = 'var(--sage)';
+    setTimeout(() => { btn.textContent = 'copy'; btn.style.background = ''; }, 2200);
+  }).catch(() => {
+    // fallback for older browsers
+    const el = document.getElementById('rp-code-text');
+    const range = document.createRange();
+    range.selectNode(el);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+    const btn = document.getElementById('rp-copy-btn');
+    btn.textContent = '✓ copied!';
+    setTimeout(() => { btn.textContent = 'copy'; }, 2200);
+  });
+}
+
+// ─── INIT ───
+renderCarousel();
+renderGrid();
+updateCart();
+bc();
+checkAndShowReviewPopup();
+</script>
+</body>
+</html>

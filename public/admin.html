@@ -1,0 +1,746 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pressfile — byteacherira.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;600;700;800&family=Caveat:wght@500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#fdf8f4;
+      --surface:#fef5ee;
+      --surface2:#faeade;
+      --rose:#e8a4a4;
+      --rose-dk:#c97070;
+      --ink:#1a1108;
+      --sand:#e8ddd0;
+      --sage:#a8b89a;
+      --butter:#f5e6c8;
+      --mid:#8a7060;
+      --border:rgba(26,17,8,.1);
+      --border-md:rgba(26,17,8,.15);
+      --accent:#d4606a;
+      --green:#5a7050;
+    }
+    ::selection{background:var(--rose);color:var(--ink)}
+    body{cursor:none;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+ 
+    /* CURSOR */
+    .cursor{width:12px;height:12px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .18s,height .18s,background .18s;mix-blend-mode:multiply}
+    .cursor.grow{width:36px;height:36px;background:var(--rose)}
+ 
+    /* TICKER */
+    .ticker{background:var(--ink);padding:.42rem 0;overflow:hidden;white-space:nowrap}
+    .ticker-track{display:inline-flex;animation:tick 26s linear infinite}
+    .ticker-track span{font-family:'Syne',sans-serif;font-size:.67rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:0 2rem;color:var(--bg)}
+    .sep{color:var(--rose)!important}
+    @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+ 
+    /* HEADER */
+    header{
+      padding:1.1rem clamp(1.5rem,5vw,4rem);
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      border-bottom:1.5px solid var(--border);
+      background:rgba(253,248,244,.92);
+      backdrop-filter:blur(10px);
+      position:sticky;top:0;z-index:100;
+    }
+    .header-left{display:flex;align-items:center;gap:.75rem}
+    .logo-mark{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.8rem;letter-spacing:-.03em;color:var(--ink);text-decoration:none}
+    .logo-mark span{color:var(--accent)}
+    .logo-tag{font-family:'Caveat',cursive;font-size:.88rem;color:var(--mid)}
+    .admin-badge{background:var(--butter);border:1.5px solid rgba(212,96,106,.3);border-radius:100px;padding:.22rem .85rem;font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent)}
+    .header-center{text-align:center}
+    .online-dot{display:flex;align-items:center;justify-content:center;gap:.4rem;font-family:'Caveat',cursive;font-size:.9rem;color:var(--green)}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--sage);animation:blink 2s ease-in-out infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+    .header-right{display:flex;justify-content:flex-end;gap:1.5rem;align-items:center}
+    .view-shop{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);text-decoration:none;position:relative;transition:color .2s}
+    .view-shop::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:var(--accent);transition:width .25s}
+    .view-shop:hover{color:var(--ink)}.view-shop:hover::after{width:100%}
+ 
+    /* LAYOUT */
+    .admin-layout{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 91px)}
+ 
+    /* SIDEBAR */
+    .sidebar{
+      background:var(--surface);
+      border-right:1.5px solid var(--border);
+      padding:1.5rem 0;
+      position:sticky;top:91px;
+      height:calc(100vh - 91px);
+      overflow-y:auto;
+    }
+    .nav-section-label{
+      font-family:'Syne',sans-serif;font-size:.56rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.18em;color:var(--mid);
+      padding:.6rem 1.5rem .3rem;margin-top:.4rem;opacity:.6;
+    }
+    .nav-item{
+      padding:.72rem 1.5rem;
+      font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;
+      text-transform:uppercase;letter-spacing:.1em;
+      color:var(--mid);cursor:none;
+      border-left:2.5px solid transparent;
+      transition:all .2s;
+      display:flex;align-items:center;gap:.7rem;
+    }
+    .nav-item:hover{color:var(--ink);background:rgba(26,17,8,.04)}
+    .nav-item.active{color:var(--ink);border-left-color:var(--accent);background:rgba(212,96,106,.07)}
+    .nav-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.85rem;background:var(--sand);flex-shrink:0}
+    .nav-item.active .nav-icon{background:var(--butter)}
+    .nav-badge{background:var(--accent);color:#fff;border-radius:100px;padding:.1rem .55rem;font-size:.58rem;font-weight:800;margin-left:auto}
+ 
+    /* MAIN */
+    .admin-main{padding:2.5rem clamp(1.5rem,4vw,3rem);background:var(--bg);overflow-y:auto}
+    .page{display:none;animation:slideUp .35s cubic-bezier(.4,0,.2,1) both}
+    .page.active{display:block}
+    @keyframes slideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+ 
+    .pg-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+    .pg-title{font-family:'Instrument Serif',serif;font-size:2rem;line-height:1}
+    .pg-sub{font-family:'Caveat',cursive;font-size:.95rem;color:var(--mid);margin-top:.2rem}
+ 
+    /* BUTTONS */
+    .pill-btn{background:var(--ink);color:var(--bg);border:none;border-radius:100px;padding:.55rem 1.3rem;font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;cursor:none;transition:transform .22s cubic-bezier(.34,1.56,.64,1),background .2s;display:inline-flex;align-items:center;gap:.4rem}
+    .pill-btn:hover{transform:scale(1.07);background:var(--accent)}
+    .ghost-btn{background:transparent;border:1.5px solid var(--border);color:var(--mid);border-radius:100px;padding:.48rem 1.1rem;font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;cursor:none;transition:all .2s}
+    .ghost-btn:hover{border-color:var(--ink);color:var(--ink)}
+ 
+    /* STATS GRID */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1.2rem;margin-bottom:2rem}
+    .scard{
+      background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:1.5rem;
+      position:relative;overflow:hidden;
+      transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+    }
+    .scard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--sc-color,var(--accent));opacity:.7}
+    .scard:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(26,17,8,.1)}
+    .sc-lbl{font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--mid);margin-bottom:.5rem}
+    .sc-val{font-family:'Instrument Serif',serif;font-size:2.5rem;line-height:1;color:var(--ink)}
+    .sc-val.green{color:var(--green)}
+    .sc-val.rose{color:var(--rose-dk)}
+    .sc-val.gold{color:#b87a20}
+    .sc-change{font-family:'Caveat',cursive;font-size:.82rem;color:var(--mid);margin-top:.35rem}
+    .mini-chart{display:flex;align-items:flex-end;gap:3px;height:32px;margin-top:.8rem}
+    .mc-bar{flex:1;border-radius:3px 3px 0 0;background:rgba(212,96,106,.25)}
+ 
+    /* OVERVIEW ROW */
+    .overview-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.5rem}
+    .panel{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:1.5rem}
+    .panel-title{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.15rem;margin-bottom:1rem;padding-bottom:.8rem;border-bottom:1px dashed var(--sand)}
+ 
+    /* TOP PRODUCTS */
+    .tp-row{display:flex;align-items:center;gap:.75rem;padding:.55rem 0;border-bottom:1px dashed var(--sand)}
+    .tp-row:last-child{border-bottom:none}
+    .tp-rank{font-family:'Syne',sans-serif;font-size:.62rem;font-weight:800;color:var(--mid);width:18px;flex-shrink:0}
+    .tp-cover{width:30px;height:40px;border-radius:2px 6px 6px 2px;overflow:hidden;position:relative;flex-shrink:0;box-shadow:-2px 2px 0 rgba(26,17,8,.1),-4px 4px 8px rgba(26,17,8,.12)}
+    .tp-cover::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:rgba(0,0,0,.18);z-index:2}
+    .tp-name{font-family:'DM Sans',sans-serif;font-size:.8rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--mid)}
+    .tp-price{font-family:'Instrument Serif',serif;font-size:.95rem;flex-shrink:0;color:var(--ink)}
+ 
+    /* SECTION CARD */
+    .section-card{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:1.5rem}
+    .sc-header{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--surface)}
+    .sc-header-title{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.15rem}
+ 
+    /* TABLE */
+    table{width:100%;border-collapse:collapse}
+    th{font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--mid);text-align:left;padding:.85rem 1.2rem;border-bottom:1px solid var(--border);background:var(--surface2)}
+    td{padding:.9rem 1.2rem;border-bottom:1px solid rgba(26,17,8,.05);font-size:.875rem;vertical-align:middle;background:var(--surface)}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:var(--surface2)}
+    .empty-table{text-align:center;padding:4rem;font-family:'Caveat',cursive;font-size:1.1rem;color:var(--mid)}
+ 
+    /* MINI BOOK IN TABLE */
+    .table-book{width:38px;height:50px;border-radius:2px 7px 7px 2px;overflow:hidden;position:relative;flex-shrink:0;box-shadow:-2px 2px 0 rgba(26,17,8,.1),-4px 4px 8px rgba(26,17,8,.12)}
+    .table-book::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:rgba(0,0,0,.18);z-index:2}
+    .tb-inner{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:.25rem .2rem .2rem .5rem;position:relative;z-index:1}
+    .tb-title{font-family:'Playfair Display',serif;font-size:.34rem;line-height:1.2;color:rgba(255,255,255,.92);font-weight:700}
+    .tb-brand{font-family:'Syne',sans-serif;font-size:.3rem;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;margin-top:.15rem}
+ 
+    /* BADGES */
+    .badge{display:inline-flex;align-items:center;gap:.2rem;border-radius:100px;padding:.2rem .65rem;font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+    .badge-j{background:rgba(168,184,154,.2);color:var(--green);border:1px solid rgba(168,184,154,.4)}
+    .badge-p{background:rgba(232,164,164,.2);color:var(--rose-dk);border:1px solid rgba(232,164,164,.35)}
+    .badge-paid{background:rgba(90,112,80,.12);color:var(--green);border:1px solid rgba(90,112,80,.2)}
+    .badge-sent{background:rgba(90,112,80,.1);color:var(--green);border:1px solid rgba(90,112,80,.18)}
+    .badge-pending{background:rgba(184,122,32,.1);color:#a07020;border:1px solid rgba(184,122,32,.2)}
+ 
+    /* ACTION BUTTONS */
+    .act-btn{background:transparent;border:1.5px solid var(--border);color:var(--mid);padding:.28rem .7rem;border-radius:8px;font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;cursor:none;margin-right:.3rem;transition:all .2s}
+    .act-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(212,96,106,.06)}
+    .act-btn.del:hover{border-color:var(--rose-dk);color:var(--rose-dk);background:rgba(201,112,112,.06)}
+    .resend-btn{background:rgba(90,112,80,.08);border:1.5px solid rgba(90,112,80,.2);color:var(--green);padding:.28rem .7rem;border-radius:8px;font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;cursor:none;transition:all .2s}
+    .resend-btn:hover{background:rgba(90,112,80,.16)}
+ 
+    /* STAR */
+    .star-disp{color:#c8880a;font-size:.8rem}
+ 
+    /* REVIEWS GRID */
+    .reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem}
+    .rev-card{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:1.2rem;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s}
+    .rev-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(26,17,8,.09)}
+    .rev-product-tag{font-family:'Caveat',cursive;font-size:.82rem;color:var(--accent);margin-bottom:.4rem;display:flex;align-items:center;gap:.3rem}
+    .rev-card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem}
+    .rev-name{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;color:var(--ink)}
+    .rev-date{font-family:'Caveat',cursive;font-size:.78rem;color:var(--mid)}
+    .rev-text{font-size:.875rem;color:var(--mid);line-height:1.6;margin-top:.35rem}
+    .rev-tag{display:inline-block;margin-top:.5rem;background:var(--butter);border:1px solid rgba(212,96,106,.2);border-radius:100px;padding:.15rem .6rem;font-family:'Caveat',cursive;font-size:.78rem;color:var(--accent)}
+ 
+    /* MODAL */
+    .modal-bg{display:none;position:fixed;inset:0;background:rgba(26,17,8,.45);backdrop-filter:blur(8px);z-index:300;align-items:center;justify-content:center}
+    .modal-bg.open{display:flex;animation:fadeIn .2s}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    .modal{background:var(--bg);border:1.5px solid var(--border);border-radius:24px;padding:2rem;width:min(540px,95vw);max-height:90vh;overflow-y:auto;animation:popUp .3s cubic-bezier(.34,1.56,.64,1)}
+    @keyframes popUp{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+    .modal h3{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.5rem;margin-bottom:1.5rem;color:var(--ink)}
+    .modal-actions{display:flex;gap:1rem;justify-content:flex-end;margin-top:1.5rem}
+    .mfg{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem}
+    .mfg label{font-family:'Syne',sans-serif;font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--mid)}
+    .mfg input,.mfg select,.mfg textarea{background:var(--surface);border:1.5px solid var(--border);border-radius:12px;color:var(--ink);padding:.68rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;width:100%;transition:border-color .2s,box-shadow .2s}
+    .mfg input:focus,.mfg select:focus,.mfg textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(212,96,106,.1)}
+    .mfg input::placeholder,.mfg textarea::placeholder{color:rgba(138,112,96,.4)}
+    .mfg textarea{resize:vertical;min-height:80px}
+    .mfrow{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .cancel-btn{background:transparent;border:1.5px solid var(--border);color:var(--mid);padding:.58rem 1.2rem;border-radius:100px;font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;cursor:none;transition:all .2s}
+    .cancel-btn:hover{color:var(--ink);border-color:var(--ink)}
+ 
+    /* SETTINGS */
+    .settings-block{background:var(--surface);border:1.5px solid var(--border);border-radius:20px;padding:1.5rem;margin-bottom:1.2rem;max-width:580px}
+    .settings-block h4{font-family:'Instrument Serif',serif;font-style:italic;font-size:1.2rem;margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:1px dashed var(--sand)}
+    .integration-note{background:rgba(168,184,154,.1);border:1.5px solid rgba(168,184,154,.3);border-radius:16px;padding:1.2rem;max-width:580px;margin-bottom:1rem}
+    .integration-note h4{font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--green);margin-bottom:.5rem}
+    .integration-note p{font-family:'Caveat',cursive;font-size:.92rem;color:var(--mid);line-height:1.6}
+    .integration-note code{color:var(--accent);font-family:monospace;font-size:.85rem}
+ 
+    /* DIVIDER */
+    .section-divider{height:1px;background:var(--border);margin:1.5rem 0}
+ 
+    @media(max-width:900px){
+      .admin-layout{grid-template-columns:1fr}
+      .sidebar{display:flex;flex-wrap:wrap;position:static;height:auto;padding:.5rem;border-right:none;border-bottom:1.5px solid var(--border)}
+      .nav-item{border-left:none!important;border-bottom:2.5px solid transparent!important;padding:.6rem 1rem}
+      .nav-item.active{border-bottom-color:var(--accent)!important}
+      .nav-section-label{display:none}
+      .overview-row{grid-template-columns:1fr}
+      header{grid-template-columns:1fr auto}
+      .header-center{display:none}
+    }
+  </style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+ 
+<!-- TICKER -->
+<div class="ticker"><div class="ticker-track" id="ttrack"></div></div>
+ 
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <a class="logo-mark" href="shop.html">by<span>line</span>.</a>
+    <div class="admin-badge">admin</div>
+  </div>
+  <div class="header-center">
+    <div class="online-dot"><div class="dot"></div>store live</div>
+  </div>
+  <div class="header-right">
+    <a class="view-shop" href="shop.html" target="_blank">view shop →</a>
+    <a class="view-shop" href="checkout.html" target="_blank">checkout →</a>
+  </div>
+</header>
+ 
+<div class="admin-layout">
+ 
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="nav-section-label">overview</div>
+    <div class="nav-item active" onclick="showPage('dashboard',this)">
+      <div class="nav-icon">📊</div>dashboard
+    </div>
+    <div class="nav-section-label">store</div>
+    <div class="nav-item" onclick="showPage('products',this)">
+      <div class="nav-icon">📦</div>products
+    </div>
+    <div class="nav-item" onclick="showPage('orders',this)">
+      <div class="nav-icon">🧾</div>orders
+      <span class="nav-badge" id="orders-badge">0</span>
+    </div>
+    <div class="nav-section-label">community</div>
+    <div class="nav-item" onclick="showPage('reviews',this)">
+      <div class="nav-icon">⭐</div>reviews
+    </div>
+    <div class="nav-section-label">config</div>
+    <div class="nav-item" onclick="showPage('settings',this)">
+      <div class="nav-icon">⚙️</div>settings
+    </div>
+  </nav>
+ 
+  <!-- MAIN -->
+  <main class="admin-main">
+ 
+    <!-- ══════════ DASHBOARD ══════════ -->
+    <div class="page active" id="page-dashboard">
+      <div class="pg-head">
+        <div>
+          <div class="pg-title">dashboard</div>
+          <div class="pg-sub">your store at a glance ✦</div>
+        </div>
+      </div>
+      <div class="stats-grid" id="stats-grid"></div>
+      <div class="overview-row">
+        <div class="panel">
+          <div class="panel-title">top products</div>
+          <div id="top-products-list"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">recent reviews</div>
+          <div id="recent-reviews-list"></div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="sc-header">
+          <div class="sc-header-title">recent orders</div>
+          <button class="ghost-btn" onclick="showPage('orders',document.querySelectorAll('.nav-item')[3])">view all</button>
+        </div>
+        <table>
+          <thead><tr><th>order id</th><th>email</th><th>items</th><th>total</th><th>status</th><th>date</th></tr></thead>
+          <tbody id="dash-orders"></tbody>
+        </table>
+      </div>
+    </div>
+ 
+    <!-- ══════════ PRODUCTS ══════════ -->
+    <div class="page" id="page-products">
+      <div class="pg-head">
+        <div>
+          <div class="pg-title">products</div>
+          <div class="pg-sub">manage your digital files</div>
+        </div>
+        <button class="pill-btn" onclick="openProdModal()">+ add product</button>
+      </div>
+      <div class="section-card">
+        <table>
+          <thead><tr><th>cover</th><th>title</th><th>type</th><th>price</th><th>file</th><th>reviews</th><th>actions</th></tr></thead>
+          <tbody id="prods-body"></tbody>
+        </table>
+      </div>
+    </div>
+ 
+    <!-- ══════════ ORDERS ══════════ -->
+    <div class="page" id="page-orders">
+      <div class="pg-head">
+        <div>
+          <div class="pg-title">orders</div>
+          <div class="pg-sub">all purchases & deliveries</div>
+        </div>
+      </div>
+      <div class="section-card">
+        <table>
+          <thead><tr><th>order id</th><th>email</th><th>items</th><th>total</th><th>status</th><th>delivered</th><th>date</th><th>actions</th></tr></thead>
+          <tbody id="orders-body"></tbody>
+        </table>
+      </div>
+    </div>
+ 
+    <!-- ══════════ REVIEWS ══════════ -->
+    <div class="page" id="page-reviews">
+      <div class="pg-head">
+        <div>
+          <div class="pg-title">reviews</div>
+          <div class="pg-sub">what your readers are saying</div>
+        </div>
+      </div>
+      <div class="stats-grid" id="review-stats"></div>
+      <div class="reviews-grid" id="reviews-grid"></div>
+    </div>
+ 
+    <!-- ══════════ SETTINGS ══════════ -->
+    <div class="page" id="page-settings">
+      <div class="pg-head">
+        <div>
+          <div class="pg-title">settings</div>
+          <div class="pg-sub">store config & integrations</div>
+        </div>
+      </div>
+ 
+      <div class="settings-block">
+        <h4>store details</h4>
+        <div class="mfg"><label>store name</label><input type="text" value="byline." /></div>
+        <div class="mfg"><label>currency</label><input type="text" value="PHP (Philippine Peso ₱)" readonly style="opacity:.6"/></div>
+        <div class="mfg"><label>from email (for deliveries)</label><input type="email" placeholder="noreply@byline.store" /></div>
+        <div class="mfg"><label>email subject line</label><input type="text" value="your files from byline. are ready! ✦" /></div>
+      </div>
+ 
+      <div class="settings-block">
+        <h4>payment & email integrations</h4>
+        <div class="mfg"><label>stripe publishable key</label><input type="text" placeholder="pk_live_..." /></div>
+        <div class="mfg"><label>stripe secret key</label><input type="password" placeholder="sk_live_..." /></div>
+        <div class="mfg"><label>email API key (sendgrid / smtp)</label><input type="text" placeholder="SG...." /></div>
+        <div class="mfg"><label>backend API URL</label><input type="text" placeholder="https://your-server.com/api" /></div>
+      </div>
+ 
+      <div class="integration-note">
+        <h4>📬 auto email delivery flow</h4>
+        <p>When a customer pays, your backend at <code>/api/checkout</code> verifies the Stripe payment, then emails all purchased ZIP files as attachments via Nodemailer or SendGrid. Admins can resend any order from the Orders page.</p>
+      </div>
+ 
+      <div class="integration-note">
+        <h4>🗂️ adding your real files</h4>
+        <p>Place ZIP files inside the <code>/files/</code> folder at the project root. The filename must match exactly what is set in the Products panel — e.g. <code>mental_health_schools.zip</code>.</p>
+      </div>
+ 
+      <button class="pill-btn" onclick="saveSetting()">save settings ✦</button>
+    </div>
+ 
+  </main>
+</div>
+ 
+<!-- ── PRODUCT MODAL ── -->
+<div class="modal-bg" id="prod-modal-bg" onclick="closeProdModalClick(event)">
+  <div class="modal">
+    <h3 id="prod-modal-title">add product ✦</h3>
+    <input type="hidden" id="eid"/>
+    <div class="mfg"><label>title *</label><input type="text" id="pt" placeholder="e.g. The Hidden Crisis: Mental Health in Schools"/></div>
+    <div class="mfg"><label>description *</label><textarea id="pd" rows="3" placeholder="What's inside this file?"></textarea></div>
+    <div class="mfrow">
+      <div class="mfg">
+        <label>type *</label>
+        <select id="ptype"><option value="journalism">📰 Journalism</option><option value="powerpoint">📊 PowerPoint</option></select>
+      </div>
+      <div class="mfg"><label>price (₱) *</label><input type="number" id="pp" step="1" min="0" placeholder="650"/></div>
+    </div>
+    <div class="mfrow">
+      <div class="mfg"><label>zip filename</label><input type="text" id="pf" placeholder="article.zip"/></div>
+      <div class="mfg"><label>file size</label><input type="text" id="ps" placeholder="2.4 MB"/></div>
+    </div>
+    <div class="mfg"><label>pages / slides</label><input type="text" id="pg" placeholder="18 pages"/></div>
+    <div class="modal-actions">
+      <button class="cancel-btn" onclick="document.getElementById('prod-modal-bg').classList.remove('open')">cancel</button>
+      <button class="pill-btn" onclick="saveProd()">save product ✦</button>
+    </div>
+  </div>
+</div>
+ 
+<script>
+// ── CURSOR ──
+const cur = document.getElementById('cursor');
+document.addEventListener('mousemove', e => { cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
+function bc() {
+  document.querySelectorAll('button,a,.nav-item,.scard,.rev-card,.tp-row').forEach(el => {
+    el.addEventListener('mouseenter', () => cur.classList.add('grow'));
+    el.addEventListener('mouseleave', () => cur.classList.remove('grow'));
+  });
+}
+ 
+// ── TICKER ──
+const tI = ['📰 admin portal','✦','📦 manage products','✦','🧾 view orders','✦','⭐ reviews','✦','⚙️ settings','✦','byline. admin ✦'];
+document.getElementById('ttrack').innerHTML = [...tI,...tI].map(t=>`<span${t==='✦'?' class="sep"':''}>${t}</span>`).join('');
+ 
+// ── CURRENCY ──
+const peso = n => '₱' + Number(n).toLocaleString('en-PH', {minimumFractionDigits:2, maximumFractionDigits:2});
+ 
+// ── COVER DESIGNS ──
+const CD = {
+  1:{bg:'linear-gradient(135deg,#2d4a3e,#0d1a14)'},
+  2:{bg:'linear-gradient(160deg,#1a1a2e,#0f3460)'},
+  3:{bg:'linear-gradient(160deg,#3d1f08,#c4622a)'},
+  4:{bg:'linear-gradient(135deg,#1c1410,#5c3d22)'},
+  5:{bg:'linear-gradient(150deg,#1a0a1a,#6b2060)'},
+  6:{bg:'linear-gradient(145deg,#0a1628,#1e3a60)'}
+};
+function tinyBook(p) {
+  const d = CD[p.id] || CD[Math.min(p.id, 6)] || {bg:'linear-gradient(135deg,#2d4a3e,#0d1a14)'};
+  const short = p.title.substring(0,16);
+  return `<div class="table-book">
+    <div style="width:100%;height:100%;background:${d.bg}">
+      <div class="tb-inner">
+        <div class="tb-title">${short}</div>
+        <div class="tb-brand">byline.</div>
+      </div>
+    </div>
+  </div>`;
+}
+function tpCover(p) {
+  const d = CD[p.id] || {bg:'linear-gradient(135deg,#2d4a3e,#0d1a14)'};
+  return `<div class="tp-cover" style="background:${d.bg}"><div style="position:absolute;left:0;top:0;bottom:0;width:5px;background:rgba(0,0,0,.18);z-index:2"></div></div>`;
+}
+ 
+// ── DATA ──
+const DEFAULT_PRODUCTS = [
+  {id:1,title:"The Hidden Crisis: Mental Health in Schools",description:"In-depth investigative piece exploring the mental health epidemic in public schools.",type:"journalism",price:650,fileName:"mental_health_schools.zip",fileSize:"2.4 MB",pages:"18 pages"},
+  {id:2,title:"Tech Giants & Antitrust: A Deep Dive",description:"Feature examining how Silicon Valley monopolies reshape regulatory landscapes.",type:"journalism",price:850,fileName:"tech_antitrust.zip",fileSize:"1.8 MB",pages:"24 pages"},
+  {id:3,title:"Climate Migration: The Untold Story",description:"Award-winning long-form field reporting on climate refugees.",type:"journalism",price:1000,fileName:"climate_migration.zip",fileSize:"5.1 MB",pages:"32 pages"},
+  {id:4,title:"Executive Leadership Masterclass Deck",description:"Professional 45-slide C-suite training deck.",type:"powerpoint",price:1400,fileName:"leadership_deck.zip",fileSize:"12.3 MB",pages:"45 slides"},
+  {id:5,title:"Startup Pitch Deck Template Pro",description:"Investor-ready 30-slide pitch template.",type:"powerpoint",price:1950,fileName:"pitch_deck_pro.zip",fileSize:"8.7 MB",pages:"30 slides"},
+  {id:6,title:"Data Journalism Fundamentals",description:"Guide to data-driven storytelling with Excel templates.",type:"powerpoint",price:1200,fileName:"data_journalism.zip",fileSize:"15.2 MB",pages:"55 slides"}
+];
+const DEFAULT_REVIEWS = {
+  1:[{name:'Aaliya M.',stars:5,text:'Incredibly well-researched. Used in my journalism class — students were blown away.',tag:'classroom ready',date:'Mar 2025'},{name:'Priya T.',stars:5,text:'Made me rethink how I write investigative features. Worth every centavo.',tag:'inspiring',date:'Feb 2025'},{name:'Jordan K.',stars:4,text:'Solid long-form piece. Data well-cited and narrative flows beautifully.',tag:'well-written',date:'Jan 2025'}],
+  2:[{name:'Fatima A.',stars:5,text:'Perfect for media law research. Nuanced antitrust analysis you won\'t find elsewhere.',tag:'academic',date:'Mar 2025'},{name:'Leila C.',stars:4,text:'Dense but rewarding. The EU regulations section is particularly insightful.',tag:'detailed',date:'Feb 2025'}],
+  3:[{name:'Nadia S.',stars:5,text:'The field reporting is visceral and human. Journalism at its absolute best.',tag:'emotionally powerful',date:'Apr 2025'},{name:'Blessing O.',stars:5,text:'Assigned for Earth Day. Accessible without dumbing down the science.',tag:'classroom',date:'Mar 2025'}],
+  4:[{name:'Aisha R.',stars:5,text:'The decision framework slides alone were worth the price. Used for PD session.',tag:'PD approved',date:'Mar 2025'},{name:'Karen L.',stars:5,text:'Board presentation loved it. Looked like a professional designer made it.',tag:'board-ready',date:'Feb 2025'}],
+  5:[{name:'Sofia B.',stars:5,text:'Got my first investor meeting using this template! The story arc is perfect.',tag:'investor approved',date:'Mar 2025'},{name:'Tara V.',stars:5,text:'So easy to customize. Swapped colors in 20 minutes and it looked iconic.',tag:'easy to edit',date:'Feb 2025'}],
+  6:[{name:'Joy F.',stars:5,text:'The Excel templates alone are worth 10x the price. Essential resource.',tag:'essential',date:'Apr 2025'},{name:'Morgan A.',stars:5,text:'Zero data skills before this. Now I make charts for every lesson.',tag:'beginner-friendly',date:'Mar 2025'}]
+};
+ 
+function getProds() { const s=localStorage.getItem('pressroom_products'); return s?JSON.parse(s):DEFAULT_PRODUCTS; }
+function saveProds(p) { localStorage.setItem('pressroom_products',JSON.stringify(p)); }
+function getOrders() { return JSON.parse(localStorage.getItem('pressroom_orders')||'[]'); }
+function getReviews(id) { const s=localStorage.getItem(`reviews_${id}`); return s?JSON.parse(s):(DEFAULT_REVIEWS[id]||[]); }
+function allRevs() { return getProds().flatMap(p=>getReviews(p.id).map(r=>({...r,productId:p.id,productTitle:p.title}))); }
+function avgR(reviews) { return reviews.length?reviews.reduce((s,r)=>s+r.stars,0)/reviews.length:0; }
+function starStr(n) { return '★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n)); }
+ 
+// ── NAV ──
+function showPage(name, el) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  if(el) el.classList.add('active');
+  ({dashboard:renderDash,products:renderProds,orders:renderOrders,reviews:renderRevs})[name]?.();
+}
+ 
+// ── DASHBOARD ──
+function renderDash() {
+  const orders = getOrders();
+  const prods = getProds();
+  const rev = orders.reduce((s,o)=>s+Number(o.total),0);
+  const reviews = allRevs();
+  const avg = avgR(reviews);
+ 
+  document.getElementById('orders-badge').textContent = orders.length;
+ 
+  const bars = [12,8,18,14,22,16,24];
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="scard" style="--sc-color:var(--sage)">
+      <div class="sc-lbl">total revenue</div>
+      <div class="sc-val green">${peso(rev)}</div>
+      <div class="sc-change">all time ✦</div>
+      <div class="mini-chart">${bars.map(h=>`<div class="mc-bar" style="height:${(h/24)*100}%;background:rgba(90,112,80,.3)"></div>`).join('')}</div>
+    </div>
+    <div class="scard" style="--sc-color:var(--rose-dk)">
+      <div class="sc-lbl">total orders</div>
+      <div class="sc-val rose">${orders.length}</div>
+      <div class="sc-change">all time ✦</div>
+    </div>
+    <div class="scard" style="--sc-color:#c8880a">
+      <div class="sc-lbl">avg rating</div>
+      <div class="sc-val gold">${avg.toFixed(1)}★</div>
+      <div class="sc-change">${reviews.length} reviews total</div>
+    </div>
+    <div class="scard" style="--sc-color:var(--accent)">
+      <div class="sc-lbl">products live</div>
+      <div class="sc-val">${prods.length}</div>
+      <div class="sc-change">in your store ✦</div>
+    </div>`;
+ 
+  // top products
+  const salesMap = {};
+  orders.forEach(o=>(o.items||[]).forEach(i=>{salesMap[i.id]=(salesMap[i.id]||0)+1;}));
+  const sorted = [...prods].sort((a,b)=>(salesMap[b.id]||0)-(salesMap[a.id]||0));
+  document.getElementById('top-products-list').innerHTML = sorted.slice(0,5).map((p,i)=>`
+    <div class="tp-row">
+      <div class="tp-rank">${i+1}</div>
+      ${tpCover(p)}
+      <div class="tp-name">${p.title.substring(0,32)}…</div>
+      <div class="tp-price">${peso(p.price)}</div>
+    </div>`).join('') || '<div style="font-family:\'Caveat\',cursive;font-size:.9rem;color:var(--mid);padding:.5rem 0">no products ✦</div>';
+ 
+  // recent reviews
+  const recRevs = allRevs().slice(0,4);
+  document.getElementById('recent-reviews-list').innerHTML = recRevs.length ? recRevs.map(r=>`
+    <div class="tp-row" style="flex-direction:column;align-items:flex-start;gap:.2rem;cursor:default">
+      <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
+        <div style="font-family:'Syne',sans-serif;font-size:.7rem;font-weight:700;color:var(--ink)">${r.name}</div>
+        <div class="star-disp" style="font-size:.72rem">${'★'.repeat(r.stars)}</div>
+      </div>
+      <div style="font-family:'Caveat',cursive;font-size:.8rem;color:var(--mid)">${r.productTitle?.substring(0,30)}…</div>
+    </div>`).join('') : '<div style="font-family:\'Caveat\',cursive;font-size:.9rem;color:var(--mid);padding:.5rem 0">no reviews yet ✦</div>';
+ 
+  // recent orders table
+  const tb = document.getElementById('dash-orders');
+  if (!orders.length) { tb.innerHTML='<tr><td colspan="6"><div class="empty-table">no orders yet — share your store! ✦</div></td></tr>'; bc(); return; }
+  tb.innerHTML = orders.slice().reverse().slice(0,6).map(o=>`
+    <tr>
+      <td style="font-family:monospace;font-size:.68rem;color:var(--mid)">${o.id}</td>
+      <td style="font-size:.875rem">${o.email}</td>
+      <td style="font-family:'Caveat',cursive;font-size:.88rem;color:var(--mid)">${(o.items||[]).length} file${(o.items||[]).length!==1?'s':''}</td>
+      <td style="font-family:'Instrument Serif',serif;font-size:1.05rem">${peso(o.total)}</td>
+      <td><span class="badge badge-paid">✓ paid</span></td>
+      <td style="font-family:'Caveat',cursive;font-size:.85rem;color:var(--mid)">${new Date(o.date).toLocaleDateString('en-PH')}</td>
+    </tr>`).join('');
+  bc();
+}
+ 
+// ── PRODUCTS ──
+function renderProds() {
+  const prods = getProds();
+  const tb = document.getElementById('prods-body');
+  if (!prods.length) { tb.innerHTML='<tr><td colspan="7"><div class="empty-table">no products yet ✦ add one!</div></td></tr>'; bc(); return; }
+  tb.innerHTML = prods.map(p=>{
+    const revs = getReviews(p.id);
+    const avg = avgR(revs);
+    return `<tr>
+      <td>${tinyBook(p)}</td>
+      <td style="max-width:200px"><strong style="font-size:.875rem;color:var(--ink)">${p.title}</strong></td>
+      <td><span class="badge ${p.type==='journalism'?'badge-j':'badge-p'}">${p.type}</span></td>
+      <td style="font-family:'Instrument Serif',serif;font-size:1.05rem">${peso(p.price)}</td>
+      <td style="font-family:monospace;font-size:.68rem;color:var(--mid)">${p.fileName}</td>
+      <td>
+        <span class="star-disp" style="font-size:.7rem">${starStr(avg)}</span>
+        <span style="font-family:'Caveat',cursive;font-size:.78rem;color:var(--mid);margin-left:.25rem">(${revs.length})</span>
+      </td>
+      <td>
+        <button class="act-btn" onclick="editProd(${p.id})">edit</button>
+        <button class="act-btn del" onclick="delProd(${p.id})">delete</button>
+      </td>
+    </tr>`;}).join('');
+  bc();
+}
+ 
+// ── ORDERS ──
+function renderOrders() {
+  const orders = getOrders();
+  document.getElementById('orders-badge').textContent = orders.length;
+  const tb = document.getElementById('orders-body');
+  if (!orders.length) { tb.innerHTML='<tr><td colspan="8"><div class="empty-table">no orders yet ✦</div></td></tr>'; bc(); return; }
+  tb.innerHTML = orders.slice().reverse().map(o=>`
+    <tr>
+      <td style="font-family:monospace;font-size:.68rem;color:var(--mid)">${o.id}</td>
+      <td style="font-size:.875rem">${o.email}</td>
+      <td style="font-family:'Caveat',cursive;font-size:.85rem;color:var(--mid)">${(o.items||[]).slice(0,2).map(i=>i.title?.substring(0,15)+'…').join(', ')}</td>
+      <td style="font-family:'Instrument Serif',serif;font-size:1.05rem">${peso(o.total)}</td>
+      <td><span class="badge badge-paid">✓ paid</span></td>
+      <td><span class="badge ${o.delivered?'badge-sent':'badge-pending'}">${o.delivered?'✓ sent':'pending'}</span></td>
+      <td style="font-family:'Caveat',cursive;font-size:.85rem;color:var(--mid)">${new Date(o.date).toLocaleDateString('en-PH')}</td>
+      <td><button class="resend-btn" onclick="resend('${o.email}')">resend files</button></td>
+    </tr>`).join('');
+  bc();
+}
+function resend(email) {
+  alert('📬 Resending files to: '+email+'\n\nIn production: POST /api/resend-order');
+}
+ 
+// ── REVIEWS ──
+function renderRevs() {
+  const all = allRevs();
+  const avg = avgR(all);
+  const fiveStars = all.filter(r=>r.stars===5).length;
+ 
+  document.getElementById('review-stats').innerHTML = `
+    <div class="scard" style="--sc-color:#c8880a">
+      <div class="sc-lbl">avg rating</div>
+      <div class="sc-val gold">${avg.toFixed(1)}★</div>
+      <div class="sc-change">across all products</div>
+    </div>
+    <div class="scard" style="--sc-color:var(--rose-dk)">
+      <div class="sc-lbl">total reviews</div>
+      <div class="sc-val rose">${all.length}</div>
+      <div class="sc-change">from real buyers</div>
+    </div>
+    <div class="scard" style="--sc-color:var(--sage)">
+      <div class="sc-lbl">5-star reviews</div>
+      <div class="sc-val green">${fiveStars}</div>
+      <div class="sc-change">${all.length?Math.round(fiveStars/all.length*100):0}% of all reviews</div>
+    </div>`;
+ 
+  document.getElementById('reviews-grid').innerHTML = all.length
+    ? all.map(r=>`
+      <div class="rev-card">
+        <div class="rev-product-tag">✦ ${r.productTitle?.substring(0,36)}${r.productTitle?.length>36?'…':''}</div>
+        <div class="rev-card-head">
+          <div>
+            <div class="rev-name">${r.name}</div>
+            <div class="rev-date">${r.date}</div>
+          </div>
+          <div class="star-disp">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+        </div>
+        <div class="rev-text">${r.text}</div>
+        ${r.tag?`<span class="rev-tag">${r.tag}</span>`:''}
+      </div>`).join('')
+    : '<div class="empty-table" style="grid-column:1/-1">no reviews yet ✦</div>';
+  bc();
+}
+ 
+// ── PRODUCT MODAL ──
+function openProdModal() {
+  document.getElementById('prod-modal-title').textContent = 'add product ✦';
+  document.getElementById('eid').value = '';
+  ['pt','pd','pf','ps','pg'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('pp').value = '';
+  document.getElementById('ptype').value = 'journalism';
+  document.getElementById('prod-modal-bg').classList.add('open');
+  bc();
+}
+function editProd(id) {
+  const p = getProds().find(x=>x.id===id);
+  if (!p) return;
+  document.getElementById('prod-modal-title').textContent = 'edit product ✦';
+  document.getElementById('eid').value = id;
+  document.getElementById('pt').value = p.title;
+  document.getElementById('pd').value = p.description;
+  document.getElementById('ptype').value = p.type;
+  document.getElementById('pp').value = p.price;
+  document.getElementById('pf').value = p.fileName;
+  document.getElementById('ps').value = p.fileSize;
+  document.getElementById('pg').value = p.pages;
+  document.getElementById('prod-modal-bg').classList.add('open');
+  bc();
+}
+function closeProdModalClick(e) {
+  if (e.target === document.getElementById('prod-modal-bg'))
+    document.getElementById('prod-modal-bg').classList.remove('open');
+}
+function saveProd() {
+  const title = document.getElementById('pt').value.trim();
+  const desc = document.getElementById('pd').value.trim();
+  const price = parseFloat(document.getElementById('pp').value);
+  if (!title || !desc || isNaN(price)) { alert('please fill in title, description and price!'); return; }
+  const prods = getProds();
+  const eid = parseInt(document.getElementById('eid').value);
+  const prod = {
+    id: eid || Date.now(),
+    title, description: desc,
+    type: document.getElementById('ptype').value,
+    price,
+    fileName: document.getElementById('pf').value.trim() || title.toLowerCase().replace(/\s+/g,'_')+'.zip',
+    fileSize: document.getElementById('ps').value.trim() || 'N/A',
+    pages: document.getElementById('pg').value.trim() || ''
+  };
+  if (eid) { const idx=prods.findIndex(p=>p.id===eid); if(idx!==-1) prods[idx]=prod; }
+  else prods.push(prod);
+  saveProds(prods);
+  document.getElementById('prod-modal-bg').classList.remove('open');
+  renderProds();
+}
+function delProd(id) {
+  if (!confirm('delete this product? 🥺 this cannot be undone.')) return;
+  saveProds(getProds().filter(p=>p.id!==id));
+  renderProds();
+}
+ 
+function saveSetting() {
+  // show feedback
+  const btn = document.querySelector('#page-settings .pill-btn');
+  btn.textContent = '✓ saved!';
+  btn.style.background = 'var(--sage)';
+  btn.style.color = 'var(--ink)';
+  setTimeout(() => { btn.textContent = 'save settings ✦'; btn.style.background=''; btn.style.color=''; }, 2000);
+}
+ 
+// ── INIT ──
+renderDash();
+bc();
+</script>
+</body>
+</html>
+ 
+Tool result could not be submitted. The request may have expired or the connection was interrupted. Refresh the page to continue.
+Notification Tool result could not be submitted. The request may have expired or the connection was interrupted. Refresh the page to continue.
