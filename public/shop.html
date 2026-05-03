@@ -699,6 +699,7 @@
       .modal-cover-col { display: none; }
     }
   </style>
+ <script src="product.js"></script>
 </head>
 <body>
 
@@ -727,8 +728,8 @@
 <!-- HERO -->
 <section class="hero">
   <div>
-    <div class="hero-badge">📚 Digital Files for Educators &amp; Students</div>
-    <h1 class="hero-title">Complete Digital Services for Students, Teachers & Businesses.<br><em>Download today.</em></h1>
+    <div class="hero-badge"> Complete Digital Services for Students, Teachers & Businesses</div>
+    <h1 class="hero-title"><em>Download today</em></h1>
     <p class="hero-desc">Fast, creative, and professionally made outputs delivered online. From academic materials to branding and website solutions — we’ve got you covered.</p>
     <div class="hero-actions">
       <button class="btn-primary" onclick="document.querySelector('.section-head').scrollIntoView({behavior:'smooth'})">Browse Files ↓</button>
@@ -736,7 +737,7 @@
     </div>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-v">100+</div><div class="hstat-l">Digital Files</div></div>
+    <div class="hstat"><div class="hstat-v">1000+</div><div class="hstat-l">Digital Files</div></div>
     <div class="hstat"><div class="hstat-v">⚡</div><div class="hstat-l">Instant Delivery</div></div>
     <div class="hstat"><div class="hstat-v">4.9★</div><div class="hstat-l">Avg. Rating</div></div>
     <div class="hstat"><div class="hstat-v">.zip</div><div class="hstat-l">Ready to Open</div></div>
@@ -923,12 +924,12 @@ document.getElementById('ttrack').innerHTML = [...tI,...tI].map(t=>`<span${t==='
 
 /* ── COVER DESIGNS ── */
 const CD = {
-  1:{bg:'linear-gradient(145deg,#1b3a4b,#0d2233)',label:'Journalism'},
-  2:{bg:'linear-gradient(145deg,#1a2744,#0f1e3a)',label:'Feature'},
-  3:{bg:'linear-gradient(145deg,#2d1b10,#5c3420)',label:'Long-Form'},
-  4:{bg:'linear-gradient(145deg,#1a2a1a,#2d4a2d)',label:'Slides'},
-  5:{bg:'linear-gradient(145deg,#2a1a3a,#4a2060)',label:'Template'},
-  6:{bg:'linear-gradient(145deg,#0f2535,#1a4060)',label:'Guide'}
+  1: { bg: 'linear-gradient(145deg,#5a0e0e,#1a0505)', label: 'Journalism', color: '#f9d9cc' }, /* pale blush on darkest red */
+  2: { bg: 'linear-gradient(145deg,#7a1515,#1a0a0a)', label: 'Feature',    color: '#f2b3a0' }, /* light salmon on dark crimson */
+  3: { bg: 'linear-gradient(145deg,#b03020,#5a0e0e)', label: 'Long-Form',  color: '#fde8e8' }, /* soft white-pink on brick red */
+  4: { bg: 'linear-gradient(145deg,#c0392b,#7a1515)', label: 'Slides',     color: '#f9cfc0' }, /* light peach on classic red */
+  5: { bg: 'linear-gradient(145deg,#e05c4b,#b03020)', label: 'Template',   color: '#fff0ee' }, /* near white on coral red */
+  6: { bg: 'linear-gradient(145deg,#e88070,#c0392b)', label: 'Guide',      color: '#5a0e0e' }, /* darkest red on lightest cover */
 };
 function buildCover(p, w='100%', h='100%') {
   const d = CD[p.id]||CD[1];
@@ -1021,17 +1022,32 @@ function avgR(revs)   { return revs.length ? revs.reduce((s,r)=>s+r.stars,0)/rev
 function starStr(n)   { return '★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n)); }
 
 /* ── PRODUCTS ── */
-function getProds() {
+// function getProds() {
+//   const s = localStorage.getItem('pressroom_products');
+//   if (s) return JSON.parse(s);
+//   return [
+//     {id:1,title:'The Hidden Crisis: Mental Health in Schools',description:'An in-depth investigative piece exploring the growing mental health epidemic in public schools, with exclusive interviews and data analysis.',type:'journalism',price:650,fileName:'mental_health_schools.zip',fileSize:'2.4 MB',pages:'18 pages'},
+//     {id:2,title:'Tech Giants & Antitrust: A Deep Dive',description:'Comprehensive feature examining how Silicon Valley monopolies reshape regulatory landscapes across three continents.',type:'journalism',price:850,fileName:'tech_antitrust.zip',fileSize:'1.8 MB',pages:'24 pages'},
+//     {id:3,title:'Climate Migration: The Untold Story',description:'Award-winning long-form piece documenting climate refugees from Southeast Asia with original field reporting.',type:'journalism',price:1000,fileName:'climate_migration.zip',fileSize:'5.1 MB',pages:'32 pages'},
+//     {id:4,title:'Executive Leadership Masterclass Deck',description:'Professional 45-slide deck for C-suite training. Covers decision frameworks, team dynamics & strategic communication.',type:'powerpoint',price:1400,fileName:'leadership_deck.zip',fileSize:'12.3 MB',pages:'45 slides'},
+//     {id:5,title:'Startup Pitch Deck Template Pro',description:'Polished investor-ready pitch template with 30 slides, editable charts, and built-in storytelling structure.',type:'powerpoint',price:1950,fileName:'pitch_deck_pro.zip',fileSize:'8.7 MB',pages:'30 slides'},
+//     {id:6,title:'Data Journalism Fundamentals',description:'A guide to data-driven storytelling with Excel and chart templates for journalists and communicators.',type:'powerpoint',price:1200,fileName:'data_journalism.zip',fileSize:'15.2 MB',pages:'55 slides'}
+//   ];
+// }
+
+// Call this once on page load — stores products in memory
+let PRODUCTS_CACHE = [];
+
+async function loadProds() {
   const s = localStorage.getItem('pressroom_products');
-  if (s) return JSON.parse(s);
-  return [
-    {id:1,title:'The Hidden Crisis: Mental Health in Schools',description:'An in-depth investigative piece exploring the growing mental health epidemic in public schools, with exclusive interviews and data analysis.',type:'journalism',price:650,fileName:'mental_health_schools.zip',fileSize:'2.4 MB',pages:'18 pages'},
-    {id:2,title:'Tech Giants & Antitrust: A Deep Dive',description:'Comprehensive feature examining how Silicon Valley monopolies reshape regulatory landscapes across three continents.',type:'journalism',price:850,fileName:'tech_antitrust.zip',fileSize:'1.8 MB',pages:'24 pages'},
-    {id:3,title:'Climate Migration: The Untold Story',description:'Award-winning long-form piece documenting climate refugees from Southeast Asia with original field reporting.',type:'journalism',price:1000,fileName:'climate_migration.zip',fileSize:'5.1 MB',pages:'32 pages'},
-    {id:4,title:'Executive Leadership Masterclass Deck',description:'Professional 45-slide deck for C-suite training. Covers decision frameworks, team dynamics & strategic communication.',type:'powerpoint',price:1400,fileName:'leadership_deck.zip',fileSize:'12.3 MB',pages:'45 slides'},
-    {id:5,title:'Startup Pitch Deck Template Pro',description:'Polished investor-ready pitch template with 30 slides, editable charts, and built-in storytelling structure.',type:'powerpoint',price:1950,fileName:'pitch_deck_pro.zip',fileSize:'8.7 MB',pages:'30 slides'},
-    {id:6,title:'Data Journalism Fundamentals',description:'A guide to data-driven storytelling with Excel and chart templates for journalists and communicators.',type:'powerpoint',price:1200,fileName:'data_journalism.zip',fileSize:'15.2 MB',pages:'55 slides'}
-  ];
+  if (s) { PRODUCTS_CACHE = JSON.parse(s); return; }
+  const res = await fetch('/api/products');
+  PRODUCTS_CACHE = await res.json();
+}
+
+// Keep getProds() synchronous everywhere else — nothing else changes
+function getProds() {
+  return PRODUCTS_CACHE;
 }
 
 /* ── STATE ── */
@@ -1291,11 +1307,16 @@ function copyRpCode() {
   });
 }
 
-/* ── INIT ── */
-renderCarousel();
-renderGrid();
-updateCart();
-checkAndShowReviewPopup();
+// Replace your current init block with this
+async function init() {
+  await loadProds();
+  renderCarousel();
+  renderGrid();
+  updateCart();
+  checkAndShowReviewPopup();
+}
+
+init();
 </script>
 </body>
 </html>
