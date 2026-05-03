@@ -1,940 +1,2003 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pressfiles — by Teacher Ira</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;0,900;1,300;1,500;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css"/>
-  <style>
-    /* ── SHOP-SPECIFIC STYLES ── */
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pressfiles — by Teacher Ira</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;0,900;1,300;1,500;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* ── SHOP-SPECIFIC STYLES ── */
 
-    /* HERO */
-    .hero {
-      padding: 3.5rem clamp(1.5rem, 5vw, 3rem) 3rem;
-      border-bottom: 1px solid var(--border);
-      display: grid;
-      grid-template-columns: 1fr 400px;
-      gap: 3.5rem;
-      align-items: center;
-      background: linear-gradient(155deg, #fff 55%, #f9f0f0 100%);
-    }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: .4rem;
-      background: var(--crimson-light);
-      color: var(--crimson);
-      border: 1px solid var(--crimson-mid);
-      border-radius: 100px;
-      padding: .3rem .88rem;
-      font-size: .74rem;
-      font-weight: 700;
-      margin-bottom: 1.1rem;
-      letter-spacing: .02em;
-    }
-    .hero-title {
-      font-family: Georgia, serif;
-      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -.03em;
-      color: var(--ink);            
-      margin-bottom: .95rem;
-    }
-.hero-title em { font-style: italic; color: #000000; }
-    .hero-desc {
-      font-size: .92rem;
-      color: var(--mid);
-      line-height: 1.7;
-      max-width: 440px;
-      margin-bottom: 1.7rem;
-    }
-    .hero-actions { display: flex; gap: .75rem; flex-wrap: wrap; }
-    .hero-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: .85rem;
-    }
-    .hstat {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      padding: 1.1rem 1.3rem;
-      box-shadow: var(--shadow-sm);
-    }
-    .hstat-v {
-      font-family: Georgia, serif;
-      font-size: 1.85rem;
-      font-weight: 700;
-      color: var(--crimson);
-      line-height: 1;
-    }
-    .hstat-l { font-size: .72rem; color: var(--mid); margin-top: .22rem; font-weight: 500; }
+        /* HERO */
+        .hero {
+            padding: 3.5rem clamp(1.5rem, 5vw, 3rem) 3rem;
+            border-bottom: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3.5rem;
+            align-items: center;
+            background: linear-gradient(155deg, #fff 55%, #f9f0f0 100%);
+        }
 
-    /* SECTION HEAD */
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.5rem clamp(1.5rem, 5vw, 3rem) 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .sec-title { font-family: Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); }
-    .sec-sub   { font-size: .75rem; color: var(--mid); margin-top: .1rem; }
-    .arr-row   { display: flex; gap: .38rem; }
-    .arr {
-      width: 34px; height: 34px;
-      border-radius: 7px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: .9rem; color: var(--ink2);
-      transition: all .18s;
-    }
-    .arr:hover { background: var(--crimson); color: #fff; border-color: var(--crimson); }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            background: var(--crimson-light);
+            color: var(--crimson);
+            border: 1px solid var(--crimson-mid);
+            border-radius: 100px;
+            padding: .3rem .88rem;
+            font-size: .74rem;
+            font-weight: 700;
+            margin-bottom: 1.1rem;
+            letter-spacing: .02em;
+        }
 
-    /* CAROUSEL */
-    .c-outer {
-      padding: 1rem clamp(1.5rem, 5vw, 3rem) 1.5rem;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-    .c-outer::after {
-      content: '';
-      position: absolute;
-      top: 0; right: 0; bottom: 0;
-      width: 55px;
-      background: linear-gradient(to right, transparent, var(--bg));
-      pointer-events: none;
-      z-index: 2;
-    }
-    .c-track {
-      display: flex;
-      gap: 1.1rem;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      padding: .5rem .25rem 1rem;
-      scrollbar-width: none;
-      cursor: grab;
-    }
-    .c-track::-webkit-scrollbar { display: none; }
-    .c-track.grabbing { cursor: grabbing; }
+        .hero-title {
+            font-family: Georgia, serif;
+            font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -.03em;
+            color: var(--ink);
+            margin-bottom: .95rem;
+        }
 
-    /* BOOK CARD */
-    .book-card {
-      flex: 0 0 185px;
-      display: flex;
-      flex-direction: column;
-      gap: .8rem;
-      animation: fadeUp .4s ease both;
-    }
-    .book-wrap { width: 185px; height: 250px; perspective: 700px; }
-    .book-cover {
-      width: 100%; height: 100%;
-      border-radius: 2px 10px 10px 2px;
-      position: relative;
-      overflow: hidden;
-      transform: rotateY(-6deg);
-      transition: transform .35s, box-shadow .35s;
-      box-shadow: -4px 6px 0 rgba(0,0,0,.12), -8px 12px 22px rgba(0,0,0,.19);
-      cursor: pointer;
-    }
-    .book-card:hover .book-cover {
-      transform: rotateY(-1deg) translateY(-4px);
-      box-shadow: -2px 4px 0 rgba(0,0,0,.08), -4px 8px 26px rgba(0,0,0,.21);
-    }
-    .book-cover::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 13px;
-      background: rgba(0,0,0,.2);
-      z-index: 10;
-      border-radius: 2px 0 0 2px;
-    }
-    .book-cover::after {
-      content: '';
-      position: absolute;
-      right: -3px; top: 2px; bottom: 2px;
-      width: 4px;
-      background: repeating-linear-gradient(to bottom, #eee 0px, #eee 1px, #ddd 1px, #ddd 2px);
-      border-radius: 0 2px 2px 0;
-      z-index: 10;
-    }
+        .hero-title em {
+            font-style: italic;
+            color: var(--crimson);
+        }
 
-    /* Card info below book */
-    .card-info { padding: 0 .1rem; }
-    .ctype-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: .3rem;
-      border-radius: 4px;
-      padding: .19rem .58rem;
-      font-size: .62rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      margin-bottom: .38rem;
-    }
-    .ctype-badge.j { background: var(--crimson-light); color: var(--crimson); }
-    .ctype-badge.p { background: var(--gold-lt);        color: var(--gold); }
-    .c-card-title {
-      font-family: Georgia, serif;
-      font-size: .9rem;
-      font-weight: 700;
-      color: var(--ink);
-      line-height: 1.25;
-      margin-bottom: .2rem;
-    }
-    .c-stars { color: var(--gold); font-size: .68rem; }
-    .c-pages { font-size: .7rem; color: var(--mid); margin: .14rem 0 .42rem; }
-    .c-bot   { display: flex; align-items: center; justify-content: space-between; }
-    .c-price { font-family: Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); }
-    .add-sm {
-      background: var(--crimson);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: .36rem .85rem;
-      font-size: .7rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background .18s, transform .18s;
-    }
-    .add-sm:hover       { background: var(--crimson-dark); transform: scale(1.04); }
-    .add-sm.added       { background: var(--green); }
+        .hero-desc {
+            font-size: .92rem;
+            color: var(--mid);
+            line-height: 1.7;
+            max-width: 440px;
+            margin-bottom: 1.7rem;
+        }
 
-    /* FILTER BAR */
-    .filter-bar {
-      padding: .85rem clamp(1.5rem, 5vw, 3rem);
-      display: flex;
-      gap: .45rem;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      flex-wrap: wrap;
-    }
-    .filter-lbl { font-size: .75rem; font-weight: 700; color: var(--mid); margin-right: .2rem; }
+        .hero-actions {
+            display: flex;
+            gap: .75rem;
+            flex-wrap: wrap;
+        }
 
-    /* PRODUCT GRID */
-    .grid-section { padding: 1.5rem clamp(1.5rem, 5vw, 3rem); }
-    .grid-header  { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.4rem; }
-    .grid-title   { font-family: Georgia, serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); }
-    .pgrid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
-      gap: 1.2rem;
-    }
+        .hero-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .85rem;
+        }
 
-    /* PRODUCT CARD */
-    .pcard {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: box-shadow .2s, transform .2s;
-      cursor: pointer;
-      animation: fadeUp .4s ease both;
-    }
-    .pcard:hover {
-      box-shadow: 0 6px 24px rgba(139,26,26,.13);
-      transform: translateY(-3px);
-    }
-    .pcard-thumb { height: 148px; position: relative; overflow: hidden; flex-shrink: 0; }
-    .pcard-thumb-inner { width: 100%; height: 100%; }
-    .view-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(139,26,26,0);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0;
-      transition: all .22s;
-      z-index: 20;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-    }
-    .pcard:hover .view-overlay  { opacity: 1; background: rgba(139,26,26,.65); }
-    .view-overlay span {
-      background: #fff;
-      color: var(--crimson);
-      border-radius: 6px;
-      padding: .38rem 1rem;
-      font-size: .72rem;
-      font-weight: 700;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-      transform: translateY(5px);
-      transition: transform .22s;
-    }
-    .pcard:hover .view-overlay span { transform: translateY(0); }
+        .hstat {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 1.1rem 1.3rem;
+            box-shadow: var(--shadow-sm);
+        }
 
-    .pcard-body {
-      padding: 1rem 1.15rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      gap: .44rem;
-    }
-    .pcard-type {
-      display: inline-flex;
-      align-items: center;
-      gap: .3rem;
-      border-radius: 4px;
-      padding: .19rem .58rem;
-      font-size: .62rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-      align-self: flex-start;
-    }
-    .pcard-type.j { background: var(--crimson-light); color: var(--crimson); }
-    .pcard-type.p { background: var(--gold-lt);        color: var(--gold); }
-    .pcard-title  { font-family: Georgia, serif; font-size: .97rem; font-weight: 700; color: var(--ink); line-height: 1.3; }
-    .pcard-rating { display: flex; align-items: center; gap: .3rem; }
-    .pcard-stars  { color: var(--gold); font-size: .7rem; }
-    .pcard-rc     { font-size: .73rem; color: var(--mid); }
-    .pcard-meta   { font-size: .73rem; color: var(--mid); }
-    .pcard-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: .6rem;
-      border-top: 1px solid var(--border);
-      margin-top: auto;
-    }
-    .pcard-price { font-family: Georgia, serif; font-size: 1.38rem; font-weight: 700; color: var(--ink); }
-    .padd {
-      background: var(--crimson);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: .42rem .95rem;
-      font-size: .73rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background .18s, transform .18s;
-    }
-    .padd:hover  { background: var(--crimson-dark); transform: scale(1.04); }
-    .padd.added  { background: var(--green); }
+        .hstat-v {
+            font-family: Georgia, serif;
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: var(--crimson);
+            line-height: 1;
+        }
 
-    /* ── PRODUCT MODAL ── */
-    .product-modal {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--r-xl);
-      width: min(880px, 96vw);
-      max-height: 92vh;
-      overflow-y: auto;
-      box-shadow: var(--shadow-lg);
-      animation: slideUpMd .3s ease;
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.15rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    .modal-header-left { display: flex; align-items: center; gap: .85rem; }
-    .modal-header-title {
-      font-family: Georgia, serif;
-      font-weight: 700;
-      font-size: .97rem;
-      color: var(--ink);
-      max-width: 460px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .modal-body {
-      display: grid;
-      grid-template-columns: 210px 1fr;
-    }
-    .modal-cover-col {
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      padding: 2rem 1.4rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-book-wrap  { width: 145px; height: 196px; perspective: 600px; }
-    .modal-book {
-      width: 100%; height: 100%;
-      border-radius: 2px 9px 9px 2px;
-      overflow: hidden;
-      transform: rotateY(-5deg);
-      box-shadow: -4px 5px 0 rgba(0,0,0,.1), -8px 10px 18px rgba(0,0,0,.18);
-      position: relative;
-    }
-    .modal-book::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 11px;
-      background: rgba(0,0,0,.2);
-      z-index: 10;
-    }
-    .modal-info { padding: 1.5rem; display: flex; flex-direction: column; gap: .88rem; }
+        .hstat-l {
+            font-size: .72rem;
+            color: var(--mid);
+            margin-top: .22rem;
+            font-weight: 500;
+        }
 
-    .modal-type-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: .3rem;
-      border-radius: 4px;
-      padding: .22rem .65rem;
-      font-size: .65rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .06em;
-    }
-    .modal-type-badge.j { background: var(--crimson-light); color: var(--crimson); }
-    .modal-type-badge.p { background: var(--gold-lt);        color: var(--gold); }
+        /* SECTION HEAD */
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem clamp(1.5rem, 5vw, 3rem) 1rem;
+            border-bottom: 1px solid var(--border);
+        }
 
-    .modal-title-full {
-      font-family: Georgia, serif;
-      font-size: 1.42rem;
-      font-weight: 700;
-      color: var(--ink);
-      line-height: 1.2;
-    }
-    .modal-rating-row { display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
-    .modal-stars-d    { color: var(--gold); font-size: .9rem; }
-    .modal-avg-d      { font-family: Georgia, serif; font-size: 1.05rem; font-weight: 700; }
-    .modal-rc-d       { font-size: .78rem; color: var(--mid); }
+        .sec-title {
+            font-family: Georgia, serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
 
-    .modal-desc { font-size: .88rem; color: var(--ink2); line-height: 1.65; }
-    .meta-tags  { display: flex; gap: .42rem; flex-wrap: wrap; }
-    .meta-tag   {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: .28rem .7rem;
-      font-size: .72rem;
-      color: var(--mid);
-      font-weight: 500;
-    }
-    .modal-price-d {
-      font-family: Georgia, serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--ink);
-    }
-    .modal-add-btn {
-      background: var(--crimson);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: .78rem 1.8rem;
-      font-size: .875rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background .18s, transform .18s;
-      align-self: flex-start;
-      letter-spacing: .01em;
-    }
-    .modal-add-btn:hover  { background: var(--crimson-dark); transform: translateY(-1px); }
-    .modal-add-btn.added  { background: var(--green); }
+        .sec-sub {
+            font-size: .75rem;
+            color: var(--mid);
+            margin-top: .1rem;
+        }
 
-    /* PREVIEW STRIP */
-    .preview-strip { border-top: 1px solid var(--border); padding: 1.25rem 1.5rem; }
-    .strip-label {
-      font-size: .7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      color: var(--mid);
-      margin-bottom: .85rem;
-      display: flex; align-items: center; gap: .5rem;
-    }
-    .strip-label span {
-      background: var(--gold-lt);
-      color: var(--gold);
-      border-radius: 4px;
-      padding: .12rem .5rem;
-      font-size: .6rem;
-    }
-    .preview-nav {
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-    }
-    .prev-arr {
-      width: 30px; height: 30px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: .85rem; color: var(--ink2);
-      transition: all .18s;
-      flex-shrink: 0;
-    }
-    .prev-arr:hover { background: var(--crimson); color: #fff; border-color: var(--crimson); }
-    .prev-scroll-wrap {
-      flex: 1;
-      overflow: hidden;
-      position: relative;
-    }
-    .prev-scroll-wrap::after {
-      content: '';
-      position: absolute;
-      top: 0; right: 0; bottom: 0;
-      width: 40px;
-      background: linear-gradient(to right, transparent, var(--bg));
-      pointer-events: none;
-      z-index: 2;
-    }
-    .preview-scroll {
-      display: flex;
-      gap: .75rem;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      padding: .25rem .25rem .75rem;
-      scrollbar-width: none;
-      cursor: grab;
-    }
-    .preview-scroll::-webkit-scrollbar { display: none; }
-    .preview-scroll.grabbing { cursor: grabbing; }
-    .preview-page {
-      flex: 0 0 auto;
-      border-radius: 7px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      transition: transform .2s, box-shadow .2s;
-      position: relative;
-      box-shadow: var(--shadow-sm);
-    }
-    .preview-page:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-    .blur-mask {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 55%;
-      background: linear-gradient(to bottom, transparent, rgba(255,255,255,.97));
-      z-index: 3;
-      display: flex; align-items: flex-end; justify-content: center;
-      padding-bottom: .5rem;
-    }
-    .blur-mask span {
-      font-size: .65rem; color: var(--mid);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: .14rem .5rem; font-weight: 500;
-    }
-    .pg-num {
-      position: absolute;
-      top: .35rem; right: .45rem;
-      font-size: .5rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .1em;
-      color: var(--mid);
-      background: rgba(255,255,255,.85);
-      padding: .1rem .38rem; border-radius: 3px; z-index: 4;
-    }
+        .arr-row {
+            display: flex;
+            gap: .38rem;
+        }
 
-    /* FAKE PAGE STYLES */
-    .fp-j {
-      background: #fff; width: 148px; height: 195px;
-      padding: .82rem .78rem;
-      font-family: Georgia, serif;
-    }
-    .fp-hl { font-size: .63rem; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: .28rem; }
-    .fp-by { font-family: 'Plus Jakarta Sans', sans-serif; font-size: .42rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--crimson); margin-bottom: .32rem; }
-    .fp-rule { height: 1.5px; background: var(--ink); margin: .24rem 0; }
-    .fp-col  { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem; margin-top: .28rem; }
-    .fp-line { height: 2px; background: rgba(26,26,26,.1); border-radius: 2px; margin-bottom: .17rem; }
-    .fp-line.dk { background: rgba(26,26,26,.22); }
-    .fp-dc   { font-family: Georgia, serif; font-size: 1.2rem; font-weight: 700; float: left; margin-right: .17rem; line-height: 1; color: var(--ink); }
-    .fp-img  { background: var(--surface2); border-radius: 2px; height: 34px; margin: .27rem 0; display: flex; align-items: center; justify-content: center; font-size: .52rem; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--mid); font-weight: 500; }
-    .fp-pq   { border-left: 2px solid var(--crimson); padding: .14rem .32rem; margin: .28rem 0; font-style: italic; font-size: .44rem; line-height: 1.4; color: var(--crimson); }
+        .arr {
+            width: 34px;
+            height: 34px;
+            border-radius: 7px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .9rem;
+            color: var(--ink2);
+            transition: all .18s;
+        }
 
-    .fp-slide { width: 185px; height: 110px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: .85rem 1rem; position: relative; overflow: hidden; }
-    .fp-st    { font-family: Georgia, serif; font-size: .68rem; font-weight: 700; line-height: 1.2; margin-bottom: .25rem; position: relative; z-index: 1; color: #fff; }
-    .fp-bullets{ display: flex; flex-direction: column; gap: .16rem; position: relative; z-index: 1; }
-    .fp-bullet { display: flex; align-items: center; gap: .25rem; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .38rem; color: rgba(255,255,255,.78); font-weight: 500; }
-    .fp-bullet::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-    .fp-snum  { position: absolute; bottom: .32rem; right: .45rem; font-size: .42rem; font-weight: 600; opacity: .3; color: #fff; }
-    .fp-sbar  { position: absolute; top: 0; left: 0; right: 0; height: 2.5px; background: rgba(255,255,255,.14); }
-    .fp-sbar-fill { height: 100%; background: rgba(255,255,255,.6); }
-    .fp-chart { display: flex; align-items: flex-end; gap: .15rem; height: 24px; margin-top: .25rem; position: relative; z-index: 1; }
-    .fp-bar   { width: 10px; border-radius: 2px 2px 0 0; }
+        .arr:hover {
+            background: var(--crimson);
+            color: #fff;
+            border-color: var(--crimson);
+        }
 
-    /* REVIEWS SECTION */
-    .reviews-section { border-top: 1px solid var(--border); padding: 1.25rem 1.5rem 1.8rem; }
-    .reviews-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    .reviews-title { font-family: Georgia, serif; font-size: 1rem; font-weight: 700; color: var(--ink); }
-    .write-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: .34rem .88rem;
-      font-size: .72rem; font-weight: 700;
-      cursor: pointer; color: var(--mid);
-      transition: all .18s;
-    }
-    .write-btn:hover { border-color: var(--crimson); color: var(--crimson); background: var(--crimson-light); }
+        /* CAROUSEL */
+        .c-outer {
+            padding: 1rem clamp(1.5rem, 5vw, 3rem) 1.5rem;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
 
-    /* Rating breakdown */
-    .rb-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1rem; margin-bottom: 1rem; }
-    .rb-title { font-size: .8rem; font-weight: 700; color: var(--ink2); margin-bottom: .65rem; }
-    .rb-row   { display: flex; align-items: center; gap: .55rem; margin-bottom: .32rem; }
-    .rb-lbl   { font-size: .65rem; font-weight: 600; color: var(--mid); width: 30px; text-align: right; }
-    .rb-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; }
-    .rb-bar-fill { height: 100%; background: linear-gradient(90deg, var(--crimson-mid), var(--crimson)); border-radius: 100px; transition: width .9s ease; }
-    .rb-cnt   { font-size: .7rem; color: var(--mid); width: 16px; }
+        .c-outer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 55px;
+            background: linear-gradient(to right, transparent, var(--bg));
+            pointer-events: none;
+            z-index: 2;
+        }
 
-    .reviews-list { display: flex; flex-direction: column; gap: .65rem; max-height: 260px; overflow-y: auto; padding-right: .25rem; }
-    .review-card  { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: .88rem 1rem; }
-    .review-top   { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: .38rem; gap: .5rem; flex-wrap: wrap; }
-    .reviewer-name{ font-size: .78rem; font-weight: 700; color: var(--ink); }
-    .review-date  { font-size: .7rem; color: var(--mid); }
-    .review-stars { color: var(--gold); font-size: .73rem; }
-    .review-text  { font-size: .83rem; color: var(--ink2); line-height: 1.56; }
-    .review-tag   { display: inline-block; margin-top: .35rem; background: var(--crimson-light); color: var(--crimson); border-radius: 4px; padding: .1rem .45rem; font-size: .7rem; font-weight: 500; }
-    .no-reviews   { text-align: center; padding: 1.25rem; font-size: .82rem; color: var(--mid); }
+        .c-track {
+            display: flex;
+            gap: 1.1rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: .5rem .25rem 1rem;
+            scrollbar-width: none;
+            cursor: grab;
+        }
 
-    .review-form-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1rem; margin-top: .8rem; }
-    .rf-label { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--mid); margin-bottom: .55rem; }
-    .rf-submit {
-      background: var(--crimson); color: #fff; border: none;
-      border-radius: 6px; padding: .56rem 1.2rem;
-      font-size: .78rem; font-weight: 700; cursor: pointer;
-      transition: background .18s; margin-top: .1rem;
-    }
-    .rf-submit:hover { background: var(--crimson-dark); }
+        .c-track::-webkit-scrollbar {
+            display: none;
+        }
 
-    /* CART DRAWER */
-    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.35); backdrop-filter: blur(4px); z-index: 200; }
-    .overlay.open { display: block; animation: fadeIn .2s; }
-    .cart-drawer {
-      position: fixed; top: 0; right: 0; bottom: 0;
-      width: min(370px, 100vw);
-      background: var(--bg);
-      border-left: 1.5px solid var(--border);
-      z-index: 201;
-      transform: translateX(100%);
-      transition: transform .3s ease;
-      display: flex; flex-direction: column;
-      box-shadow: -8px 0 32px rgba(0,0,0,.12);
-    }
-    .cart-drawer.open { transform: translateX(0); }
-    .cd-head { padding: 1.2rem 1.45rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-    .cd-head h3 { font-family: Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); }
-    .cd-close { width: 30px; height: 30px; border-radius: 6px; background: var(--surface); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: .9rem; color: var(--mid); transition: background .18s; }
-    .cd-close:hover { background: var(--surface2); }
-    .cd-body  { flex: 1; overflow-y: auto; padding: 1.2rem 1.45rem; }
-    .cd-empty { text-align: center; padding: 2.5rem 1rem; color: var(--mid); font-size: .88rem; }
-    .cd-empty span { display: block; font-size: 2.5rem; margin-bottom: .5rem; }
-    .ci { display: grid; grid-template-columns: 1fr auto; gap: .5rem; padding: .78rem 0; border-bottom: 1px solid var(--border); }
-    .ci-name  { font-size: .88rem; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: .12rem; }
-    .ci-meta  { font-size: .72rem; color: var(--mid); margin-bottom: .18rem; }
-    .ci-rm    { font-size: .7rem; color: var(--crimson); background: none; border: none; cursor: pointer; font-weight: 600; padding: 0; }
-    .ci-rm:hover { text-decoration: underline; }
-    .ci-price { font-family: Georgia, serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); }
-    .cd-footer { padding: 1.2rem 1.45rem; border-top: 1px solid var(--border); }
-    .cd-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    .cd-total-lbl { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--mid); }
-    .cd-total-amt { font-family: Georgia, serif; font-size: 1.85rem; font-weight: 700; color: var(--ink); }
-    .checkout-btn { width: 100%; background: var(--crimson); color: #fff; border: none; border-radius: 8px; padding: .88rem; font-size: .875rem; font-weight: 700; cursor: pointer; transition: background .18s, transform .18s; }
-    .checkout-btn:hover { background: var(--crimson-dark); transform: translateY(-1px); }
+        .c-track.grabbing {
+            cursor: grabbing;
+        }
 
-    /* REVIEW POPUP */
-    .rp-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.42); backdrop-filter: blur(5px); z-index: 500; align-items: flex-end; justify-content: center; padding-bottom: 1.5rem; }
-    .rp-overlay.open { display: flex; animation: fadeIn .25s; }
-    .rp-card {
-      background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-lg);
-      width: min(500px, 95vw); padding: 2rem; position: relative;
-      box-shadow: var(--shadow-lg); animation: rpUp .4s cubic-bezier(.34,1.2,.64,1);
-    }
-    @keyframes rpUp { from{opacity:0;transform:translateY(50px)} to{opacity:1;transform:none} }
-    .rp-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--crimson), #c94040, var(--crimson));
-      background-size: 200%; animation: gradMove 2.5s linear infinite;
-      border-radius: var(--r-lg) var(--r-lg) 0 0;
-    }
-    @keyframes gradMove { from{background-position:0%} to{background-position:200%} }
-    .rp-close { position: absolute; top: .9rem; right: .9rem; width: 28px; height: 28px; border-radius: 6px; background: var(--surface); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: .9rem; color: var(--mid); transition: background .18s; }
-    .rp-close:hover { background: var(--surface2); }
-    .rp-icon  { font-size: 2.2rem; margin-bottom: .6rem; display: block; }
-    .rp-eyebrow { display: inline-flex; align-items: center; gap: .3rem; background: var(--crimson-light); color: var(--crimson); border-radius: 4px; padding: .22rem .7rem; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: .65rem; }
-    .rp-title { font-family: Georgia, serif; font-size: 1.5rem; font-weight: 700; color: var(--ink); line-height: 1.2; margin-bottom: .5rem; }
-    .rp-body  { font-size: .875rem; color: var(--ink2); line-height: 1.65; margin-bottom: 1.1rem; }
-    .rp-promo-box { display: flex; align-items: center; gap: .75rem; background: var(--crimson-light); border: 1px solid var(--crimson-mid); border-radius: 10px; padding: .88rem 1rem; margin-bottom: 1.2rem; }
-    .rp-promo-ico { font-size: 1.25rem; flex-shrink: 0; }
-    .rp-promo-text strong { display: block; font-size: .78rem; font-weight: 700; color: var(--crimson); margin-bottom: .16rem; text-transform: uppercase; letter-spacing: .06em; }
-    .rp-promo-text span   { font-size: .8rem; color: var(--ink2); }
-    .rp-files   { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
-    .rp-file-chip { display: flex; align-items: center; gap: .3rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .28rem .65rem; font-size: .75rem; color: var(--ink2); font-weight: 500; }
-    .rp-file-chip::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--crimson); flex-shrink: 0; }
-    .rp-actions { display: flex; gap: .6rem; flex-wrap: wrap; }
-    .rp-cta  { flex: 1; background: var(--crimson); color: #fff; border: none; border-radius: 8px; padding: .78rem 1.2rem; font-size: .82rem; font-weight: 700; cursor: pointer; transition: background .18s; text-align: center; }
-    .rp-cta:hover { background: var(--crimson-dark); }
-    .rp-skip { background: transparent; border: 1px solid var(--border); color: var(--mid); border-radius: 8px; padding: .76rem 1.1rem; font-size: .78rem; font-weight: 600; cursor: pointer; transition: all .18s; white-space: nowrap; }
-    .rp-skip:hover { border-color: var(--ink2); color: var(--ink2); }
-    .rp-section-lbl { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--mid); margin-bottom: .4rem; }
-    .rp-select { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: .62rem .9rem; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .875rem; color: var(--ink); width: 100%; outline: none; cursor: pointer; margin-bottom: .85rem; transition: border-color .18s; }
-    .rp-select:focus { border-color: var(--crimson); }
-    .rp-code-box { display: flex; align-items: center; justify-content: center; gap: .85rem; background: var(--ink); color: #fff; border-radius: 10px; padding: .85rem 1.2rem; margin: .6rem 0 .5rem; font-family: monospace; font-size: 1.4rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; }
-    .rp-copy-btn { background: var(--crimson); color: #fff; border: none; border-radius: 5px; padding: .28rem .65rem; font-size: .65rem; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: .06em; transition: background .18s; }
-    .rp-copy-btn:hover { background: var(--crimson-dark); }
-    .rp-code-note { font-size: .78rem; color: var(--mid); text-align: center; }
-    .rp-done { background: var(--crimson); color: #fff; border: none; border-radius: 8px; padding: .65rem 1.5rem; font-size: .8rem; font-weight: 700; cursor: pointer; margin-top: .9rem; transition: background .18s; }
-    .rp-done:hover { background: var(--crimson-dark); }
+        /* BOOK CARD */
+        .book-card {
+            flex: 0 0 185px;
+            display: flex;
+            flex-direction: column;
+            gap: .8rem;
+            animation: fadeUp .4s ease both;
+        }
 
-    @media (max-width: 760px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-stats { display: none; }
-      .modal-body { grid-template-columns: 1fr; }
-      .modal-cover-col { display: none; }
-    }
-  </style>
- <script src="product.js"></script>
+        .book-wrap {
+            width: 185px;
+            height: 250px;
+            perspective: 700px;
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 100%;
+            border-radius: 2px 10px 10px 2px;
+            position: relative;
+            overflow: hidden;
+            transform: rotateY(-6deg);
+            transition: transform .35s, box-shadow .35s;
+            box-shadow: -4px 6px 0 rgba(0, 0, 0, .12), -8px 12px 22px rgba(0, 0, 0, .19);
+            cursor: pointer;
+        }
+
+        .book-card:hover .book-cover {
+            transform: rotateY(-1deg) translateY(-4px);
+            box-shadow: -2px 4px 0 rgba(0, 0, 0, .08), -4px 8px 26px rgba(0, 0, 0, .21);
+        }
+
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 13px;
+            background: rgba(0, 0, 0, .2);
+            z-index: 10;
+            border-radius: 2px 0 0 2px;
+        }
+
+        .book-cover::after {
+            content: '';
+            position: absolute;
+            right: -3px;
+            top: 2px;
+            bottom: 2px;
+            width: 4px;
+            background: repeating-linear-gradient(to bottom, #eee 0px, #eee 1px, #ddd 1px, #ddd 2px);
+            border-radius: 0 2px 2px 0;
+            z-index: 10;
+        }
+
+        /* Card info below book */
+        .card-info {
+            padding: 0 .1rem;
+        }
+
+        .ctype-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            border-radius: 4px;
+            padding: .19rem .58rem;
+            font-size: .62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: .38rem;
+        }
+
+        .ctype-badge.j {
+            background: var(--crimson-light);
+            color: var(--crimson);
+        }
+
+        .ctype-badge.p {
+            background: var(--gold-lt);
+            color: var(--gold);
+        }
+
+        .c-card-title {
+            font-family: Georgia, serif;
+            font-size: .9rem;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.25;
+            margin-bottom: .2rem;
+        }
+
+        .c-stars {
+            color: var(--gold);
+            font-size: .68rem;
+        }
+
+        .c-pages {
+            font-size: .7rem;
+            color: var(--mid);
+            margin: .14rem 0 .42rem;
+        }
+
+        .c-bot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .c-price {
+            font-family: Georgia, serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .add-sm {
+            background: var(--crimson);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: .36rem .85rem;
+            font-size: .7rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .18s, transform .18s;
+        }
+
+        .add-sm:hover {
+            background: var(--crimson-dark);
+            transform: scale(1.04);
+        }
+
+        .add-sm.added {
+            background: var(--green);
+        }
+
+        /* FILTER BAR */
+        .filter-bar {
+            padding: .85rem clamp(1.5rem, 5vw, 3rem);
+            display: flex;
+            gap: .45rem;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+            flex-wrap: wrap;
+        }
+
+        .filter-lbl {
+            font-size: .75rem;
+            font-weight: 700;
+            color: var(--mid);
+            margin-right: .2rem;
+        }
+
+        /* PRODUCT GRID */
+        .grid-section {
+            padding: 1.5rem clamp(1.5rem, 5vw, 3rem);
+        }
+
+        .grid-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.4rem;
+        }
+
+        .grid-title {
+            font-family: Georgia, serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .pgrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+            gap: 1.2rem;
+        }
+
+        /* PRODUCT CARD */
+        .pcard {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: box-shadow .2s, transform .2s;
+            cursor: pointer;
+            animation: fadeUp .4s ease both;
+        }
+
+        .pcard:hover {
+            box-shadow: 0 6px 24px rgba(139, 26, 26, .13);
+            transform: translateY(-3px);
+        }
+
+        .pcard-thumb {
+            height: 148px;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .pcard-thumb-inner {
+            width: 100%;
+            height: 100%;
+        }
+
+        .view-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(139, 26, 26, 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all .22s;
+            z-index: 20;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .pcard:hover .view-overlay {
+            opacity: 1;
+            background: rgba(139, 26, 26, .65);
+        }
+
+        .view-overlay span {
+            background: #fff;
+            color: var(--crimson);
+            border-radius: 6px;
+            padding: .38rem 1rem;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            transform: translateY(5px);
+            transition: transform .22s;
+        }
+
+        .pcard:hover .view-overlay span {
+            transform: translateY(0);
+        }
+
+        .pcard-body {
+            padding: 1rem 1.15rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: .44rem;
+        }
+
+        .pcard-type {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            border-radius: 4px;
+            padding: .19rem .58rem;
+            font-size: .62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            align-self: flex-start;
+        }
+
+        .pcard-type.j {
+            background: var(--crimson-light);
+            color: var(--crimson);
+        }
+
+        .pcard-type.p {
+            background: var(--gold-lt);
+            color: var(--gold);
+        }
+
+        .pcard-title {
+            font-family: Georgia, serif;
+            font-size: .97rem;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.3;
+        }
+
+        .pcard-rating {
+            display: flex;
+            align-items: center;
+            gap: .3rem;
+        }
+
+        .pcard-stars {
+            color: var(--gold);
+            font-size: .7rem;
+        }
+
+        .pcard-rc {
+            font-size: .73rem;
+            color: var(--mid);
+        }
+
+        .pcard-meta {
+            font-size: .73rem;
+            color: var(--mid);
+        }
+
+        .pcard-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: .6rem;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+        }
+
+        .pcard-price {
+            font-family: Georgia, serif;
+            font-size: 1.38rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .padd {
+            background: var(--crimson);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: .42rem .95rem;
+            font-size: .73rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .18s, transform .18s;
+        }
+
+        .padd:hover {
+            background: var(--crimson-dark);
+            transform: scale(1.04);
+        }
+
+        .padd.added {
+            background: var(--green);
+        }
+
+        /* ── PRODUCT MODAL ── */
+        .product-modal {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--r-xl);
+            width: min(880px, 96vw);
+            max-height: 92vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: slideUpMd .3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.15rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            background: var(--surface);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .modal-header-left {
+            display: flex;
+            align-items: center;
+            gap: .85rem;
+        }
+
+        .modal-header-title {
+            font-family: Georgia, serif;
+            font-weight: 700;
+            font-size: .97rem;
+            color: var(--ink);
+            max-width: 460px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 210px 1fr;
+        }
+
+        .modal-cover-col {
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 2rem 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-book-wrap {
+            width: 145px;
+            height: 196px;
+            perspective: 600px;
+        }
+
+        .modal-book {
+            width: 100%;
+            height: 100%;
+            border-radius: 2px 9px 9px 2px;
+            overflow: hidden;
+            transform: rotateY(-5deg);
+            box-shadow: -4px 5px 0 rgba(0, 0, 0, .1), -8px 10px 18px rgba(0, 0, 0, .18);
+            position: relative;
+        }
+
+        .modal-book::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 11px;
+            background: rgba(0, 0, 0, .2);
+            z-index: 10;
+        }
+
+        .modal-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: .88rem;
+        }
+
+        .modal-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            border-radius: 4px;
+            padding: .22rem .65rem;
+            font-size: .65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        .modal-type-badge.j {
+            background: var(--crimson-light);
+            color: var(--crimson);
+        }
+
+        .modal-type-badge.p {
+            background: var(--gold-lt);
+            color: var(--gold);
+        }
+
+        .modal-title-full {
+            font-family: Georgia, serif;
+            font-size: 1.42rem;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.2;
+        }
+
+        .modal-rating-row {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            flex-wrap: wrap;
+        }
+
+        .modal-stars-d {
+            color: var(--gold);
+            font-size: .9rem;
+        }
+
+        .modal-avg-d {
+            font-family: Georgia, serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .modal-rc-d {
+            font-size: .78rem;
+            color: var(--mid);
+        }
+
+        .modal-desc {
+            font-size: .88rem;
+            color: var(--ink2);
+            line-height: 1.65;
+        }
+
+        .meta-tags {
+            display: flex;
+            gap: .42rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-tag {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: .28rem .7rem;
+            font-size: .72rem;
+            color: var(--mid);
+            font-weight: 500;
+        }
+
+        .modal-price-d {
+            font-family: Georgia, serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .modal-add-btn {
+            background: var(--crimson);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: .78rem 1.8rem;
+            font-size: .875rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .18s, transform .18s;
+            align-self: flex-start;
+            letter-spacing: .01em;
+        }
+
+        .modal-add-btn:hover {
+            background: var(--crimson-dark);
+            transform: translateY(-1px);
+        }
+
+        .modal-add-btn.added {
+            background: var(--green);
+        }
+
+        /* PREVIEW STRIP */
+        .preview-strip {
+            border-top: 1px solid var(--border);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .strip-label {
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: var(--mid);
+            margin-bottom: .85rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .strip-label span {
+            background: var(--gold-lt);
+            color: var(--gold);
+            border-radius: 4px;
+            padding: .12rem .5rem;
+            font-size: .6rem;
+        }
+
+        .preview-nav {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+        }
+
+        .prev-arr {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .85rem;
+            color: var(--ink2);
+            transition: all .18s;
+            flex-shrink: 0;
+        }
+
+        .prev-arr:hover {
+            background: var(--crimson);
+            color: #fff;
+            border-color: var(--crimson);
+        }
+
+        .prev-scroll-wrap {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .prev-scroll-wrap::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 40px;
+            background: linear-gradient(to right, transparent, var(--bg));
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .preview-scroll {
+            display: flex;
+            gap: .75rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: .25rem .25rem .75rem;
+            scrollbar-width: none;
+            cursor: grab;
+        }
+
+        .preview-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .preview-scroll.grabbing {
+            cursor: grabbing;
+        }
+
+        .preview-page {
+            flex: 0 0 auto;
+            border-radius: 7px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform .2s, box-shadow .2s;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .preview-page:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .blur-mask {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 55%;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, .97));
+            z-index: 3;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: .5rem;
+        }
+
+        .blur-mask span {
+            font-size: .65rem;
+            color: var(--mid);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: .14rem .5rem;
+            font-weight: 500;
+        }
+
+        .pg-num {
+            position: absolute;
+            top: .35rem;
+            right: .45rem;
+            font-size: .5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--mid);
+            background: rgba(255, 255, 255, .85);
+            padding: .1rem .38rem;
+            border-radius: 3px;
+            z-index: 4;
+        }
+
+        /* FAKE PAGE STYLES */
+        .fp-j {
+            background: #fff;
+            width: 148px;
+            height: 195px;
+            padding: .82rem .78rem;
+            font-family: Georgia, serif;
+        }
+
+        .fp-hl {
+            font-size: .63rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--ink);
+            margin-bottom: .28rem;
+        }
+
+        .fp-by {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: .42rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--crimson);
+            margin-bottom: .32rem;
+        }
+
+        .fp-rule {
+            height: 1.5px;
+            background: var(--ink);
+            margin: .24rem 0;
+        }
+
+        .fp-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .3rem;
+            margin-top: .28rem;
+        }
+
+        .fp-line {
+            height: 2px;
+            background: rgba(26, 26, 26, .1);
+            border-radius: 2px;
+            margin-bottom: .17rem;
+        }
+
+        .fp-line.dk {
+            background: rgba(26, 26, 26, .22);
+        }
+
+        .fp-dc {
+            font-family: Georgia, serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            float: left;
+            margin-right: .17rem;
+            line-height: 1;
+            color: var(--ink);
+        }
+
+        .fp-img {
+            background: var(--surface2);
+            border-radius: 2px;
+            height: 34px;
+            margin: .27rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .52rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--mid);
+            font-weight: 500;
+        }
+
+        .fp-pq {
+            border-left: 2px solid var(--crimson);
+            padding: .14rem .32rem;
+            margin: .28rem 0;
+            font-style: italic;
+            font-size: .44rem;
+            line-height: 1.4;
+            color: var(--crimson);
+        }
+
+        .fp-slide {
+            width: 185px;
+            height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: .85rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fp-st {
+            font-family: Georgia, serif;
+            font-size: .68rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: .25rem;
+            position: relative;
+            z-index: 1;
+            color: #fff;
+        }
+
+        .fp-bullets {
+            display: flex;
+            flex-direction: column;
+            gap: .16rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .fp-bullet {
+            display: flex;
+            align-items: center;
+            gap: .25rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: .38rem;
+            color: rgba(255, 255, 255, .78);
+            font-weight: 500;
+        }
+
+        .fp-bullet::before {
+            content: '';
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: currentColor;
+            flex-shrink: 0;
+        }
+
+        .fp-snum {
+            position: absolute;
+            bottom: .32rem;
+            right: .45rem;
+            font-size: .42rem;
+            font-weight: 600;
+            opacity: .3;
+            color: #fff;
+        }
+
+        .fp-sbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2.5px;
+            background: rgba(255, 255, 255, .14);
+        }
+
+        .fp-sbar-fill {
+            height: 100%;
+            background: rgba(255, 255, 255, .6);
+        }
+
+        .fp-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: .15rem;
+            height: 24px;
+            margin-top: .25rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .fp-bar {
+            width: 10px;
+            border-radius: 2px 2px 0 0;
+        }
+
+        /* REVIEWS SECTION */
+        .reviews-section {
+            border-top: 1px solid var(--border);
+            padding: 1.25rem 1.5rem 1.8rem;
+        }
+
+        .reviews-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .reviews-title {
+            font-family: Georgia, serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .write-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: .34rem .88rem;
+            font-size: .72rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--mid);
+            transition: all .18s;
+        }
+
+        .write-btn:hover {
+            border-color: var(--crimson);
+            color: var(--crimson);
+            background: var(--crimson-light);
+        }
+
+        /* Rating breakdown */
+        .rb-wrap {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .rb-title {
+            font-size: .8rem;
+            font-weight: 700;
+            color: var(--ink2);
+            margin-bottom: .65rem;
+        }
+
+        .rb-row {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            margin-bottom: .32rem;
+        }
+
+        .rb-lbl {
+            font-size: .65rem;
+            font-weight: 600;
+            color: var(--mid);
+            width: 30px;
+            text-align: right;
+        }
+
+        .rb-bar-wrap {
+            flex: 1;
+            height: 6px;
+            background: var(--border);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .rb-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--crimson-mid), var(--crimson));
+            border-radius: 100px;
+            transition: width .9s ease;
+        }
+
+        .rb-cnt {
+            font-size: .7rem;
+            color: var(--mid);
+            width: 16px;
+        }
+
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: .65rem;
+            max-height: 260px;
+            overflow-y: auto;
+            padding-right: .25rem;
+        }
+
+        .review-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: .88rem 1rem;
+        }
+
+        .review-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: .38rem;
+            gap: .5rem;
+            flex-wrap: wrap;
+        }
+
+        .reviewer-name {
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .review-date {
+            font-size: .7rem;
+            color: var(--mid);
+        }
+
+        .review-stars {
+            color: var(--gold);
+            font-size: .73rem;
+        }
+
+        .review-text {
+            font-size: .83rem;
+            color: var(--ink2);
+            line-height: 1.56;
+        }
+
+        .review-tag {
+            display: inline-block;
+            margin-top: .35rem;
+            background: var(--crimson-light);
+            color: var(--crimson);
+            border-radius: 4px;
+            padding: .1rem .45rem;
+            font-size: .7rem;
+            font-weight: 500;
+        }
+
+        .no-reviews {
+            text-align: center;
+            padding: 1.25rem;
+            font-size: .82rem;
+            color: var(--mid);
+        }
+
+        .review-form-wrap {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 1rem;
+            margin-top: .8rem;
+        }
+
+        .rf-label {
+            font-size: .68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--mid);
+            margin-bottom: .55rem;
+        }
+
+        .rf-submit {
+            background: var(--crimson);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: .56rem 1.2rem;
+            font-size: .78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .18s;
+            margin-top: .1rem;
+        }
+
+        .rf-submit:hover {
+            background: var(--crimson-dark);
+        }
+
+        /* CART DRAWER */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .35);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+        }
+
+        .overlay.open {
+            display: block;
+            animation: fadeIn .2s;
+        }
+
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: min(370px, 100vw);
+            background: var(--bg);
+            border-left: 1.5px solid var(--border);
+            z-index: 201;
+            transform: translateX(100%);
+            transition: transform .3s ease;
+            display: flex;
+            flex-direction: column;
+            box-shadow: -8px 0 32px rgba(0, 0, 0, .12);
+        }
+
+        .cart-drawer.open {
+            transform: translateX(0);
+        }
+
+        .cd-head {
+            padding: 1.2rem 1.45rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cd-head h3 {
+            font-family: Georgia, serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .cd-close {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            background: var(--surface);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .9rem;
+            color: var(--mid);
+            transition: background .18s;
+        }
+
+        .cd-close:hover {
+            background: var(--surface2);
+        }
+
+        .cd-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.2rem 1.45rem;
+        }
+
+        .cd-empty {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--mid);
+            font-size: .88rem;
+        }
+
+        .cd-empty span {
+            display: block;
+            font-size: 2.5rem;
+            margin-bottom: .5rem;
+        }
+
+        .ci {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: .5rem;
+            padding: .78rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ci-name {
+            font-size: .88rem;
+            font-weight: 600;
+            color: var(--ink);
+            line-height: 1.3;
+            margin-bottom: .12rem;
+        }
+
+        .ci-meta {
+            font-size: .72rem;
+            color: var(--mid);
+            margin-bottom: .18rem;
+        }
+
+        .ci-rm {
+            font-size: .7rem;
+            color: var(--crimson);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 0;
+        }
+
+        .ci-rm:hover {
+            text-decoration: underline;
+        }
+
+        .ci-price {
+            font-family: Georgia, serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .cd-footer {
+            padding: 1.2rem 1.45rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .cd-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .cd-total-lbl {
+            font-size: .75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--mid);
+        }
+
+        .cd-total-amt {
+            font-family: Georgia, serif;
+            font-size: 1.85rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: var(--crimson);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: .88rem;
+            font-size: .875rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .18s, transform .18s;
+        }
+
+        .checkout-btn:hover {
+            background: var(--crimson-dark);
+            transform: translateY(-1px);
+        }
+
+        /* REVIEW POPUP */
+        .rp-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .42);
+            backdrop-filter: blur(5px);
+            z-index: 500;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 1.5rem;
+        }
+
+        .rp-overlay.open {
+            display: flex;
+            animation: fadeIn .25s;
+        }
+
+        .rp-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            width: min(500px, 95vw);
+            padding: 2rem;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            animation: rpUp .4s cubic-bezier(.34, 1.2, .64, 1);
+        }
+
+        @keyframes rpUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .rp-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--crimson), #c94040, var(--crimson));
+            background-size: 200%;
+            animation: gradMove 2.5s linear infinite;
+            border-radius: var(--r-lg) var(--r-lg) 0 0;
+        }
+
+        @keyframes gradMove {
+            from {
+                background-position: 0%
+            }
+
+            to {
+                background-position: 200%
+            }
+        }
+
+        .rp-close {
+            position: absolute;
+            top: .9rem;
+            right: .9rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: var(--surface);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .9rem;
+            color: var(--mid);
+            transition: background .18s;
+        }
+
+        .rp-close:hover {
+            background: var(--surface2);
+        }
+
+        .rp-icon {
+            font-size: 2.2rem;
+            margin-bottom: .6rem;
+            display: block;
+        }
+
+        .rp-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            background: var(--crimson-light);
+            color: var(--crimson);
+            border-radius: 4px;
+            padding: .22rem .7rem;
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin-bottom: .65rem;
+        }
+
+        .rp-title {
+            font-family: Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.2;
+            margin-bottom: .5rem;
+        }
+
+        .rp-body {
+            font-size: .875rem;
+            color: var(--ink2);
+            line-height: 1.65;
+            margin-bottom: 1.1rem;
+        }
+
+        .rp-promo-box {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            background: var(--crimson-light);
+            border: 1px solid var(--crimson-mid);
+            border-radius: 10px;
+            padding: .88rem 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .rp-promo-ico {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .rp-promo-text strong {
+            display: block;
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--crimson);
+            margin-bottom: .16rem;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        .rp-promo-text span {
+            font-size: .8rem;
+            color: var(--ink2);
+        }
+
+        .rp-files {
+            display: flex;
+            gap: .4rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.2rem;
+        }
+
+        .rp-file-chip {
+            display: flex;
+            align-items: center;
+            gap: .3rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: .28rem .65rem;
+            font-size: .75rem;
+            color: var(--ink2);
+            font-weight: 500;
+        }
+
+        .rp-file-chip::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--crimson);
+            flex-shrink: 0;
+        }
+
+        .rp-actions {
+            display: flex;
+            gap: .6rem;
+            flex-wrap: wrap;
+        }
+
+        .rp-cta {
+            flex: 1;
+            background: var(--crimson);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: .78rem 1.2rem;
+            font-size: .82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .18s;
+            text-align: center;
+        }
+
+        .rp-cta:hover {
+            background: var(--crimson-dark);
+        }
+
+        .rp-skip {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--mid);
+            border-radius: 8px;
+            padding: .76rem 1.1rem;
+            font-size: .78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .18s;
+            white-space: nowrap;
+        }
+
+        .rp-skip:hover {
+            border-color: var(--ink2);
+            color: var(--ink2);
+        }
+
+        .rp-section-lbl {
+            font-size: .7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--mid);
+            margin-bottom: .4rem;
+        }
+
+        .rp-select {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: .62rem .9rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: .875rem;
+            color: var(--ink);
+            width: 100%;
+            outline: none;
+            cursor: pointer;
+            margin-bottom: .85rem;
+            transition: border-color .18s;
+        }
+
+        .rp-select:focus {
+            border-color: var(--crimson);
+        }
+
+        .rp-code-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .85rem;
+            background: var(--ink);
+            color: #fff;
+            border-radius: 10px;
+            padding: .85rem 1.2rem;
+            margin: .6rem 0 .5rem;
+            font-family: monospace;
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+        }
+
+        .rp-copy-btn {
+            background: var(--crimson);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: .28rem .65rem;
+            font-size: .65rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            transition: background .18s;
+        }
+
+        .rp-copy-btn:hover {
+            background: var(--crimson-dark);
+        }
+
+        .rp-code-note {
+            font-size: .78rem;
+            color: var(--mid);
+            text-align: center;
+        }
+
+        .rp-done {
+            background: var(--crimson);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: .65rem 1.5rem;
+            font-size: .8rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: .9rem;
+            transition: background .18s;
+        }
+
+        .rp-done:hover {
+            background: var(--crimson-dark);
+        }
+
+        @media (max-width: 760px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-stats {
+                display: none;
+            }
+
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-cover-col {
+                display: none;
+            }
+        }
+    </style>
+    <script src="product.js"></script>
 </head>
+
 <body>
 
-<!-- TICKER -->
-<div class="ticker">
-  <div class="ticker-track" id="ttrack"></div>
-</div>
-
-<!-- HEADER -->
-<header>
-<a href="shop.html">
-<img src="/assets/logo/pressfilesv2.gif" alt="Pressfiles by Teacher Ira" style="height:80px;width:auto;display:block;"/>
-</a>
-  <div class="header-right">
-    <a class="hlink" href="admin.html">Admin</a>
-  <button class="cart-btn" onclick="openCart()">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-  </svg>
-  Cart <span id="cart-count">0</span>
-</button>
-  </div>
-</header>
-
-<!-- HERO -->
-<section class="hero">
-  <div>
-    <div class="hero-badge"> Complete Digital Services for Students, Teachers & Businesses</div>
-    <h1 class="hero-title"><em>Download today</em></h1>
-    <p class="hero-desc">Fast, creative, and professionally made outputs delivered online. From academic materials to branding and website solutions — we’ve got you covered.</p>
-    <div class="hero-actions">
-      <button class="btn-primary" onclick="document.querySelector('.section-head').scrollIntoView({behavior:'smooth'})">Browse Files ↓</button>
-      <button class="btn-ghost" onclick="document.querySelector('.filter-bar').scrollIntoView({behavior:'smooth'})">View All →</button>
+    <!-- TICKER -->
+    <div class="ticker">
+        <div class="ticker-track" id="ttrack"></div>
     </div>
-  </div>
-  <div class="hero-stats">
-    <div class="hstat"><div class="hstat-v">1000+</div><div class="hstat-l">Digital Files</div></div>
-    <div class="hstat"><div class="hstat-v">⚡</div><div class="hstat-l">Instant Delivery</div></div>
-    <div class="hstat"><div class="hstat-v">4.9★</div><div class="hstat-l">Avg. Rating</div></div>
-    <div class="hstat"><div class="hstat-v">.zip</div><div class="hstat-l">Ready to Open</div></div>
-  </div>
-</section>
 
-<!-- FEATURED CAROUSEL -->
-<div class="section-head">
-  <div>
-    <div class="sec-title">Featured Files</div>
-    <div class="sec-sub">Click any cover to preview &amp; add to cart</div>
-  </div>
-  <div class="arr-row">
-    <button class="arr" onclick="scrollC(-1)">←</button>
-    <button class="arr" onclick="scrollC(1)">→</button>
-  </div>
-</div>
-<div class="c-outer">
-  <div class="c-track" id="ctrack"></div>
-</div>
-
-<!-- FILTER + GRID -->
-<div class="filter-bar">
-  <span class="filter-lbl">Filter:</span>
-  <button class="chip active" onclick="filterP('all',this)">All Files</button>
-  <button class="chip" onclick="filterP('journalism',this)">📰 Journalism</button>
-  <button class="chip" onclick="filterP('powerpoint',this)">📊 Presentations</button>
-</div>
-<section class="grid-section">
-  <div class="grid-header">
-    <div class="grid-title">All Files</div>
-  </div>
-  <div class="pgrid" id="pgrid"></div>
-</section>
-
-<!-- PRODUCT MODAL -->
-<div class="modal-bg" id="modal-bg" onclick="closeMaybe(event)">
-  <div class="product-modal">
-    <div class="modal-header">
-      <div class="modal-header-left">
-        <span class="modal-type-badge" id="modal-type-badge"></span>
-        <span class="modal-header-title" id="modal-header-title"></span>
-      </div>
-      <button class="modal-close-btn" onclick="closeModal()" title="Close">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-cover-col">
-        <div class="modal-book-wrap">
-          <div class="modal-book" id="modal-book"></div>
+    <!-- HEADER -->
+    <header>
+        <a href="shop.html">
+            <img src="/assets/logo/pressfilesv2.gif" alt="Pressfiles by Teacher Ira"
+                style="height:80px;width:auto;display:block;" />
+        </a>
+        <div class="header-right">
+            <a class="hlink" href="admin.html">Admin</a>
+            <button class="cart-btn" onclick="openCart()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1" />
+                    <circle cx="20" cy="21" r="1" />
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                </svg>
+                Cart <span id="cart-count">0</span>
+            </button>
         </div>
-      </div>
-      <div class="modal-info">
-        <div class="modal-title-full" id="modal-title-text"></div>
-        <div class="modal-rating-row">
-          <span class="modal-stars-d" id="modal-stars-disp"></span>
-          <span class="modal-avg-d" id="modal-avg-disp"></span>
-          <span class="modal-rc-d" id="modal-rcount-disp"></span>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div>
+            <div class="hero-badge"> Complete Digital Services for Students, Teachers & Businesses</div>
+            <h1 class="hero-title"><em>Download today</em></h1>
+            <p class="hero-desc">Fast, creative, and professionally made outputs delivered online. From academic
+                materials to branding and website solutions — we’ve got you covered.</p>
+            <div class="hero-actions">
+                <button class="btn-primary"
+                    onclick="document.querySelector('.section-head').scrollIntoView({behavior:'smooth'})">Browse Files
+                    ↓</button>
+                <button class="btn-ghost"
+                    onclick="document.querySelector('.filter-bar').scrollIntoView({behavior:'smooth'})">View All
+                    →</button>
+            </div>
         </div>
-        <div class="modal-desc" id="modal-desc-text"></div>
-        <div class="meta-tags" id="modal-meta-row"></div>
-        <div class="modal-price-d" id="modal-price-disp"></div>
-        <button class="modal-add-btn" id="modal-add-btn"></button>
-      </div>
-    </div>
-    <!-- PREVIEW STRIP with left/right arrows -->
-    <div class="preview-strip">
-      <div class="strip-label">📄 File Preview <span>Pages 3+ blurred — buy to read in full</span></div>
-      <div class="preview-nav">
-        <button class="prev-arr" onclick="scrollPrev(-1)" title="Scroll left">←</button>
-        <div class="prev-scroll-wrap">
-          <div class="preview-scroll" id="preview-scroll"></div>
+        <div class="hero-stats">
+            <div class="hstat">
+                <div class="hstat-v">1000+</div>
+                <div class="hstat-l">Digital Files</div>
+            </div>
+            <div class="hstat">
+                <div class="hstat-v">⚡</div>
+                <div class="hstat-l">Instant Delivery</div>
+            </div>
+            <div class="hstat">
+                <div class="hstat-v">4.9★</div>
+                <div class="hstat-l">Avg. Rating</div>
+            </div>
+            <div class="hstat">
+                <div class="hstat-v">.zip</div>
+                <div class="hstat-l">Ready to Open</div>
+            </div>
         </div>
-        <button class="prev-arr" onclick="scrollPrev(1)" title="Scroll right">→</button>
-      </div>
-    </div>
-    <div class="reviews-section">
-      <div class="reviews-top">
-        <div class="reviews-title">Reader Reviews</div>
-        <button class="write-btn" onclick="toggleReviewForm()" id="write-btn">+ Write a Review</button>
-      </div>
-      <div class="rb-wrap" id="rating-breakdown"></div>
-      <div id="review-form-wrap"></div>
-      <div class="reviews-list" id="reviews-list"></div>
-    </div>
-  </div>
-</div>
+    </section>
 
-<!-- CART DRAWER -->
-<div class="overlay" id="overlay" onclick="closeCart()"></div>
-<div class="cart-drawer" id="cdrawer">
-  <div class="cd-head">
-    <h3>Your Cart</h3>
-    <button class="cd-close" onclick="closeCart()">✕</button>
-  </div>
-  <div class="cd-body" id="cbody">
-    <div class="cd-empty"><span>🛒</span>Your cart is empty.</div>
-  </div>
-  <div class="cd-footer">
-    <div class="cd-total-row">
-      <span class="cd-total-lbl">Total</span>
-      <span class="cd-total-amt" id="ctotal">₱0.00</span>
-    </div>
-    <button class="checkout-btn" onclick="goCheckout()">Proceed to Checkout →</button>
-  </div>
-</div>
-
-<!-- REVIEW POPUP -->
-<div class="rp-overlay" id="rp-overlay">
-  <div class="rp-card">
-    <button class="rp-close" onclick="closeRpPopup()">✕</button>
-    <div id="rp-invite">
-      <span class="rp-icon">🎁</span>
-      <div class="rp-eyebrow">✦ Exclusive Buyer Offer</div>
-      <div class="rp-title">Enjoyed your purchase?<br>Get rewarded.</div>
-      <p class="rp-body">Leave an honest review for a file you've purchased and receive a <strong>₱200 promo code</strong> for your next order.</p>
-      <div class="rp-promo-box">
-        <div class="rp-promo-ico">🏷️</div>
-        <div class="rp-promo-text">
-          <strong>₱200 off your next purchase</strong>
-          <span>Promo code revealed instantly after you post your review</span>
+    <!-- FEATURED CAROUSEL -->
+    <div class="section-head">
+        <div>
+            <div class="sec-title">Featured Files</div>
+            <div class="sec-sub">Click any cover to preview &amp; add to cart</div>
         </div>
-      </div>
-      <div id="rp-files-list" class="rp-files"></div>
-      <div class="rp-actions">
-        <button class="rp-cta" onclick="showRpForm()">Write My Review &amp; Get Code →</button>
-        <button class="rp-skip" onclick="closeRpPopup()">Maybe Later</button>
-      </div>
+        <div class="arr-row">
+            <button class="arr" onclick="scrollC(-1)">←</button>
+            <button class="arr" onclick="scrollC(1)">→</button>
+        </div>
     </div>
-    <div id="rp-form" style="display:none">
-      <span class="rp-icon">✍️</span>
-      <div class="rp-title" style="font-size:1.3rem;margin-bottom:.4rem">Write Your Review</div>
-      <p class="rp-body" style="margin-bottom:1rem;font-size:.85rem">Your promo code unlocks right after!</p>
-      <div class="rp-section-lbl">Which file are you reviewing? *</div>
-      <select class="rp-select" id="rp-product-select"></select>
-      <div class="rp-section-lbl">Your Rating *</div>
-      <div id="rp-stars" style="display:flex;gap:.35rem;margin-bottom:.85rem">
-        <span class="sp-star" data-n="1" onclick="rpPickStar(1)">★</span>
-        <span class="sp-star" data-n="2" onclick="rpPickStar(2)">★</span>
-        <span class="sp-star" data-n="3" onclick="rpPickStar(3)">★</span>
-        <span class="sp-star" data-n="4" onclick="rpPickStar(4)">★</span>
-        <span class="sp-star" data-n="5" onclick="rpPickStar(5)">★</span>
-      </div>
-      <div class="rp-section-lbl">Your Name *</div>
-      <input class="rf-inp" id="rp-name" type="text" placeholder="e.g. Maria S."/>
-      <div class="rp-section-lbl">Your Review *</div>
-      <textarea class="rf-inp rf-textarea" id="rp-text" placeholder="What did you find useful? How did you use it?"></textarea>
-      <div class="rp-section-lbl">Tag (optional)</div>
-      <input class="rf-inp" id="rp-tag-inp" type="text" placeholder="e.g. helpful, well-written" style="margin-bottom:1rem"/>
-      <div class="rp-actions">
-        <button class="rp-cta" onclick="rpSubmitReview()">Post Review &amp; Reveal Code →</button>
-        <button class="rp-skip" onclick="showRpInvite()">← Back</button>
-      </div>
+    <div class="c-outer">
+        <div class="c-track" id="ctrack"></div>
     </div>
-    <div id="rp-reveal" style="display:none;text-align:center">
-      <span class="rp-icon">🎉</span>
-      <div class="rp-title" style="font-size:1.35rem;margin-bottom:.4rem">Your Code is Ready!</div>
-      <p class="rp-body" style="text-align:center;margin-bottom:.5rem;font-size:.85rem">Thank you for your review! Here's your exclusive discount:</p>
-      <div class="rp-code-note" style="margin-bottom:.3rem">Copy &amp; save this code</div>
-      <div class="rp-code-box">
-        <span id="rp-code-text">PRESS200</span>
-        <button class="rp-copy-btn" id="rp-copy-btn" onclick="copyRpCode()">Copy</button>
-      </div>
-      <div class="rp-code-note">₱200 off your next order · Valid 30 days · One use only</div>
-      <br>
-      <button class="rp-done" onclick="closeRpPopup()">Done — Keep Shopping ✓</button>
+
+    <!-- FILTER + GRID -->
+    <div class="filter-bar">
+        <span class="filter-lbl">Filter:</span>
+        <button class="chip active" onclick="filterP('all',this)">All Files</button>
+        <button class="chip" onclick="filterP('journalism',this)"> Journalism</button>
+        <button class="chip" onclick="filterP('powerpoint',this)"> Essay & Article Writing</button>
+        <button class="chip" onclick="filterP('powerpoint',this)"> School Paper Layout </button>
+        <button class="chip" onclick="filterP('powerpoint',this)"> Lesson Plans</button>
+        <button class="chip" onclick="filterP('powerpoint',this)"> PPT Lessons</button>
+        <button class="chip" onclick="filterP('powerpoint',this)"> Canva Templates</button>
     </div>
-  </div>
-</div>
+    <section class="grid-section">
+        <div class="grid-header">
+            <div class="grid-title">All Files</div>
+        </div>
+        <div class="pgrid" id="pgrid"></div>
+    </section>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">pressfiles.</div>
-  <p>Digital files only · No physical shipping · Instant email delivery</p>
-  <p><a href="admin.html">Admin Portal</a></p>
-</footer>
+    <!-- PRODUCT MODAL -->
+    <div class="modal-bg" id="modal-bg" onclick="closeMaybe(event)">
+        <div class="product-modal">
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <span class="modal-type-badge" id="modal-type-badge"></span>
+                    <span class="modal-header-title" id="modal-header-title"></span>
+                </div>
+                <button class="modal-close-btn" onclick="closeModal()" title="Close">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-cover-col">
+                    <div class="modal-book-wrap">
+                        <div class="modal-book" id="modal-book"></div>
+                    </div>
+                </div>
+                <div class="modal-info">
+                    <div class="modal-title-full" id="modal-title-text"></div>
+                    <div class="modal-rating-row">
+                        <span class="modal-stars-d" id="modal-stars-disp"></span>
+                        <span class="modal-avg-d" id="modal-avg-disp"></span>
+                        <span class="modal-rc-d" id="modal-rcount-disp"></span>
+                    </div>
+                    <div class="modal-desc" id="modal-desc-text"></div>
+                    <div class="meta-tags" id="modal-meta-row"></div>
+                    <div class="modal-price-d" id="modal-price-disp"></div>
+                    <button class="modal-add-btn" id="modal-add-btn"></button>
+                </div>
+            </div>
+            <!-- PREVIEW STRIP with left/right arrows -->
+            <div class="preview-strip">
+                <div class="strip-label">📄 File Preview <span>Pages 3+ blurred — buy to read in full</span></div>
+                <div class="preview-nav">
+                    <button class="prev-arr" onclick="scrollPrev(-1)" title="Scroll left">←</button>
+                    <div class="prev-scroll-wrap">
+                        <div class="preview-scroll" id="preview-scroll"></div>
+                    </div>
+                    <button class="prev-arr" onclick="scrollPrev(1)" title="Scroll right">→</button>
+                </div>
+            </div>
+            <div class="reviews-section">
+                <div class="reviews-top">
+                    <div class="reviews-title">Reader Reviews</div>
+                    <button class="write-btn" onclick="toggleReviewForm()" id="write-btn">+ Write a Review</button>
+                </div>
+                <div class="rb-wrap" id="rating-breakdown"></div>
+                <div id="review-form-wrap"></div>
+                <div class="reviews-list" id="reviews-list"></div>
+            </div>
+        </div>
+    </div>
 
-<script>
-/* ── HELPERS ── */
-const peso = n => '₱' + Number(n).toLocaleString('en-PH', {minimumFractionDigits:2,maximumFractionDigits:2});
+    <!-- CART DRAWER -->
+    <div class="overlay" id="overlay" onclick="closeCart()"></div>
+    <div class="cart-drawer" id="cdrawer">
+        <div class="cd-head">
+            <h3>Your Cart</h3>
+            <button class="cd-close" onclick="closeCart()">✕</button>
+        </div>
+        <div class="cd-body" id="cbody">
+            <div class="cd-empty"><span>🛒</span>Your cart is empty.</div>
+        </div>
+        <div class="cd-footer">
+            <div class="cd-total-row">
+                <span class="cd-total-lbl">Total</span>
+                <span class="cd-total-amt" id="ctotal">₱0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="goCheckout()">Proceed to Checkout →</button>
+        </div>
+    </div>
 
-/* ── TICKER ── */
-const tI = [' Journalism Files ','·',' Essay & Article Writing','·',' School Paper Layout','·',' Lesson Plans','·',' PPT Lessons','·',' Canva Templates','·',' Layout & Design Services','·',' Logo Design','·',' Website Development Services','·'];
-document.getElementById('ttrack').innerHTML = [...tI,...tI].map(t=>`<span${t==='·'?' class="sep"':''}>${t}</span>`).join('');
+    <!-- REVIEW POPUP -->
+    <div class="rp-overlay" id="rp-overlay">
+        <div class="rp-card">
+            <button class="rp-close" onclick="closeRpPopup()">✕</button>
+            <div id="rp-invite">
+                <span class="rp-icon">🎁</span>
+                <div class="rp-eyebrow">✦ Exclusive Buyer Offer</div>
+                <div class="rp-title">Enjoyed your purchase?<br>Get rewarded.</div>
+                <p class="rp-body">Leave an honest review for a file you've purchased and receive a <strong>₱200 promo
+                        code</strong> for your next order.</p>
+                <div class="rp-promo-box">
+                    <div class="rp-promo-ico">🏷️</div>
+                    <div class="rp-promo-text">
+                        <strong>₱200 off your next purchase</strong>
+                        <span>Promo code revealed instantly after you post your review</span>
+                    </div>
+                </div>
+                <div id="rp-files-list" class="rp-files"></div>
+                <div class="rp-actions">
+                    <button class="rp-cta" onclick="showRpForm()">Write My Review &amp; Get Code →</button>
+                    <button class="rp-skip" onclick="closeRpPopup()">Maybe Later</button>
+                </div>
+            </div>
+            <div id="rp-form" style="display:none">
+                <span class="rp-icon">✍️</span>
+                <div class="rp-title" style="font-size:1.3rem;margin-bottom:.4rem">Write Your Review</div>
+                <p class="rp-body" style="margin-bottom:1rem;font-size:.85rem">Your promo code unlocks right after!</p>
+                <div class="rp-section-lbl">Which file are you reviewing? *</div>
+                <select class="rp-select" id="rp-product-select"></select>
+                <div class="rp-section-lbl">Your Rating *</div>
+                <div id="rp-stars" style="display:flex;gap:.35rem;margin-bottom:.85rem">
+                    <span class="sp-star" data-n="1" onclick="rpPickStar(1)">★</span>
+                    <span class="sp-star" data-n="2" onclick="rpPickStar(2)">★</span>
+                    <span class="sp-star" data-n="3" onclick="rpPickStar(3)">★</span>
+                    <span class="sp-star" data-n="4" onclick="rpPickStar(4)">★</span>
+                    <span class="sp-star" data-n="5" onclick="rpPickStar(5)">★</span>
+                </div>
+                <div class="rp-section-lbl">Your Name *</div>
+                <input class="rf-inp" id="rp-name" type="text" placeholder="e.g. Maria S." />
+                <div class="rp-section-lbl">Your Review *</div>
+                <textarea class="rf-inp rf-textarea" id="rp-text"
+                    placeholder="What did you find useful? How did you use it?"></textarea>
+                <div class="rp-section-lbl">Tag (optional)</div>
+                <input class="rf-inp" id="rp-tag-inp" type="text" placeholder="e.g. helpful, well-written"
+                    style="margin-bottom:1rem" />
+                <div class="rp-actions">
+                    <button class="rp-cta" onclick="rpSubmitReview()">Post Review &amp; Reveal Code →</button>
+                    <button class="rp-skip" onclick="showRpInvite()">← Back</button>
+                </div>
+            </div>
+            <div id="rp-reveal" style="display:none;text-align:center">
+                <span class="rp-icon">🎉</span>
+                <div class="rp-title" style="font-size:1.35rem;margin-bottom:.4rem">Your Code is Ready!</div>
+                <p class="rp-body" style="text-align:center;margin-bottom:.5rem;font-size:.85rem">Thank you for your
+                    review! Here's your exclusive discount:</p>
+                <div class="rp-code-note" style="margin-bottom:.3rem">Copy &amp; save this code</div>
+                <div class="rp-code-box">
+                    <span id="rp-code-text">PRESS200</span>
+                    <button class="rp-copy-btn" id="rp-copy-btn" onclick="copyRpCode()">Copy</button>
+                </div>
+                <div class="rp-code-note">₱200 off your next order · Valid 30 days · One use only</div>
+                <br>
+                <button class="rp-done" onclick="closeRpPopup()">Done — Keep Shopping ✓</button>
+            </div>
+        </div>
+    </div>
 
-/* ── COVER DESIGNS ── */
-const CD = {
-  1: { bg: 'linear-gradient(145deg,#1a0505,#0a0101)', label: 'Journalism' }, /* near black → pure black red */
-  2: { bg: 'linear-gradient(145deg,#2d0808,#1a0505)', label: 'Essay & Article Writing'    }, /* very dark maroon → near black */
-  3: { bg: 'linear-gradient(145deg,#4a0a0a,#2d0808)', label: 'School Paper Layout'  }, /* deep maroon → very dark */
-  4: { bg: 'linear-gradient(145deg,#5a0e0e,#3d0909)', label: 'Lesson Plans'     }, /* dark maroon → deep maroon */
-  5: { bg: 'linear-gradient(145deg,#6b1111,#4a0a0a)', label: 'PPT Lessons'   }, /* maroon → dark maroon */
-  6: { bg: 'linear-gradient(145deg,#7a1515,#5a0e0e)', label: 'Canva Templates'      } /* rich maroon → maroon */
-};
-function buildCover(p, w='100%', h='100%') {
-  const d = CD[p.id]||CD[1];
-  const s = p.title.length>38 ? p.title.substring(0,38)+'…' : p.title;
-  return `<div style="width:${w};height:${h};background:${d.bg};position:relative;overflow:hidden">
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">pressfiles.</div>
+        <p>Digital files only · No physical shipping · Instant email delivery</p>
+        <p><a href="admin.html">Admin Portal</a></p>
+    </footer>
+
+    <script>
+        /* ── HELPERS ── */
+        const peso = n => '₱' + Number(n).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        /* ── TICKER ── */
+        const tI = [' Journalism Files ', '·', ' Essay & Article Writing', '·', ' School Paper Layout', '·', ' Lesson Plans', '·', ' PPT Lessons', '·', ' Canva Templates', '·', ' Layout & Design Services', '·', ' Logo Design', '·', ' Website Development Services', '·'];
+        document.getElementById('ttrack').innerHTML = [...tI, ...tI].map(t => `<span${t === '·' ? ' class="sep"' : ''}>${t}</span>`).join('');
+
+        /* ── COVER DESIGNS ── */
+        const CD = {
+            1: { bg: 'linear-gradient(145deg,#1a0505,#0a0101)', label: 'Journalism' }, /* near black → pure black red */
+            2: { bg: 'linear-gradient(145deg,#2d0808,#1a0505)', label: 'Essay & Article Writing' }, /* very dark maroon → near black */
+            3: { bg: 'linear-gradient(145deg,#4a0a0a,#2d0808)', label: 'School Paper Layout' }, /* deep maroon → very dark */
+            4: { bg: 'linear-gradient(145deg,#5a0e0e,#3d0909)', label: 'Lesson Plans' }, /* dark maroon → deep maroon */
+            5: { bg: 'linear-gradient(145deg,#6b1111,#4a0a0a)', label: 'PPT Lessons' }, /* maroon → dark maroon */
+            6: { bg: 'linear-gradient(145deg,#7a1515,#5a0e0e)', label: 'Canva Templates' } /* rich maroon → maroon */
+        };
+        function buildCover(p, w = '100%', h = '100%') {
+            const d = CD[p.id] || CD[1];
+            const s = p.title.length > 38 ? p.title.substring(0, 38) + '…' : p.title;
+            return `<div style="width:${w};height:${h};background:${d.bg};position:relative;overflow:hidden">
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(255,255,255,.06) 0%,transparent 65%)"></div>
     <div class="bc-inner">
       <span class="bc-label">${d.label}</span>
@@ -946,56 +2009,56 @@ function buildCover(p, w='100%', h='100%') {
       </div>
     </div>
   </div>`;
-}
+        }
 
-/* ── PREVIEW DATA ── */
-const PREVIEWS = {
-  1:[{type:'j',page:1,hl:'The Hidden Crisis: Mental Health in Schools',by:'An investigation into a system failing its students',dc:'A',pq:'"One in five students experiences a mental health condition."',img:true,blur:false,l1:8,l2:7},
-     {type:'j',page:2,hl:'Part I: The Invisible Weight',by:'',dc:'W',pq:'"Teachers describe classrooms where anxiety is the new normal."',img:false,blur:false,l1:9,l2:8},
-     {type:'j',page:3,hl:'Data & Methodology',by:'',dc:'O',pq:'',img:true,blur:true,l1:7,l2:6},
-     {type:'j',page:4,hl:'Voices from the Hallway',by:'',dc:'S',pq:'',img:false,blur:true,l1:8,l2:7}],
-  2:[{type:'j',page:1,hl:'Tech Giants & Antitrust: A Deep Dive',by:'How Silicon Valley rewrote competition',dc:'I',pq:'"Five firms control more than $8 trillion in market value."',img:true,blur:false,l1:8,l2:7},
-     {type:'j',page:2,hl:'Part I: The Monopoly Machine',by:'',dc:'F',pq:'"Regulators in Brussels, Washington & London are asking the same questions."',img:false,blur:false,l1:9,l2:8},
-     {type:'j',page:3,hl:'Case Study: Search & Advertising',by:'',dc:'G',pq:'',img:true,blur:true,l1:7,l2:6},
-     {type:'j',page:4,hl:'What Comes Next',by:'',dc:'T',pq:'',img:false,blur:true,l1:8,l2:7}],
-  3:[{type:'j',page:1,hl:'Climate Migration: The Untold Story',by:'Field reports from the frontlines',dc:'T',pq:'"By 2050, 200 million could be displaced."',img:true,blur:false,l1:8,l2:7},
-     {type:'j',page:2,hl:'Mekong Delta: Rising Waters',by:'',dc:'H',pq:'"She has farmed this land for forty years."',img:false,blur:false,l1:9,l2:8},
-     {type:'j',page:3,hl:'The Numbers Behind the Narrative',by:'',dc:'C',pq:'',img:true,blur:true,l1:7,l2:6},
-     {type:'j',page:4,hl:'Paths Forward',by:'',dc:'I',pq:'',img:false,blur:true,l1:8,l2:7}],
-  4:[{type:'s',page:1,bg:'linear-gradient(135deg,#1a2a1a,#2d4a2d)',title:'Executive Leadership Masterclass',bullets:['45 slides · C-Suite ready','Evidence-based frameworks','Editable templates'],accent:'#6db86d',pct:100,bars:null},
-     {type:'s',page:2,bg:'linear-gradient(135deg,#1a2a1a,#2d4a2d)',title:'Module 1: Decision Frameworks',bullets:['OODA Loop methodology','Risk vs reward matrix','Case studies'],accent:'#6db86d',pct:20,bars:null},
-     {type:'s',page:3,bg:'linear-gradient(135deg,#1a2a1a,#2d4a2d)',title:'Team Dynamics Model',bullets:null,accent:'#6db86d',pct:40,bars:[60,85,40,70,90]},
-     {type:'s',page:4,bg:'linear-gradient(135deg,#1a2a1a,#2d4a2d)',title:'Strategic Communication',bullets:['Message architecture','Stakeholder mapping','Influence & persuasion'],accent:'#6db86d',pct:60,bars:null}],
-  5:[{type:'s',page:1,bg:'linear-gradient(150deg,#2a1a3a,#4a2060)',title:'Startup Pitch Deck Pro',bullets:['30 investor-ready slides','Built-in story arc','Fully editable'],accent:'#a06ad8',pct:100,bars:null},
-     {type:'s',page:2,bg:'linear-gradient(150deg,#2a1a3a,#4a2060)',title:'Slide 3 · The Problem',bullets:['Define the pain point','Market gap analysis','Why now?'],accent:'#a06ad8',pct:10,bars:null},
-     {type:'s',page:3,bg:'linear-gradient(150deg,#2a1a3a,#4a2060)',title:'Market Opportunity',bullets:null,accent:'#a06ad8',pct:30,bars:[45,75,60,90,55]},
-     {type:'s',page:4,bg:'linear-gradient(150deg,#2a1a3a,#4a2060)',title:'Go-To-Market Strategy',bullets:['Phase 1: Early adopters','Phase 2: Scale','Phase 3: Expansion'],accent:'#a06ad8',pct:50,bars:null}],
-  6:[{type:'s',page:1,bg:'linear-gradient(145deg,#0f2535,#1a4060)',title:'Data Journalism Fundamentals',bullets:['55 slides + Excel templates','For journalists & comms','Includes real datasets'],accent:'#50b8d8',pct:100,bars:null},
-     {type:'s',page:2,bg:'linear-gradient(145deg,#0f2535,#1a4060)',title:'Chapter 1: Finding the Story',bullets:['Where to find public data','Cleaning messy datasets','Spotting the narrative'],accent:'#50b8d8',pct:15,bars:null},
-     {type:'s',page:3,bg:'linear-gradient(145deg,#0f2535,#1a4060)',title:'Visualizing Data',bullets:null,accent:'#50b8d8',pct:35,bars:[50,80,65,45,90]},
-     {type:'s',page:4,bg:'linear-gradient(145deg,#0f2535,#1a4060)',title:'Tools & Templates',bullets:['Excel chart templates','Datawrapper walkthrough','Case study: COVID data'],accent:'#50b8d8',pct:55,bars:null}]
-};
-function renderPP(pg, total) {
-  if (pg.type === 'j') {
-    const l1 = Array(pg.l1).fill(0).map((_,i)=>`<div class="fp-line${i===0?' dk':''}"></div>`).join('');
-    const l2 = Array(pg.l2).fill(0).map((_,i)=>`<div class="fp-line${i===0?' dk':''}"></div>`).join('');
-    return `<div class="preview-page"${pg.blur?' style="filter:blur(3px)"':''}>
+        /* ── PREVIEW DATA ── */
+        const PREVIEWS = {
+            1: [{ type: 'j', page: 1, hl: 'The Hidden Crisis: Mental Health in Schools', by: 'An investigation into a system failing its students', dc: 'A', pq: '"One in five students experiences a mental health condition."', img: true, blur: false, l1: 8, l2: 7 },
+            { type: 'j', page: 2, hl: 'Part I: The Invisible Weight', by: '', dc: 'W', pq: '"Teachers describe classrooms where anxiety is the new normal."', img: false, blur: false, l1: 9, l2: 8 },
+            { type: 'j', page: 3, hl: 'Data & Methodology', by: '', dc: 'O', pq: '', img: true, blur: true, l1: 7, l2: 6 },
+            { type: 'j', page: 4, hl: 'Voices from the Hallway', by: '', dc: 'S', pq: '', img: false, blur: true, l1: 8, l2: 7 }],
+            2: [{ type: 'j', page: 1, hl: 'Tech Giants & Antitrust: A Deep Dive', by: 'How Silicon Valley rewrote competition', dc: 'I', pq: '"Five firms control more than $8 trillion in market value."', img: true, blur: false, l1: 8, l2: 7 },
+            { type: 'j', page: 2, hl: 'Part I: The Monopoly Machine', by: '', dc: 'F', pq: '"Regulators in Brussels, Washington & London are asking the same questions."', img: false, blur: false, l1: 9, l2: 8 },
+            { type: 'j', page: 3, hl: 'Case Study: Search & Advertising', by: '', dc: 'G', pq: '', img: true, blur: true, l1: 7, l2: 6 },
+            { type: 'j', page: 4, hl: 'What Comes Next', by: '', dc: 'T', pq: '', img: false, blur: true, l1: 8, l2: 7 }],
+            3: [{ type: 'j', page: 1, hl: 'Climate Migration: The Untold Story', by: 'Field reports from the frontlines', dc: 'T', pq: '"By 2050, 200 million could be displaced."', img: true, blur: false, l1: 8, l2: 7 },
+            { type: 'j', page: 2, hl: 'Mekong Delta: Rising Waters', by: '', dc: 'H', pq: '"She has farmed this land for forty years."', img: false, blur: false, l1: 9, l2: 8 },
+            { type: 'j', page: 3, hl: 'The Numbers Behind the Narrative', by: '', dc: 'C', pq: '', img: true, blur: true, l1: 7, l2: 6 },
+            { type: 'j', page: 4, hl: 'Paths Forward', by: '', dc: 'I', pq: '', img: false, blur: true, l1: 8, l2: 7 }],
+            4: [{ type: 's', page: 1, bg: 'linear-gradient(135deg,#1a2a1a,#2d4a2d)', title: 'Executive Leadership Masterclass', bullets: ['45 slides · C-Suite ready', 'Evidence-based frameworks', 'Editable templates'], accent: '#6db86d', pct: 100, bars: null },
+            { type: 's', page: 2, bg: 'linear-gradient(135deg,#1a2a1a,#2d4a2d)', title: 'Module 1: Decision Frameworks', bullets: ['OODA Loop methodology', 'Risk vs reward matrix', 'Case studies'], accent: '#6db86d', pct: 20, bars: null },
+            { type: 's', page: 3, bg: 'linear-gradient(135deg,#1a2a1a,#2d4a2d)', title: 'Team Dynamics Model', bullets: null, accent: '#6db86d', pct: 40, bars: [60, 85, 40, 70, 90] },
+            { type: 's', page: 4, bg: 'linear-gradient(135deg,#1a2a1a,#2d4a2d)', title: 'Strategic Communication', bullets: ['Message architecture', 'Stakeholder mapping', 'Influence & persuasion'], accent: '#6db86d', pct: 60, bars: null }],
+            5: [{ type: 's', page: 1, bg: 'linear-gradient(150deg,#2a1a3a,#4a2060)', title: 'Startup Pitch Deck Pro', bullets: ['30 investor-ready slides', 'Built-in story arc', 'Fully editable'], accent: '#a06ad8', pct: 100, bars: null },
+            { type: 's', page: 2, bg: 'linear-gradient(150deg,#2a1a3a,#4a2060)', title: 'Slide 3 · The Problem', bullets: ['Define the pain point', 'Market gap analysis', 'Why now?'], accent: '#a06ad8', pct: 10, bars: null },
+            { type: 's', page: 3, bg: 'linear-gradient(150deg,#2a1a3a,#4a2060)', title: 'Market Opportunity', bullets: null, accent: '#a06ad8', pct: 30, bars: [45, 75, 60, 90, 55] },
+            { type: 's', page: 4, bg: 'linear-gradient(150deg,#2a1a3a,#4a2060)', title: 'Go-To-Market Strategy', bullets: ['Phase 1: Early adopters', 'Phase 2: Scale', 'Phase 3: Expansion'], accent: '#a06ad8', pct: 50, bars: null }],
+            6: [{ type: 's', page: 1, bg: 'linear-gradient(145deg,#0f2535,#1a4060)', title: 'Data Journalism Fundamentals', bullets: ['55 slides + Excel templates', 'For journalists & comms', 'Includes real datasets'], accent: '#50b8d8', pct: 100, bars: null },
+            { type: 's', page: 2, bg: 'linear-gradient(145deg,#0f2535,#1a4060)', title: 'Chapter 1: Finding the Story', bullets: ['Where to find public data', 'Cleaning messy datasets', 'Spotting the narrative'], accent: '#50b8d8', pct: 15, bars: null },
+            { type: 's', page: 3, bg: 'linear-gradient(145deg,#0f2535,#1a4060)', title: 'Visualizing Data', bullets: null, accent: '#50b8d8', pct: 35, bars: [50, 80, 65, 45, 90] },
+            { type: 's', page: 4, bg: 'linear-gradient(145deg,#0f2535,#1a4060)', title: 'Tools & Templates', bullets: ['Excel chart templates', 'Datawrapper walkthrough', 'Case study: COVID data'], accent: '#50b8d8', pct: 55, bars: null }]
+        };
+        function renderPP(pg, total) {
+            if (pg.type === 'j') {
+                const l1 = Array(pg.l1).fill(0).map((_, i) => `<div class="fp-line${i === 0 ? ' dk' : ''}"></div>`).join('');
+                const l2 = Array(pg.l2).fill(0).map((_, i) => `<div class="fp-line${i === 0 ? ' dk' : ''}"></div>`).join('');
+                return `<div class="preview-page"${pg.blur ? ' style="filter:blur(3px)"' : ''}>
       <div class="pg-num">p.${pg.page}</div>
       <div class="fp-j">
         <div class="fp-hl">${pg.hl}</div>
-        ${pg.by?`<div class="fp-by">${pg.by}</div>`:''}
+        ${pg.by ? `<div class="fp-by">${pg.by}</div>` : ''}
         <div class="fp-rule"></div>
-        ${pg.img?`<div class="fp-img">📷 Photo</div>`:''}
+        ${pg.img ? `<div class="fp-img">📷 Photo</div>` : ''}
         <div class="fp-col">
-          <div><div class="fp-dc">${pg.dc}</div>${l1}${pg.pq?`<div class="fp-pq">${pg.pq}</div>`:''}</div>
+          <div><div class="fp-dc">${pg.dc}</div>${l1}${pg.pq ? `<div class="fp-pq">${pg.pq}</div>` : ''}</div>
           <div>${l2}</div>
         </div>
       </div>
-      ${pg.blur?`<div class="blur-mask"><span>🔒 Buy to read</span></div>`:''}</div>`;
-  } else {
-    const bH = pg.bars ? `<div class="fp-chart">${pg.bars.map(h=>`<div class="fp-bar" style="height:${h}%;background:${pg.accent}"></div>`).join('')}</div>` : '';
-    const buH = pg.bullets ? `<div class="fp-bullets">${pg.bullets.map(b=>`<div class="fp-bullet">${b}</div>`).join('')}</div>` : '';
-    return `<div class="preview-page">
+      ${pg.blur ? `<div class="blur-mask"><span>🔒 Buy to read</span></div>` : ''}</div>`;
+            } else {
+                const bH = pg.bars ? `<div class="fp-chart">${pg.bars.map(h => `<div class="fp-bar" style="height:${h}%;background:${pg.accent}"></div>`).join('')}</div>` : '';
+                const buH = pg.bullets ? `<div class="fp-bullets">${pg.bullets.map(b => `<div class="fp-bullet">${b}</div>`).join('')}</div>` : '';
+                return `<div class="preview-page">
       <div class="pg-num" style="background:rgba(0,0,0,.25);color:rgba(255,255,255,.5)">p.${pg.page}</div>
       <div class="fp-slide" style="background:${pg.bg}">
         <div class="fp-sbar"><div class="fp-sbar-fill" style="width:${pg.pct}%;background:${pg.accent}"></div></div>
@@ -1003,107 +2066,107 @@ function renderPP(pg, total) {
         ${buH}${bH}
         <div class="fp-snum">${pg.page} / ${total}</div>
       </div>
-      ${pg.blur?`<div class="blur-mask"><span>🔒 Buy to read</span></div>`:''}</div>`;
-  }
-}
+      ${pg.blur ? `<div class="blur-mask"><span>🔒 Buy to read</span></div>` : ''}</div>`;
+            }
+        }
 
-/* ── REVIEWS ── */
-const DEFAULT_REVIEWS = {
-  1:[{name:'Aaliya M.',stars:5,text:'Incredibly well-researched. Used in my journalism class — students were blown away.',tag:'classroom ready',date:'Mar 2025'},{name:'Priya T.',stars:5,text:'Made me rethink how I write investigative features. Worth every centavo.',tag:'inspiring',date:'Feb 2025'},{name:'Jordan K.',stars:4,text:'Solid long-form piece. Data is well-cited and narrative flows beautifully.',tag:'well-written',date:'Jan 2025'}],
-  2:[{name:'Fatima A.',stars:5,text:'Perfect for media law research. Nuanced antitrust analysis.',tag:'academic',date:'Mar 2025'},{name:'Leila C.',stars:4,text:'Dense but rewarding. EU section is insightful.',tag:'detailed',date:'Feb 2025'}],
-  3:[{name:'Nadia S.',stars:5,text:'The field reporting is visceral and human. Journalism at its best.',tag:'powerful',date:'Apr 2025'},{name:'Blessing O.',stars:5,text:'Assigned for Earth Day. Accessible without dumbing down the science.',tag:'classroom ready',date:'Mar 2025'}],
-  4:[{name:'Aisha R.',stars:5,text:'Decision framework slides alone were worth the price. Adapted for a PD session.',tag:'PD approved',date:'Mar 2025'},{name:'Karen L.',stars:5,text:'Board presentation loved it. Looked so professional.',tag:'board-ready',date:'Feb 2025'}],
-  5:[{name:'Sofia B.',stars:5,text:'Got my first investor meeting using this template!',tag:'investor approved',date:'Mar 2025'},{name:'Tara V.',stars:5,text:'So easy to customize. Swapped colors in 20 minutes.',tag:'easy to edit',date:'Feb 2025'}],
-  6:[{name:'Joy F.',stars:5,text:'Excel templates alone are worth 10x the price.',tag:'essential',date:'Apr 2025'},{name:'Morgan A.',stars:5,text:'Zero data skills before this. Now I make charts for every lesson.',tag:'beginner-friendly',date:'Mar 2025'}]
-};
-function getRevs(id)  { const s = localStorage.getItem(`reviews_${id}`); return s ? JSON.parse(s) : (DEFAULT_REVIEWS[id]||[]); }
-function saveRev(id,r){ const a = getRevs(id); a.unshift(r); localStorage.setItem(`reviews_${id}`,JSON.stringify(a)); }
-function avgR(revs)   { return revs.length ? revs.reduce((s,r)=>s+r.stars,0)/revs.length : 0; }
-function starStr(n)   { return '★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n)); }
+        /* ── REVIEWS ── */
+        const DEFAULT_REVIEWS = {
+            1: [{ name: 'Aaliya M.', stars: 5, text: 'Incredibly well-researched. Used in my journalism class — students were blown away.', tag: 'classroom ready', date: 'Mar 2025' }, { name: 'Priya T.', stars: 5, text: 'Made me rethink how I write investigative features. Worth every centavo.', tag: 'inspiring', date: 'Feb 2025' }, { name: 'Jordan K.', stars: 4, text: 'Solid long-form piece. Data is well-cited and narrative flows beautifully.', tag: 'well-written', date: 'Jan 2025' }],
+            2: [{ name: 'Fatima A.', stars: 5, text: 'Perfect for media law research. Nuanced antitrust analysis.', tag: 'academic', date: 'Mar 2025' }, { name: 'Leila C.', stars: 4, text: 'Dense but rewarding. EU section is insightful.', tag: 'detailed', date: 'Feb 2025' }],
+            3: [{ name: 'Nadia S.', stars: 5, text: 'The field reporting is visceral and human. Journalism at its best.', tag: 'powerful', date: 'Apr 2025' }, { name: 'Blessing O.', stars: 5, text: 'Assigned for Earth Day. Accessible without dumbing down the science.', tag: 'classroom ready', date: 'Mar 2025' }],
+            4: [{ name: 'Aisha R.', stars: 5, text: 'Decision framework slides alone were worth the price. Adapted for a PD session.', tag: 'PD approved', date: 'Mar 2025' }, { name: 'Karen L.', stars: 5, text: 'Board presentation loved it. Looked so professional.', tag: 'board-ready', date: 'Feb 2025' }],
+            5: [{ name: 'Sofia B.', stars: 5, text: 'Got my first investor meeting using this template!', tag: 'investor approved', date: 'Mar 2025' }, { name: 'Tara V.', stars: 5, text: 'So easy to customize. Swapped colors in 20 minutes.', tag: 'easy to edit', date: 'Feb 2025' }],
+            6: [{ name: 'Joy F.', stars: 5, text: 'Excel templates alone are worth 10x the price.', tag: 'essential', date: 'Apr 2025' }, { name: 'Morgan A.', stars: 5, text: 'Zero data skills before this. Now I make charts for every lesson.', tag: 'beginner-friendly', date: 'Mar 2025' }]
+        };
+        function getRevs(id) { const s = localStorage.getItem(`reviews_${id}`); return s ? JSON.parse(s) : (DEFAULT_REVIEWS[id] || []); }
+        function saveRev(id, r) { const a = getRevs(id); a.unshift(r); localStorage.setItem(`reviews_${id}`, JSON.stringify(a)); }
+        function avgR(revs) { return revs.length ? revs.reduce((s, r) => s + r.stars, 0) / revs.length : 0; }
+        function starStr(n) { return '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n)); }
 
-/* ── PRODUCTS ── */
-// function getProds() {
-//   const s = localStorage.getItem('pressroom_products');
-//   if (s) return JSON.parse(s);
-//   return [
-//     {id:1,title:'The Hidden Crisis: Mental Health in Schools',description:'An in-depth investigative piece exploring the growing mental health epidemic in public schools, with exclusive interviews and data analysis.',type:'journalism',price:650,fileName:'mental_health_schools.zip',fileSize:'2.4 MB',pages:'18 pages'},
-//     {id:2,title:'Tech Giants & Antitrust: A Deep Dive',description:'Comprehensive feature examining how Silicon Valley monopolies reshape regulatory landscapes across three continents.',type:'journalism',price:850,fileName:'tech_antitrust.zip',fileSize:'1.8 MB',pages:'24 pages'},
-//     {id:3,title:'Climate Migration: The Untold Story',description:'Award-winning long-form piece documenting climate refugees from Southeast Asia with original field reporting.',type:'journalism',price:1000,fileName:'climate_migration.zip',fileSize:'5.1 MB',pages:'32 pages'},
-//     {id:4,title:'Executive Leadership Masterclass Deck',description:'Professional 45-slide deck for C-suite training. Covers decision frameworks, team dynamics & strategic communication.',type:'powerpoint',price:1400,fileName:'leadership_deck.zip',fileSize:'12.3 MB',pages:'45 slides'},
-//     {id:5,title:'Startup Pitch Deck Template Pro',description:'Polished investor-ready pitch template with 30 slides, editable charts, and built-in storytelling structure.',type:'powerpoint',price:1950,fileName:'pitch_deck_pro.zip',fileSize:'8.7 MB',pages:'30 slides'},
-//     {id:6,title:'Data Journalism Fundamentals',description:'A guide to data-driven storytelling with Excel and chart templates for journalists and communicators.',type:'powerpoint',price:1200,fileName:'data_journalism.zip',fileSize:'15.2 MB',pages:'55 slides'}
-//   ];
-// }
+        /* ── PRODUCTS ── */
+        // function getProds() {
+        //   const s = localStorage.getItem('pressroom_products');
+        //   if (s) return JSON.parse(s);
+        //   return [
+        //     {id:1,title:'The Hidden Crisis: Mental Health in Schools',description:'An in-depth investigative piece exploring the growing mental health epidemic in public schools, with exclusive interviews and data analysis.',type:'journalism',price:650,fileName:'mental_health_schools.zip',fileSize:'2.4 MB',pages:'18 pages'},
+        //     {id:2,title:'Tech Giants & Antitrust: A Deep Dive',description:'Comprehensive feature examining how Silicon Valley monopolies reshape regulatory landscapes across three continents.',type:'journalism',price:850,fileName:'tech_antitrust.zip',fileSize:'1.8 MB',pages:'24 pages'},
+        //     {id:3,title:'Climate Migration: The Untold Story',description:'Award-winning long-form piece documenting climate refugees from Southeast Asia with original field reporting.',type:'journalism',price:1000,fileName:'climate_migration.zip',fileSize:'5.1 MB',pages:'32 pages'},
+        //     {id:4,title:'Executive Leadership Masterclass Deck',description:'Professional 45-slide deck for C-suite training. Covers decision frameworks, team dynamics & strategic communication.',type:'powerpoint',price:1400,fileName:'leadership_deck.zip',fileSize:'12.3 MB',pages:'45 slides'},
+        //     {id:5,title:'Startup Pitch Deck Template Pro',description:'Polished investor-ready pitch template with 30 slides, editable charts, and built-in storytelling structure.',type:'powerpoint',price:1950,fileName:'pitch_deck_pro.zip',fileSize:'8.7 MB',pages:'30 slides'},
+        //     {id:6,title:'Data Journalism Fundamentals',description:'A guide to data-driven storytelling with Excel and chart templates for journalists and communicators.',type:'powerpoint',price:1200,fileName:'data_journalism.zip',fileSize:'15.2 MB',pages:'55 slides'}
+        //   ];
+        // }
 
-// Call this once on page load — stores products in memory
-let PRODUCTS_CACHE = [];
+        // Call this once on page load — stores products in memory
+        let PRODUCTS_CACHE = [];
 
-async function loadProds() {
-  const s = localStorage.getItem('pressroom_products');
-  if (s) { PRODUCTS_CACHE = JSON.parse(s); return; }
-  const res = await fetch('/api/products');
-  PRODUCTS_CACHE = await res.json();
-}
+        async function loadProds() {
+            const s = localStorage.getItem('pressroom_products');
+            if (s) { PRODUCTS_CACHE = JSON.parse(s); return; }
+            const res = await fetch('/api/products');
+            PRODUCTS_CACHE = await res.json();
+        }
 
-// Keep getProds() synchronous everywhere else — nothing else changes
-function getProds() {
-  return PRODUCTS_CACHE;
-}
+        // Keep getProds() synchronous everywhere else — nothing else changes
+        function getProds() {
+            return PRODUCTS_CACHE;
+        }
 
-/* ── STATE ── */
-let cart = JSON.parse(localStorage.getItem('pressroom_cart')||'[]');
-const saveCart = () => localStorage.setItem('pressroom_cart', JSON.stringify(cart));
-let currentId = null, selectedStars = 0, showForm = false, rpStars = 0;
+        /* ── STATE ── */
+        let cart = JSON.parse(localStorage.getItem('pressroom_cart') || '[]');
+        const saveCart = () => localStorage.setItem('pressroom_cart', JSON.stringify(cart));
+        let currentId = null, selectedStars = 0, showForm = false, rpStars = 0;
 
-/* ── CAROUSEL ── */
-function renderCarousel() {
-  const track = document.getElementById('ctrack'); track.innerHTML = '';
-  getProds().forEach((p, i) => {
-    const revs = getRevs(p.id); const avg = avgR(revs); const inCart = !!cart.find(c=>c.id===p.id);
-    const d = document.createElement('div'); d.className = 'book-card'; d.style.animationDelay = (i*.07)+'s';
-    d.innerHTML = `
+        /* ── CAROUSEL ── */
+        function renderCarousel() {
+            const track = document.getElementById('ctrack'); track.innerHTML = '';
+            getProds().forEach((p, i) => {
+                const revs = getRevs(p.id); const avg = avgR(revs); const inCart = !!cart.find(c => c.id === p.id);
+                const d = document.createElement('div'); d.className = 'book-card'; d.style.animationDelay = (i * .07) + 's';
+                d.innerHTML = `
       <div class="book-wrap">
         <div class="book-cover" onclick="openModal(${p.id})">${buildCover(p)}</div>
       </div>
       <div class="card-info">
-        <div class="ctype-badge ${p.type==='journalism'?'j':'p'}">${p.type==='journalism'?'📰 Journalism':'📊 Slides'}</div>
-        <div class="c-card-title">${p.title.length>42?p.title.substring(0,42)+'…':p.title}</div>
+        <div class="ctype-badge ${p.type === 'journalism' ? 'j' : 'p'}">${p.type === 'journalism' ? '📰 Journalism' : '📊 Slides'}</div>
+        <div class="c-card-title">${p.title.length > 42 ? p.title.substring(0, 42) + '…' : p.title}</div>
         <div><span class="c-stars">${starStr(avg)}</span></div>
         <div class="c-pages">${p.pages}</div>
         <div class="c-bot">
           <span class="c-price">${peso(p.price)}</span>
-          <button class="add-sm${inCart?' added':''}" onclick="addToCart(${p.id})">${inCart?'✓ Added':'+ Add'}</button>
+          <button class="add-sm${inCart ? ' added' : ''}" onclick="addToCart(${p.id})">${inCart ? '✓ Added' : '+ Add'}</button>
         </div>
       </div>`;
-    track.appendChild(d);
-  });
-  setupDrag(track);
-}
-function scrollC(dir) { document.getElementById('ctrack').scrollBy({left:dir*230,behavior:'smooth'}); }
-function scrollPrev(dir) { document.getElementById('preview-scroll').scrollBy({left:dir*200,behavior:'smooth'}); }
+                track.appendChild(d);
+            });
+            setupDrag(track);
+        }
+        function scrollC(dir) { document.getElementById('ctrack').scrollBy({ left: dir * 230, behavior: 'smooth' }); }
+        function scrollPrev(dir) { document.getElementById('preview-scroll').scrollBy({ left: dir * 200, behavior: 'smooth' }); }
 
-function setupDrag(el) {
-  let down=false, sx, sl;
-  el.addEventListener('mousedown', e => { down=true; el.classList.add('grabbing'); sx=e.pageX-el.offsetLeft; sl=el.scrollLeft; });
-  el.addEventListener('mouseleave',()=>{ down=false; el.classList.remove('grabbing'); });
-  el.addEventListener('mouseup',   ()=>{ down=false; el.classList.remove('grabbing'); });
-  el.addEventListener('mousemove', e => { if(!down) return; e.preventDefault(); el.scrollLeft=sl-(e.pageX-el.offsetLeft-sx)*1.5; });
-}
+        function setupDrag(el) {
+            let down = false, sx, sl;
+            el.addEventListener('mousedown', e => { down = true; el.classList.add('grabbing'); sx = e.pageX - el.offsetLeft; sl = el.scrollLeft; });
+            el.addEventListener('mouseleave', () => { down = false; el.classList.remove('grabbing'); });
+            el.addEventListener('mouseup', () => { down = false; el.classList.remove('grabbing'); });
+            el.addEventListener('mousemove', e => { if (!down) return; e.preventDefault(); el.scrollLeft = sl - (e.pageX - el.offsetLeft - sx) * 1.5; });
+        }
 
-/* ── GRID ── */
-function renderGrid(filter='all') {
-  const grid = document.getElementById('pgrid'); grid.innerHTML = '';
-  getProds().forEach((p, i) => {
-    if (filter !== 'all' && p.type !== filter) return;
-    const revs = getRevs(p.id); const avg = avgR(revs); const inCart = !!cart.find(c=>c.id===p.id);
-    const d = document.createElement('div'); d.className = 'pcard'; d.style.animationDelay = (i*.05)+'s';
-    d.innerHTML = `
+        /* ── GRID ── */
+        function renderGrid(filter = 'all') {
+            const grid = document.getElementById('pgrid'); grid.innerHTML = '';
+            getProds().forEach((p, i) => {
+                if (filter !== 'all' && p.type !== filter) return;
+                const revs = getRevs(p.id); const avg = avgR(revs); const inCart = !!cart.find(c => c.id === p.id);
+                const d = document.createElement('div'); d.className = 'pcard'; d.style.animationDelay = (i * .05) + 's';
+                d.innerHTML = `
       <div class="pcard-thumb">
-        <div class="pcard-thumb-inner">${buildCover(p,'100%','100%')}</div>
+        <div class="pcard-thumb-inner">${buildCover(p, '100%', '100%')}</div>
         <button class="view-overlay" onclick="openModal(${p.id})"><span>Preview + Reviews</span></button>
       </div>
       <div class="pcard-body">
-        <span class="pcard-type ${p.type==='journalism'?'j':'p'}">${p.type==='journalism'?'📰 Journalism':'📊 Slides'}</span>
+        <span class="pcard-type ${p.type === 'journalism' ? 'j' : 'p'}">${p.type === 'journalism' ? '📰 Journalism' : '📊 Slides'}</span>
         <div class="pcard-title">${p.title}</div>
         <div class="pcard-rating">
           <span class="pcard-stars">${starStr(avg)}</span>
@@ -1112,142 +2175,142 @@ function renderGrid(filter='all') {
         <div class="pcard-meta">${p.pages} · ${p.fileSize}</div>
         <div class="pcard-footer">
           <span class="pcard-price">${peso(p.price)}</span>
-          <button class="padd${inCart?' added':''}" onclick="addToCart(${p.id})">${inCart?'✓ Added':'+ Add'}</button>
+          <button class="padd${inCart ? ' added' : ''}" onclick="addToCart(${p.id})">${inCart ? '✓ Added' : '+ Add'}</button>
         </div>
       </div>`;
-    grid.appendChild(d);
-  });
-}
-function filterP(type, btn) {
-  document.querySelectorAll('.chip').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderGrid(type);
-}
+                grid.appendChild(d);
+            });
+        }
+        function filterP(type, btn) {
+            document.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderGrid(type);
+        }
 
-/* ── MODAL ── */
-function openModal(id) {
-  currentId = id; selectedStars = 0; showForm = false;
-  const p = getProds().find(x=>x.id===id); if (!p) return;
-  const revs = getRevs(id); const avg = avgR(revs); const inCart = !!cart.find(c=>c.id===id);
+        /* ── MODAL ── */
+        function openModal(id) {
+            currentId = id; selectedStars = 0; showForm = false;
+            const p = getProds().find(x => x.id === id); if (!p) return;
+            const revs = getRevs(id); const avg = avgR(revs); const inCart = !!cart.find(c => c.id === id);
 
-  document.getElementById('modal-book').innerHTML = buildCover(p,'100%','100%');
+            document.getElementById('modal-book').innerHTML = buildCover(p, '100%', '100%');
 
-  const tb = document.getElementById('modal-type-badge');
-  tb.textContent = p.type==='journalism'?'📰 Journalism':'📊 Slides';
-  tb.className = 'modal-type-badge '+(p.type==='journalism'?'j':'p');
-  document.getElementById('modal-header-title').textContent = p.title.length>45?p.title.substring(0,45)+'…':p.title;
-  document.getElementById('modal-title-text').textContent   = p.title;
-  document.getElementById('modal-stars-disp').textContent   = starStr(avg);
-  document.getElementById('modal-avg-disp').textContent     = avg.toFixed(1);
-  document.getElementById('modal-rcount-disp').textContent  = `(${revs.length} reviews)`;
-  document.getElementById('modal-desc-text').textContent    = p.description;
-  document.getElementById('modal-meta-row').innerHTML = `<div class="meta-tag">✦ ${p.pages}</div><div class="meta-tag">📦 ${p.fileSize}</div><div class="meta-tag">${p.type==='journalism'?'Article':'Presentation'}</div>`;
-  document.getElementById('modal-price-disp').textContent   = peso(p.price);
+            const tb = document.getElementById('modal-type-badge');
+            tb.textContent = p.type === 'journalism' ? '📰 Journalism' : '📊 Slides';
+            tb.className = 'modal-type-badge ' + (p.type === 'journalism' ? 'j' : 'p');
+            document.getElementById('modal-header-title').textContent = p.title.length > 45 ? p.title.substring(0, 45) + '…' : p.title;
+            document.getElementById('modal-title-text').textContent = p.title;
+            document.getElementById('modal-stars-disp').textContent = starStr(avg);
+            document.getElementById('modal-avg-disp').textContent = avg.toFixed(1);
+            document.getElementById('modal-rcount-disp').textContent = `(${revs.length} reviews)`;
+            document.getElementById('modal-desc-text').textContent = p.description;
+            document.getElementById('modal-meta-row').innerHTML = `<div class="meta-tag">✦ ${p.pages}</div><div class="meta-tag">📦 ${p.fileSize}</div><div class="meta-tag">${p.type === 'journalism' ? 'Article' : 'Presentation'}</div>`;
+            document.getElementById('modal-price-disp').textContent = peso(p.price);
 
-  const ab = document.getElementById('modal-add-btn');
-  ab.textContent = inCart ? '✓ Already in Cart' : '+ Add to Cart';
-  ab.className   = 'modal-add-btn'+(inCart?' added':'');
-  ab.onclick = () => { addToCart(id); ab.textContent='✓ Added!'; ab.classList.add('added'); };
+            const ab = document.getElementById('modal-add-btn');
+            ab.textContent = inCart ? '✓ Already in Cart' : '+ Add to Cart';
+            ab.className = 'modal-add-btn' + (inCart ? ' added' : '');
+            ab.onclick = () => { addToCart(id); ab.textContent = '✓ Added!'; ab.classList.add('added'); };
 
-  const pages = PREVIEWS[id]||[];
-  document.getElementById('preview-scroll').innerHTML = pages.map(pg=>renderPP(pg,pages.length)).join('');
-  setupDrag(document.getElementById('preview-scroll'));
+            const pages = PREVIEWS[id] || [];
+            document.getElementById('preview-scroll').innerHTML = pages.map(pg => renderPP(pg, pages.length)).join('');
+            setupDrag(document.getElementById('preview-scroll'));
 
-  renderRB(revs); renderRevsList(revs);
-  document.getElementById('write-btn').textContent = '+ Write a Review';
-  document.getElementById('review-form-wrap').innerHTML = '';
+            renderRB(revs); renderRevsList(revs);
+            document.getElementById('write-btn').textContent = '+ Write a Review';
+            document.getElementById('review-form-wrap').innerHTML = '';
 
-  document.getElementById('modal-bg').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
+            document.getElementById('modal-bg').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
 
-function renderRB(revs) {
-  const counts = [0,0,0,0,0];
-  revs.forEach(r=>{ if(r.stars>=1&&r.stars<=5) counts[r.stars-1]++; });
-  const mx = Math.max(...counts, 1);
-  document.getElementById('rating-breakdown').innerHTML = `
+        function renderRB(revs) {
+            const counts = [0, 0, 0, 0, 0];
+            revs.forEach(r => { if (r.stars >= 1 && r.stars <= 5) counts[r.stars - 1]++; });
+            const mx = Math.max(...counts, 1);
+            document.getElementById('rating-breakdown').innerHTML = `
     <div class="rb-title">Rating Breakdown</div>
-    ${[5,4,3,2,1].map(n=>`
+    ${[5, 4, 3, 2, 1].map(n => `
       <div class="rb-row">
         <div class="rb-lbl">${n}★</div>
-        <div class="rb-bar-wrap"><div class="rb-bar-fill" style="width:${(counts[n-1]/mx)*100}%"></div></div>
-        <div class="rb-cnt">${counts[n-1]}</div>
+        <div class="rb-bar-wrap"><div class="rb-bar-fill" style="width:${(counts[n - 1] / mx) * 100}%"></div></div>
+        <div class="rb-cnt">${counts[n - 1]}</div>
       </div>`).join('')}`;
-}
+        }
 
-function renderRevsList(revs) {
-  const list = document.getElementById('reviews-list');
-  if (!revs.length) { list.innerHTML = '<div class="no-reviews">No reviews yet — be the first!</div>'; return; }
-  list.innerHTML = revs.map(r=>`
+        function renderRevsList(revs) {
+            const list = document.getElementById('reviews-list');
+            if (!revs.length) { list.innerHTML = '<div class="no-reviews">No reviews yet — be the first!</div>'; return; }
+            list.innerHTML = revs.map(r => `
     <div class="review-card">
       <div class="review-top">
         <div><div class="reviewer-name">${r.name}</div><div class="review-date">${r.date}</div></div>
-        <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+        <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
       </div>
       <div class="review-text">${r.text}</div>
-      ${r.tag?`<span class="review-tag">${r.tag}</span>`:''}</div>`).join('');
-}
+      ${r.tag ? `<span class="review-tag">${r.tag}</span>` : ''}</div>`).join('');
+        }
 
-function toggleReviewForm() {
-  showForm = !showForm;
-  const wrap = document.getElementById('review-form-wrap');
-  const btn  = document.getElementById('write-btn');
-  if (showForm) {
-    btn.textContent = '✕ Cancel'; selectedStars = 0;
-    wrap.innerHTML = `<div class="review-form-wrap">
+        function toggleReviewForm() {
+            showForm = !showForm;
+            const wrap = document.getElementById('review-form-wrap');
+            const btn = document.getElementById('write-btn');
+            if (showForm) {
+                btn.textContent = '✕ Cancel'; selectedStars = 0;
+                wrap.innerHTML = `<div class="review-form-wrap">
       <div class="rf-label">Leave Your Review</div>
       <div style="display:flex;gap:.35rem;margin-bottom:.75rem" id="star-picker">
-        ${[1,2,3,4,5].map(n=>`<span class="sp-star" data-n="${n}" onclick="pickStar(${n})">★</span>`).join('')}
+        ${[1, 2, 3, 4, 5].map(n => `<span class="sp-star" data-n="${n}" onclick="pickStar(${n})">★</span>`).join('')}
       </div>
       <input class="rf-inp" id="rf-name" placeholder="Your name (e.g. Maria S.)"/>
       <textarea class="rf-inp rf-textarea" id="rf-text" placeholder="Share your thoughts on this file…"></textarea>
       <input class="rf-inp" id="rf-tag" placeholder="One-word tag, optional (e.g. helpful)" style="margin-bottom:.75rem"/>
       <button class="rf-submit" onclick="submitReview()">Post Review</button>
     </div>`;
-  } else { btn.textContent = '+ Write a Review'; wrap.innerHTML = ''; }
-}
+            } else { btn.textContent = '+ Write a Review'; wrap.innerHTML = ''; }
+        }
 
-function pickStar(n) {
-  selectedStars = n;
-  document.querySelectorAll('#star-picker .sp-star').forEach(s=>s.classList.toggle('lit', parseInt(s.dataset.n)<=n));
-}
+        function pickStar(n) {
+            selectedStars = n;
+            document.querySelectorAll('#star-picker .sp-star').forEach(s => s.classList.toggle('lit', parseInt(s.dataset.n) <= n));
+        }
 
-function submitReview() {
-  const name = document.getElementById('rf-name').value.trim();
-  const text = document.getElementById('rf-text').value.trim();
-  const tag  = document.getElementById('rf-tag').value.trim();
-  if (!name)         { alert('Please enter your name.'); return; }
-  if (!text)         { alert('Please write your review.'); return; }
-  if (!selectedStars){ alert('Please select a star rating.'); return; }
-  const now = new Date();
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  saveRev(currentId, {name, stars:selectedStars, text, tag:tag||null, date:`${months[now.getMonth()]} ${now.getFullYear()}`});
-  const revs = getRevs(currentId);
-  renderRB(revs); renderRevsList(revs); toggleReviewForm(); renderCarousel(); renderGrid();
-  const avg = avgR(revs);
-  document.getElementById('modal-stars-disp').textContent  = starStr(avg);
-  document.getElementById('modal-avg-disp').textContent    = avg.toFixed(1);
-  document.getElementById('modal-rcount-disp').textContent = `(${revs.length} reviews)`;
-}
+        function submitReview() {
+            const name = document.getElementById('rf-name').value.trim();
+            const text = document.getElementById('rf-text').value.trim();
+            const tag = document.getElementById('rf-tag').value.trim();
+            if (!name) { alert('Please enter your name.'); return; }
+            if (!text) { alert('Please write your review.'); return; }
+            if (!selectedStars) { alert('Please select a star rating.'); return; }
+            const now = new Date();
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            saveRev(currentId, { name, stars: selectedStars, text, tag: tag || null, date: `${months[now.getMonth()]} ${now.getFullYear()}` });
+            const revs = getRevs(currentId);
+            renderRB(revs); renderRevsList(revs); toggleReviewForm(); renderCarousel(); renderGrid();
+            const avg = avgR(revs);
+            document.getElementById('modal-stars-disp').textContent = starStr(avg);
+            document.getElementById('modal-avg-disp').textContent = avg.toFixed(1);
+            document.getElementById('modal-rcount-disp').textContent = `(${revs.length} reviews)`;
+        }
 
-function closeMaybe(e) { if (e.target===document.getElementById('modal-bg')) closeModal(); }
-function closeModal()  { document.getElementById('modal-bg').classList.remove('open'); document.body.style.overflow=''; }
+        function closeMaybe(e) { if (e.target === document.getElementById('modal-bg')) closeModal(); }
+        function closeModal() { document.getElementById('modal-bg').classList.remove('open'); document.body.style.overflow = ''; }
 
-/* ── CART ── */
-function addToCart(id) {
-  const p = getProds().find(x=>x.id===id);
-  if (!p || cart.find(c=>c.id===id)) return;
-  cart.push(p); saveCart(); updateCart(); renderCarousel(); renderGrid();
-  const cnt = document.getElementById('cart-count');
-  cnt.style.transform='scale(1.5)'; setTimeout(()=>cnt.style.transform='', 350);
-}
-function removeFromCart(id) { cart=cart.filter(c=>c.id!==id); saveCart(); updateCart(); renderCarousel(); renderGrid(); }
-function updateCart() {
-  document.getElementById('cart-count').textContent = cart.length;
-  document.getElementById('ctotal').textContent = peso(cart.reduce((s,i)=>s+Number(i.price),0));
-  const body = document.getElementById('cbody');
-  if (!cart.length) { body.innerHTML='<div class="cd-empty"><span>🛒</span>Your cart is empty.</div>'; return; }
-  body.innerHTML = cart.map(item=>`
+        /* ── CART ── */
+        function addToCart(id) {
+            const p = getProds().find(x => x.id === id);
+            if (!p || cart.find(c => c.id === id)) return;
+            cart.push(p); saveCart(); updateCart(); renderCarousel(); renderGrid();
+            const cnt = document.getElementById('cart-count');
+            cnt.style.transform = 'scale(1.5)'; setTimeout(() => cnt.style.transform = '', 350);
+        }
+        function removeFromCart(id) { cart = cart.filter(c => c.id !== id); saveCart(); updateCart(); renderCarousel(); renderGrid(); }
+        function updateCart() {
+            document.getElementById('cart-count').textContent = cart.length;
+            document.getElementById('ctotal').textContent = peso(cart.reduce((s, i) => s + Number(i.price), 0));
+            const body = document.getElementById('cbody');
+            if (!cart.length) { body.innerHTML = '<div class="cd-empty"><span>🛒</span>Your cart is empty.</div>'; return; }
+            body.innerHTML = cart.map(item => `
     <div class="ci">
       <div>
         <div class="ci-name">${item.title}</div>
@@ -1256,67 +2319,68 @@ function updateCart() {
       </div>
       <div class="ci-price">${peso(Number(item.price))}</div>
     </div>`).join('');
-}
-function openCart()    { document.getElementById('overlay').classList.add('open'); document.getElementById('cdrawer').classList.add('open'); }
-function closeCart()   { document.getElementById('overlay').classList.remove('open'); document.getElementById('cdrawer').classList.remove('open'); }
-function goCheckout()  { if (!cart.length) return; window.location.href='checkout.html'; }
+        }
+        function openCart() { document.getElementById('overlay').classList.add('open'); document.getElementById('cdrawer').classList.add('open'); }
+        function closeCart() { document.getElementById('overlay').classList.remove('open'); document.getElementById('cdrawer').classList.remove('open'); }
+        function goCheckout() { if (!cart.length) return; window.location.href = 'checkout.html'; }
 
-/* ── REVIEW POPUP ── */
-function checkAndShowReviewPopup() {
-  const orders = JSON.parse(localStorage.getItem('pressroom_orders')||'[]');
-  if (!orders.length) return;
-  if (sessionStorage.getItem('rp_dismissed')) return;
-  if (sessionStorage.getItem('rp_reviewed'))  return;
-  const purchasedIds = [...new Set(orders.flatMap(o=>(o.items||[]).map(i=>i.id)))];
-  const done = JSON.parse(sessionStorage.getItem('rp_session_reviews')||'[]');
-  const unreviewed = purchasedIds.filter(id=>!done.includes(id));
-  if (!unreviewed.length) return;
-  const prods = getProds().filter(p=>unreviewed.includes(p.id));
-  document.getElementById('rp-files-list').innerHTML = prods.map(p=>`<div class="rp-file-chip">${p.title.length>32?p.title.substring(0,32)+'…':p.title}</div>`).join('');
-  document.getElementById('rp-product-select').innerHTML = prods.map(p=>`<option value="${p.id}">${p.title.substring(0,52)}${p.title.length>52?'…':''}</option>`).join('');
-  setTimeout(()=>document.getElementById('rp-overlay').classList.add('open'), 4000);
-}
-function closeRpPopup(){ document.getElementById('rp-overlay').classList.remove('open'); sessionStorage.setItem('rp_dismissed','1'); }
-function showRpInvite(){ document.getElementById('rp-invite').style.display='block'; document.getElementById('rp-form').style.display='none'; document.getElementById('rp-reveal').style.display='none'; }
-function showRpForm()  { document.getElementById('rp-invite').style.display='none'; document.getElementById('rp-form').style.display='block'; document.getElementById('rp-reveal').style.display='none'; rpStars=0; document.querySelectorAll('#rp-stars .sp-star').forEach(s=>s.classList.remove('lit')); }
-function rpPickStar(n) { rpStars=n; document.querySelectorAll('#rp-stars .sp-star').forEach(s=>s.classList.toggle('lit', parseInt(s.dataset.n)<=n)); }
-function rpSubmitReview() {
-  const name = document.getElementById('rp-name').value.trim();
-  const text = document.getElementById('rp-text').value.trim();
-  const tag  = document.getElementById('rp-tag-inp').value.trim();
-  const pid  = parseInt(document.getElementById('rp-product-select').value);
-  if (!rpStars)          { alert('Please select a star rating.'); return; }
-  if (!name)             { alert('Please enter your name.'); return; }
-  if (!text||text.length<10){ alert('Please write a bit more about the file.'); return; }
-  const codes = ['PRESS200','PFIRA200','TEACH200','LEARN200','FILE200'];
-  const code  = codes[Math.floor(Math.random()*codes.length)];
-  const now   = new Date();
-  const months= ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  saveRev(pid, {name, stars:rpStars, text, tag:tag||null, date:`${months[now.getMonth()]} ${now.getFullYear()}`});
-  const done = JSON.parse(sessionStorage.getItem('rp_session_reviews')||'[]');
-  done.push(pid); sessionStorage.setItem('rp_session_reviews',JSON.stringify(done)); sessionStorage.setItem('rp_reviewed','1');
-  document.getElementById('rp-code-text').textContent = code;
-  document.getElementById('rp-form').style.display   = 'none';
-  document.getElementById('rp-reveal').style.display = 'block';
-  renderCarousel(); renderGrid();
-}
-function copyRpCode() {
-  const code = document.getElementById('rp-code-text').textContent;
-  navigator.clipboard.writeText(code).then(()=>{
-    const b = document.getElementById('rp-copy-btn'); b.textContent='✓ Copied!'; setTimeout(()=>b.textContent='Copy',2200);
-  });
-}
+        /* ── REVIEW POPUP ── */
+        function checkAndShowReviewPopup() {
+            const orders = JSON.parse(localStorage.getItem('pressroom_orders') || '[]');
+            if (!orders.length) return;
+            if (sessionStorage.getItem('rp_dismissed')) return;
+            if (sessionStorage.getItem('rp_reviewed')) return;
+            const purchasedIds = [...new Set(orders.flatMap(o => (o.items || []).map(i => i.id)))];
+            const done = JSON.parse(sessionStorage.getItem('rp_session_reviews') || '[]');
+            const unreviewed = purchasedIds.filter(id => !done.includes(id));
+            if (!unreviewed.length) return;
+            const prods = getProds().filter(p => unreviewed.includes(p.id));
+            document.getElementById('rp-files-list').innerHTML = prods.map(p => `<div class="rp-file-chip">${p.title.length > 32 ? p.title.substring(0, 32) + '…' : p.title}</div>`).join('');
+            document.getElementById('rp-product-select').innerHTML = prods.map(p => `<option value="${p.id}">${p.title.substring(0, 52)}${p.title.length > 52 ? '…' : ''}</option>`).join('');
+            setTimeout(() => document.getElementById('rp-overlay').classList.add('open'), 4000);
+        }
+        function closeRpPopup() { document.getElementById('rp-overlay').classList.remove('open'); sessionStorage.setItem('rp_dismissed', '1'); }
+        function showRpInvite() { document.getElementById('rp-invite').style.display = 'block'; document.getElementById('rp-form').style.display = 'none'; document.getElementById('rp-reveal').style.display = 'none'; }
+        function showRpForm() { document.getElementById('rp-invite').style.display = 'none'; document.getElementById('rp-form').style.display = 'block'; document.getElementById('rp-reveal').style.display = 'none'; rpStars = 0; document.querySelectorAll('#rp-stars .sp-star').forEach(s => s.classList.remove('lit')); }
+        function rpPickStar(n) { rpStars = n; document.querySelectorAll('#rp-stars .sp-star').forEach(s => s.classList.toggle('lit', parseInt(s.dataset.n) <= n)); }
+        function rpSubmitReview() {
+            const name = document.getElementById('rp-name').value.trim();
+            const text = document.getElementById('rp-text').value.trim();
+            const tag = document.getElementById('rp-tag-inp').value.trim();
+            const pid = parseInt(document.getElementById('rp-product-select').value);
+            if (!rpStars) { alert('Please select a star rating.'); return; }
+            if (!name) { alert('Please enter your name.'); return; }
+            if (!text || text.length < 10) { alert('Please write a bit more about the file.'); return; }
+            const codes = ['PRESS200', 'PFIRA200', 'TEACH200', 'LEARN200', 'FILE200'];
+            const code = codes[Math.floor(Math.random() * codes.length)];
+            const now = new Date();
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            saveRev(pid, { name, stars: rpStars, text, tag: tag || null, date: `${months[now.getMonth()]} ${now.getFullYear()}` });
+            const done = JSON.parse(sessionStorage.getItem('rp_session_reviews') || '[]');
+            done.push(pid); sessionStorage.setItem('rp_session_reviews', JSON.stringify(done)); sessionStorage.setItem('rp_reviewed', '1');
+            document.getElementById('rp-code-text').textContent = code;
+            document.getElementById('rp-form').style.display = 'none';
+            document.getElementById('rp-reveal').style.display = 'block';
+            renderCarousel(); renderGrid();
+        }
+        function copyRpCode() {
+            const code = document.getElementById('rp-code-text').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const b = document.getElementById('rp-copy-btn'); b.textContent = '✓ Copied!'; setTimeout(() => b.textContent = 'Copy', 2200);
+            });
+        }
 
-// Replace your current init block with this
-async function init() {
-  await loadProds();
-  renderCarousel();
-  renderGrid();
-  updateCart();
-  checkAndShowReviewPopup();
-}
+        // Replace your current init block with this
+        async function init() {
+            await loadProds();
+            renderCarousel();
+            renderGrid();
+            updateCart();
+            checkAndShowReviewPopup();
+        }
 
-init();
-</script>
+        init();
+    </script>
 </body>
+
 </html>
