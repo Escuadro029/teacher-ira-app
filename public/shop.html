@@ -918,7 +918,7 @@
 const peso = n => '₱' + Number(n).toLocaleString('en-PH', {minimumFractionDigits:2,maximumFractionDigits:2});
 
 /* ── TICKER ── */
-const tI = ['📰 Journalism Files ','·','📊 Essay & Article Writing','·','⚡ School Paper Layout','·','⭐ Lesson Plans','·','🎓 PPT Lessons','·','Canva Templates','·','Layout & Design Services','·','Logo Design','·','Website Development Services','·'];
+const tI = [' Journalism Files ','·',' Essay & Article Writing','·',' School Paper Layout','·',' Lesson Plans','·',' PPT Lessons','·',' Canva Templates','·',' Layout & Design Services','·',' Logo Design','·',' Website Development Services','·'];
 document.getElementById('ttrack').innerHTML = [...tI,...tI].map(t=>`<span${t==='·'?' class="sep"':''}>${t}</span>`).join('');
 
 /* ── COVER DESIGNS ── */

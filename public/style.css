@@ -68,10 +68,13 @@ body {
    TICKER
    ============================================================ */
 .ticker {
-  background: var(--crimson-deep);
+    background: var(--crimson);
+  color: #fff;
   padding: .38rem 0;
   overflow: hidden;
   white-space: nowrap;
+    transition: background .2s, transform .2s;
+
 }
 .ticker-track {
   display: inline-flex;
@@ -83,7 +86,7 @@ body {
   letter-spacing: .12em;
   text-transform: uppercase;
   padding: 0 2.2rem;
-  color: rgba(255,255,255,.68);
+  color: #ffffff;
 }
 .ticker-track .sep { color: var(--crimson-mid) !important; }
 @keyframes tickAnim {
@@ -154,7 +157,7 @@ header {
   transition: background .2s, transform .2s;
   letter-spacing: .01em;
 }
-.cart-btn:hover { background: var(--crimson-dark); transform: translateY(-1px); }
+.cart-btn:hover { background: var(--crimson-mid); transform: translateY(-1px); }
 #cart-count {
   background: rgba(255,255,255,.22);
   border-radius: 4px;
