@@ -3,169 +3,154 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin — Pressfile</title>
+  <title>Admin — Pressfiles</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;0,900;1,300;1,500;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --bg:#ffffff;--surface:#f8f9fa;--surface2:#f1f3f5;
-      --ink:#1a1d23;--ink2:#3d4250;--mid:#6b7280;--muted:#9ca3af;
-      --border:#e5e7eb;--border2:#d1d5db;
-      --teal:#0d7377;--teal-lt:#e6f4f5;--teal-md:#b3dfe0;
-      --amber:#c2750a;--amber-lt:#fef3e2;
-      --red:#c0392b;--green:#1a6b3c;--green-lt:#e8f5ed;
-      --shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 16px rgba(0,0,0,.1);
-      --r:10px;--r-lg:16px;
-    }
-    ::selection{background:var(--teal-lt);color:var(--teal)}
-    body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;overflow-x:hidden;font-size:15px;line-height:1.6}
-    ::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
-
-    /* HEADER */
-    header{background:var(--bg);border-bottom:1px solid var(--border);padding:.85rem clamp(1.5rem,5vw,3rem);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-    .logo{display:flex;align-items:center;gap:.75rem;text-decoration:none}
-    .logo-name{font-family:'Fraunces',serif;font-weight:700;font-size:1.2rem;color:var(--ink);letter-spacing:-.02em;line-height:1}
-    .logo-name span{color:var(--teal)}
-    .logo-sub{font-size:.65rem;font-weight:500;color:var(--mid);letter-spacing:.04em;text-transform:uppercase}
-    .admin-chip{background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-md);border-radius:5px;padding:.2rem .65rem;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
-    .header-right{display:flex;align-items:center;gap:1.25rem}
-    .online-ind{display:flex;align-items:center;gap:.35rem;font-size:.75rem;color:var(--green);font-weight:500}
-    .dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:blink 2s ease-in-out infinite}
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-    .hlink{font-size:.78rem;font-weight:600;color:var(--mid);text-decoration:none;transition:color .18s}
-    .hlink:hover{color:var(--teal)}
+    /* ── ADMIN-SPECIFIC STYLES ── */
 
     /* LAYOUT */
-    .layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 57px)}
+    .layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: calc(100vh - 57px);
+    }
 
     /* SIDEBAR */
-    .sidebar{background:var(--surface);border-right:1px solid var(--border);padding:1.25rem 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto}
-    .nav-group-lbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);padding:.5rem 1.2rem .25rem;margin-top:.4rem}
-    .nav-item{padding:.62rem 1.2rem;font-size:.78rem;font-weight:600;color:var(--mid);cursor:pointer;border-left:2.5px solid transparent;transition:all .18s;display:flex;align-items:center;gap:.6rem}
-    .nav-item:hover{color:var(--ink);background:rgba(0,0,0,.03)}
-    .nav-item.active{color:var(--teal);border-left-color:var(--teal);background:var(--teal-lt)}
-    .nav-ico{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8rem;background:var(--surface2);flex-shrink:0}
-    .nav-item.active .nav-ico{background:var(--teal-md)}
-    .nav-badge{background:var(--teal);color:#fff;border-radius:4px;padding:.1rem .45rem;font-size:.6rem;font-weight:700;margin-left:auto}
+    .sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 1.2rem 0;
+      position: sticky;
+      top: 57px;
+      height: calc(100vh - 57px);
+      overflow-y: auto;
+    }
+    .nav-group-lbl {
+      font-size: .62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .14em;
+      color: var(--muted);
+      padding: .5rem 1.2rem .25rem;
+      margin-top: .4rem;
+    }
+    .nav-item {
+      padding: .62rem 1.2rem;
+      font-size: .78rem; font-weight: 600;
+      color: var(--mid);
+      cursor: pointer;
+      border-left: 2.5px solid transparent;
+      transition: all .18s;
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .nav-item:hover { color: var(--ink); background: rgba(0,0,0,.03); }
+    .nav-item.active{ color: var(--crimson); border-left-color: var(--crimson); background: var(--crimson-light); }
+    .nav-ico        { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: .8rem; background: var(--surface2); flex-shrink: 0; }
+    .nav-item.active .nav-ico { background: var(--crimson-mid); }
+    .nav-badge      { background: var(--crimson); color: #fff; border-radius: 4px; padding: .1rem .45rem; font-size: .6rem; font-weight: 700; margin-left: auto; }
 
     /* MAIN */
-    .admin-main{padding:2rem clamp(1.5rem,4vw,2.5rem);background:var(--bg);overflow-y:auto}
-    .page{display:none;animation:fadeUp .25s ease both}
-    .page.active{display:block}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-    .pg-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.75rem;flex-wrap:wrap;gap:.85rem}
-    .pg-title{font-family:'Fraunces',serif;font-size:1.75rem;font-weight:700;color:var(--ink)}
-    .pg-sub{font-size:.8rem;color:var(--mid);margin-top:.15rem}
+    .admin-main { padding: 2rem clamp(1.5rem, 4vw, 2.5rem); background: var(--bg); overflow-y: auto; }
+    .page       { display: none; animation: fadeUp .25s ease both; }
+    .page.active{ display: block; }
 
-    /* BUTTONS */
-    .btn-primary{background:var(--teal);color:#fff;border:none;border-radius:7px;padding:.52rem 1.2rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:background .18s,transform .18s;letter-spacing:.01em;display:inline-flex;align-items:center;gap:.35rem}
-    .btn-primary:hover{background:#0a5e61;transform:translateY(-1px)}
-    .btn-outline{background:transparent;border:1px solid var(--border);color:var(--mid);border-radius:7px;padding:.5rem 1rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .18s}
-    .btn-outline:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-lt)}
+    .pg-head  { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.75rem; flex-wrap: wrap; gap: .85rem; }
+    .pg-title { font-family: Georgia, serif; font-size: 1.75rem; font-weight: 700; color: var(--ink); }
+    .pg-sub   { font-size: .8rem; color: var(--mid); margin-top: .15rem; }
 
     /* STAT CARDS */
-    .stats-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:1rem;margin-bottom:1.75rem}
-    .scard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem;position:relative;overflow:hidden;transition:box-shadow .2s,transform .2s}
-    .scard::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:var(--sc-color,var(--teal))}
-    .scard:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
-    .sc-lbl{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--mid);margin-bottom:.45rem}
-    .sc-val{font-family:'Fraunces',serif;font-size:2.2rem;font-weight:700;color:var(--ink);line-height:1}
-    .sc-val.teal{color:var(--teal)}.sc-val.amber{color:var(--amber)}.sc-val.green{color:var(--green)}
-    .sc-sub{font-size:.72rem;color:var(--mid);margin-top:.3rem}
-    .mini-chart{display:flex;align-items:flex-end;gap:3px;height:28px;margin-top:.75rem}
-    .mc-bar{flex:1;border-radius:2px 2px 0 0}
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fill,minmax(185px,1fr)); gap: 1rem; margin-bottom: 1.75rem; }
+    .scard {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 1.2rem;
+      position: relative; overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .scard::before { content:''; position:absolute; top:0; left:0; right:0; height:2.5px; background:var(--sc-color,var(--crimson)); }
+    .scard:hover   { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .sc-lbl { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--mid); margin-bottom: .45rem; }
+    .sc-val { font-family: Georgia, serif; font-size: 2.2rem; font-weight: 700; color: var(--ink); line-height: 1; }
+    .sc-val.cr { color: var(--crimson); }
+    .sc-val.am { color: var(--gold); }
+    .sc-val.gr { color: var(--green); }
+    .sc-sub { font-size: .72rem; color: var(--mid); margin-top: .3rem; }
+    .mini-chart { display: flex; align-items: flex-end; gap: 3px; height: 28px; margin-top: .75rem; }
+    .mc-bar { flex: 1; border-radius: 2px 2px 0 0; }
 
     /* OVERVIEW */
-    .overview-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
-    .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem}
-    .panel-title{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:.9rem;padding-bottom:.7rem;border-bottom:1px solid var(--border)}
-    .tp-row{display:flex;align-items:center;gap:.65rem;padding:.5rem 0;border-bottom:1px solid var(--border)}
-    .tp-row:last-child{border-bottom:none}
-    .tp-rank{font-size:.65rem;font-weight:700;color:var(--muted);width:16px;flex-shrink:0}
-    .tp-cover{width:28px;height:38px;border-radius:2px 5px 5px 2px;overflow:hidden;position:relative;flex-shrink:0;box-shadow:-1px 2px 0 rgba(0,0,0,.1),-2px 4px 6px rgba(0,0,0,.12)}
-    .tp-cover::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:rgba(0,0,0,.18);z-index:2}
-    .tp-name{font-size:.78rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink2)}
-    .tp-price{font-family:'Fraunces',serif;font-size:.9rem;flex-shrink:0;color:var(--ink)}
+    .overview-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.25rem; }
+    .panel-title { font-family: Georgia, serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: .9rem; padding-bottom: .7rem; border-bottom: 1px solid var(--border); }
+    .tp-row { display: flex; align-items: center; gap: .65rem; padding: .5rem 0; border-bottom: 1px solid var(--border); }
+    .tp-row:last-child { border-bottom: none; }
+    .tp-rank  { font-size: .65rem; font-weight: 700; color: var(--muted); width: 16px; flex-shrink: 0; }
+    .tp-cover { width: 28px; height: 38px; border-radius: 2px 5px 5px 2px; overflow: hidden; position: relative; flex-shrink: 0; box-shadow: -1px 2px 0 rgba(0,0,0,.1), -2px 4px 6px rgba(0,0,0,.12); }
+    .tp-cover::before { content:''; position:absolute; left:0;top:0;bottom:0; width:4px; background:rgba(0,0,0,.18); z-index:2; }
+    .tp-name  { font-size: .78rem; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink2); }
+    .tp-price { font-family: Georgia, serif; font-size: .9rem; flex-shrink: 0; color: var(--ink); }
 
     /* SECTION CARD */
-    .section-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-bottom:1.5rem}
-    .sc-top{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--surface)}
-    .sc-top-title{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;color:var(--ink)}
+    .section-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin-bottom: 1.5rem; }
+    .sc-top { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface); }
+    .sc-top-title { font-family: Georgia, serif; font-size: 1rem; font-weight: 700; color: var(--ink); }
 
     /* TABLE */
-    table{width:100%;border-collapse:collapse}
-    th{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--mid);text-align:left;padding:.8rem 1.1rem;border-bottom:1px solid var(--border);background:var(--surface2)}
-    td{padding:.85rem 1.1rem;border-bottom:1px solid rgba(0,0,0,.04);font-size:.85rem;vertical-align:middle;background:var(--surface)}
-    tr:last-child td{border-bottom:none}
-    tr:hover td{background:var(--surface2)}
-    .empty-table{text-align:center;padding:3rem;font-size:.85rem;color:var(--mid)}
-
-    /* TABLE BOOK */
-    .t-book{width:34px;height:46px;border-radius:2px 6px 6px 2px;overflow:hidden;position:relative;box-shadow:-1px 2px 0 rgba(0,0,0,.1),-2px 4px 8px rgba(0,0,0,.12)}
-    .t-book::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;background:rgba(0,0,0,.18);z-index:2}
-    .tb-inner{width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:.2rem .15rem .15rem .45rem;position:relative;z-index:1;gap:.12rem}
-    .tb-t{font-family:'Fraunces',serif;font-size:.3rem;line-height:1.2;color:rgba(255,255,255,.9);font-weight:600}
-    .tb-b{font-size:.26rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3)}
-
-    /* BADGES */
-    .badge{display:inline-flex;align-items:center;border-radius:4px;padding:.18rem .55rem;font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
-    .badge-j{background:var(--teal-lt);color:var(--teal)}
-    .badge-p{background:var(--amber-lt);color:var(--amber)}
-    .badge-paid{background:var(--green-lt);color:var(--green)}
-    .badge-sent{background:var(--green-lt);color:var(--green)}
-    .badge-pending{background:var(--amber-lt);color:var(--amber)}
+    table { width: 100%; border-collapse: collapse; }
+    th { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--mid); text-align: left; padding: .8rem 1.1rem; border-bottom: 1px solid var(--border); background: var(--surface2); }
+    td { padding: .85rem 1.1rem; border-bottom: 1px solid rgba(0,0,0,.04); font-size: .85rem; vertical-align: middle; background: var(--surface); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface2); }
+    .empty-table { text-align: center; padding: 3rem; font-size: .85rem; color: var(--mid); }
 
     /* ACTION BUTTONS */
-    .act-btn{background:transparent;border:1px solid var(--border);color:var(--mid);padding:.24rem .6rem;border-radius:5px;font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;margin-right:.25rem;transition:all .18s}
-    .act-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-lt)}
-    .act-btn.del:hover{border-color:var(--red);color:var(--red);background:#fff5f5}
-    .resend-btn{background:var(--green-lt);border:1px solid rgba(26,107,60,.2);color:var(--green);padding:.24rem .6rem;border-radius:5px;font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:all .18s}
-    .resend-btn:hover{background:#d4edda}
-
-    /* STARS */
-    .star-disp{color:#e8a030;font-size:.75rem}
+    .act-btn { background: transparent; border: 1px solid var(--border); color: var(--mid); padding: .24rem .6rem; border-radius: 5px; font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; cursor: pointer; margin-right: .25rem; transition: all .18s; }
+    .act-btn:hover     { border-color: var(--crimson); color: var(--crimson); background: var(--crimson-light); }
+    .act-btn.del:hover { border-color: var(--red); color: var(--red); background: #fff5f5; }
+    .resend-btn { background: var(--green-lt); border: 1px solid rgba(26,107,60,.2); color: var(--green); padding: .24rem .6rem; border-radius: 5px; font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; cursor: pointer; transition: all .18s; }
+    .resend-btn:hover { background: #d4edda; }
 
     /* REVIEWS GRID */
-    .reviews-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem}
-    .rev-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;transition:box-shadow .2s,transform .2s}
-    .rev-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
-    .rev-prod{font-size:.72rem;font-weight:600;color:var(--teal);margin-bottom:.35rem}
-    .rev-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.4rem}
-    .rev-name{font-size:.78rem;font-weight:700;color:var(--ink)}
-    .rev-date{font-size:.72rem;color:var(--mid)}
-    .rev-text{font-size:.82rem;color:var(--ink2);line-height:1.55;margin-top:.3rem}
-    .rev-tag{display:inline-block;margin-top:.4rem;background:var(--teal-lt);color:var(--teal);border-radius:4px;padding:.12rem .5rem;font-size:.7rem;font-weight:500}
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(290px,1fr)); gap: 1rem; }
+    .rev-card     { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1.1rem; transition: box-shadow .2s, transform .2s; }
+    .rev-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .rev-prod   { font-size: .72rem; font-weight: 700; color: var(--crimson); margin-bottom: .35rem; }
+    .rev-head   { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: .4rem; }
+    .rev-name   { font-size: .78rem; font-weight: 700; color: var(--ink); }
+    .rev-date   { font-size: .72rem; color: var(--mid); }
+    .rev-text   { font-size: .82rem; color: var(--ink2); line-height: 1.55; margin-top: .3rem; }
+    .rev-tag    { display: inline-block; margin-top: .4rem; background: var(--crimson-light); color: var(--crimson); border-radius: 4px; padding: .12rem .5rem; font-size: .7rem; font-weight: 500; }
 
-    /* MODAL */
-    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(5px);z-index:300;align-items:center;justify-content:center}
-    .modal-bg.open{display:flex;animation:fadeIn .2s}
-    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    .modal{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.75rem;width:min(520px,95vw);max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.18);animation:slideUpMd .28s ease}
-    @keyframes slideUpMd{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-    .modal h3{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;margin-bottom:1.25rem;color:var(--ink)}
-    .modal-actions{display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.35rem}
-    .mfg{display:flex;flex-direction:column;gap:.38rem;margin-bottom:.85rem}
-    .mfg label{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--mid)}
-    .mfg input,.mfg select,.mfg textarea{background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--ink);padding:.62rem .9rem;font-family:'Plus Jakarta Sans',sans-serif;font-size:.875rem;outline:none;width:100%;transition:border-color .18s,box-shadow .18s}
-    .mfg input:focus,.mfg select:focus,.mfg textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,115,119,.1)}
-    .mfg input::placeholder,.mfg textarea::placeholder{color:var(--muted)}
-    .mfg textarea{resize:vertical;min-height:76px}
-    .mfrow{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
-    .btn-cancel{background:transparent;border:1px solid var(--border);color:var(--mid);padding:.52rem 1.1rem;border-radius:7px;font-family:'Plus Jakarta Sans',sans-serif;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .18s}
-    .btn-cancel:hover{border-color:var(--ink2);color:var(--ink)}
+    /* PRODUCT MODAL (admin) */
+    .modal {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 1.75rem;
+      width: min(520px, 95vw); max-height: 90vh; overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      animation: slideUpMd .28s ease;
+    }
+    .modal h3 { font-family: Georgia, serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--ink); }
+    .modal-actions { display: flex; gap: .75rem; justify-content: flex-end; margin-top: 1.35rem; }
+    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--mid); padding: .52rem 1.1rem; border-radius: 7px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .76rem; font-weight: 600; cursor: pointer; transition: all .18s; }
+    .btn-cancel:hover { border-color: var(--ink2); color: var(--ink); }
 
     /* SETTINGS */
-    .settings-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem;margin-bottom:1.1rem;max-width:560px}
-    .settings-block h4{font-family:'Fraunces',serif;font-size:1rem;font-weight:700;margin-bottom:1.1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);color:var(--ink)}
-    .info-note{background:var(--teal-lt);border:1px solid var(--teal-md);border-radius:var(--r);padding:1.1rem;max-width:560px;margin-bottom:1rem}
-    .info-note h4{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:.4rem}
-    .info-note p{font-size:.82rem;color:var(--ink2);line-height:1.6}
-    .info-note code{color:var(--teal);font-family:monospace;font-size:.82rem;background:rgba(13,115,119,.1);padding:.1rem .3rem;border-radius:3px}
-    .save-feedback{display:inline-block;font-size:.75rem;color:var(--green);font-weight:600;margin-left:.75rem;opacity:0;transition:opacity .3s}
-    .save-feedback.show{opacity:1}
+    .settings-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; margin-bottom: 1.1rem; max-width: 560px; }
+    .settings-block h4 { font-family: Georgia, serif; font-size: 1rem; font-weight: 700; margin-bottom: 1.1rem; padding-bottom: .75rem; border-bottom: 1px solid var(--border); color: var(--ink); }
+    .info-note { background: var(--crimson-light); border: 1px solid var(--crimson-mid); border-radius: var(--r); padding: 1.1rem; max-width: 560px; margin-bottom: 1rem; }
+    .info-note h4 { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--crimson); margin-bottom: .4rem; }
+    .info-note p  { font-size: .82rem; color: var(--ink2); line-height: 1.6; }
+    .info-note code { color: var(--crimson); font-family: monospace; font-size: .82rem; background: rgba(139,26,26,.1); padding: .1rem .3rem; border-radius: 3px; }
+    .save-feedback { display: inline-block; font-size: .75rem; color: var(--green); font-weight: 700; margin-left: .75rem; opacity: 0; transition: opacity .3s; }
+    .save-feedback.show { opacity: 1; }
 
-    @media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:flex;flex-wrap:wrap;position:static;height:auto;padding:.4rem;border-right:none;border-bottom:1px solid var(--border)}.nav-item{border-left:none!important;border-bottom:2px solid transparent!important;padding:.5rem .85rem}.nav-item.active{border-bottom-color:var(--teal)!important;background:transparent}.nav-group-lbl{display:none}.overview-row{grid-template-columns:1fr}}
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: flex; flex-wrap: wrap; position: static; height: auto; padding: .4rem; border-right: none; border-bottom: 1px solid var(--border); }
+      .nav-item { border-left: none!important; border-bottom: 2px solid transparent!important; padding: .5rem .85rem; }
+      .nav-item.active { border-bottom-color: var(--crimson)!important; background: transparent; }
+      .nav-group-lbl { display: none; }
+      .overview-row  { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
@@ -173,13 +158,9 @@
 <!-- HEADER -->
 <header>
   <div style="display:flex;align-items:center;gap:.75rem">
-    <a class="logo" href="shop.html">
-      <div style="display:flex;align-items:center;gap:.5rem">
-        <div>
-          <div class="logo-name">pressfile<span>.</span></div>
-          <div class="logo-sub">by Teacher Ira</div>
-        </div>
-      </div>
+    <a class="logo-wrap" href="shop.html">
+      <div class="logo-name">pressfiles<span>.</span></div>
+      <div class="logo-sub">& Digital Services · by Teacher Ira</div>
     </a>
     <div class="admin-chip">Admin</div>
   </div>
@@ -191,6 +172,7 @@
 </header>
 
 <div class="layout">
+
   <!-- SIDEBAR -->
   <nav class="sidebar">
     <div class="nav-group-lbl">Overview</div>
@@ -219,10 +201,12 @@
       <div class="section-card">
         <div class="sc-top">
           <div class="sc-top-title">Recent Orders</div>
-          <button class="btn-outline" onclick="showPage('orders',document.querySelectorAll('.nav-item')[3])">View All</button>
+          <button class="btn-outline" onclick="showPage('orders',document.querySelectorAll('.nav-item')[2])">View All</button>
         </div>
-        <table><thead><tr><th>Order ID</th><th>Email</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
-        <tbody id="dash-orders"></tbody></table>
+        <table>
+          <thead><tr><th>Order ID</th><th>Email</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody id="dash-orders"></tbody>
+        </table>
       </div>
     </div>
 
@@ -233,19 +217,23 @@
         <button class="btn-primary" onclick="openProdModal()">+ Add Product</button>
       </div>
       <div class="section-card">
-        <table><thead><tr><th>Cover</th><th>Title</th><th>Type</th><th>Price</th><th>File</th><th>Reviews</th><th>Actions</th></tr></thead>
-        <tbody id="prods-body"></tbody></table>
+        <table>
+          <thead><tr><th>Cover</th><th>Title</th><th>Type</th><th>Price</th><th>File</th><th>Reviews</th><th>Actions</th></tr></thead>
+          <tbody id="prods-body"></tbody>
+        </table>
       </div>
     </div>
 
     <!-- ORDERS -->
     <div class="page" id="page-orders">
       <div class="pg-head">
-        <div><div class="pg-title">Orders</div><div class="pg-sub">All purchases & deliveries</div></div>
+        <div><div class="pg-title">Orders</div><div class="pg-sub">All purchases &amp; deliveries</div></div>
       </div>
       <div class="section-card">
-        <table><thead><tr><th>Order ID</th><th>Email</th><th>Items</th><th>Total</th><th>Status</th><th>Delivered</th><th>Date</th><th>Actions</th></tr></thead>
-        <tbody id="orders-body"></tbody></table>
+        <table>
+          <thead><tr><th>Order ID</th><th>Email</th><th>Items</th><th>Total</th><th>Status</th><th>Delivered</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="orders-body"></tbody>
+        </table>
       </div>
     </div>
 
@@ -261,17 +249,17 @@
     <!-- SETTINGS -->
     <div class="page" id="page-settings">
       <div class="pg-head">
-        <div><div class="pg-title">Settings</div><div class="pg-sub">Store config & integrations</div></div>
+        <div><div class="pg-title">Settings</div><div class="pg-sub">Store config &amp; integrations</div></div>
       </div>
       <div class="settings-block">
         <h4>Store Details</h4>
-        <div class="mfg"><label>Store Name</label><input type="text" value="Pressfile by Teacher Ira"/></div>
+        <div class="mfg"><label>Store Name</label><input type="text" value="Pressfiles by Teacher Ira"/></div>
         <div class="mfg"><label>Currency</label><input type="text" value="PHP (Philippine Peso ₱)" readonly style="opacity:.6"/></div>
         <div class="mfg"><label>From Email (for deliveries)</label><input type="email" placeholder="noreply@pressfile.store"/></div>
-        <div class="mfg"><label>Email Subject Line</label><input type="text" value="Your files from Pressfile are ready!"/></div>
+        <div class="mfg"><label>Email Subject Line</label><input type="text" value="Your files from Pressfiles are ready!"/></div>
       </div>
       <div class="settings-block">
-        <h4>Payment & Email Integrations</h4>
+        <h4>Payment &amp; Email Integrations</h4>
         <div class="mfg"><label>Stripe Publishable Key</label><input type="text" placeholder="pk_live_..."/></div>
         <div class="mfg"><label>Stripe Secret Key</label><input type="password" placeholder="sk_live_..."/></div>
         <div class="mfg"><label>Email API Key (SendGrid / SMTP)</label><input type="text" placeholder="SG...."/></div>
@@ -302,7 +290,12 @@
     <div class="mfg"><label>Title *</label><input type="text" id="pt" placeholder="e.g. The Hidden Crisis: Mental Health in Schools"/></div>
     <div class="mfg"><label>Description *</label><textarea id="pd" rows="3" placeholder="What's inside this file?"></textarea></div>
     <div class="mfrow">
-      <div class="mfg"><label>Type *</label><select id="ptype"><option value="journalism">📰 Journalism</option><option value="powerpoint">📊 PowerPoint</option></select></div>
+      <div class="mfg"><label>Type *</label>
+        <select id="ptype">
+          <option value="journalism">📰 Journalism</option>
+          <option value="powerpoint">📊 PowerPoint</option>
+        </select>
+      </div>
       <div class="mfg"><label>Price (₱) *</label><input type="number" id="pp" step="1" min="0" placeholder="650"/></div>
     </div>
     <div class="mfrow">
@@ -318,9 +311,9 @@
 </div>
 
 <script>
-const peso=n=>'₱'+Number(n).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2});
+const peso = n => '₱' + Number(n).toLocaleString('en-PH', {minimumFractionDigits:2,maximumFractionDigits:2});
 
-const CD={
+const CD = {
   1:{bg:'linear-gradient(145deg,#1b3a4b,#0d2233)'},
   2:{bg:'linear-gradient(145deg,#1a2744,#0f1e3a)'},
   3:{bg:'linear-gradient(145deg,#2d1b10,#5c3420)'},
@@ -328,21 +321,24 @@ const CD={
   5:{bg:'linear-gradient(145deg,#2a1a3a,#4a2060)'},
   6:{bg:'linear-gradient(145deg,#0f2535,#1a4060)'}
 };
-function tinyBook(p){
-  const d=CD[p.id]||CD[1];
-  return `<div class="t-book"><div style="width:100%;height:100%;background:${d.bg}"><div class="tb-inner"><div class="tb-t">${p.title.substring(0,18)}</div><div class="tb-b">pressfile</div></div></div></div>`;
+function tinyBook(p) {
+  const d = CD[p.id]||CD[1];
+  return `<div class="t-book"><div style="width:100%;height:100%;background:${d.bg}"><div class="tb-inner"><div class="tb-t">${p.title.substring(0,18)}</div><div class="tb-b">pressfiles</div></div></div></div>`;
 }
-function tpCover(p){const d=CD[p.id]||CD[1];return `<div class="tp-cover" style="background:${d.bg}"><div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:rgba(0,0,0,.18);z-index:2"></div></div>`;}
+function tpCover(p) {
+  const d = CD[p.id]||CD[1];
+  return `<div class="tp-cover" style="background:${d.bg}"><div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:rgba(0,0,0,.18);z-index:2"></div></div>`;
+}
 
-const DEFAULT_PRODUCTS=[
-  {id:1,title:"The Hidden Crisis: Mental Health in Schools",description:"In-depth investigative piece on mental health in public schools.",type:"journalism",price:650,fileName:"mental_health_schools.zip",fileSize:"2.4 MB",pages:"18 pages"},
-  {id:2,title:"Tech Giants & Antitrust: A Deep Dive",description:"Feature examining Silicon Valley monopolies.",type:"journalism",price:850,fileName:"tech_antitrust.zip",fileSize:"1.8 MB",pages:"24 pages"},
-  {id:3,title:"Climate Migration: The Untold Story",description:"Long-form field reporting on climate refugees.",type:"journalism",price:1000,fileName:"climate_migration.zip",fileSize:"5.1 MB",pages:"32 pages"},
-  {id:4,title:"Executive Leadership Masterclass Deck",description:"Professional 45-slide C-suite training deck.",type:"powerpoint",price:1400,fileName:"leadership_deck.zip",fileSize:"12.3 MB",pages:"45 slides"},
-  {id:5,title:"Startup Pitch Deck Template Pro",description:"Investor-ready 30-slide pitch template.",type:"powerpoint",price:1950,fileName:"pitch_deck_pro.zip",fileSize:"8.7 MB",pages:"30 slides"},
-  {id:6,title:"Data Journalism Fundamentals",description:"Guide to data-driven storytelling with Excel templates.",type:"powerpoint",price:1200,fileName:"data_journalism.zip",fileSize:"15.2 MB",pages:"55 slides"}
+const DEFAULT_PRODUCTS = [
+  {id:1,title:'The Hidden Crisis: Mental Health in Schools',description:'In-depth investigative piece on mental health in public schools.',type:'journalism',price:650,fileName:'mental_health_schools.zip',fileSize:'2.4 MB',pages:'18 pages'},
+  {id:2,title:'Tech Giants & Antitrust: A Deep Dive',description:'Feature examining Silicon Valley monopolies.',type:'journalism',price:850,fileName:'tech_antitrust.zip',fileSize:'1.8 MB',pages:'24 pages'},
+  {id:3,title:'Climate Migration: The Untold Story',description:'Long-form field reporting on climate refugees.',type:'journalism',price:1000,fileName:'climate_migration.zip',fileSize:'5.1 MB',pages:'32 pages'},
+  {id:4,title:'Executive Leadership Masterclass Deck',description:'Professional 45-slide C-suite training deck.',type:'powerpoint',price:1400,fileName:'leadership_deck.zip',fileSize:'12.3 MB',pages:'45 slides'},
+  {id:5,title:'Startup Pitch Deck Template Pro',description:'Investor-ready 30-slide pitch template.',type:'powerpoint',price:1950,fileName:'pitch_deck_pro.zip',fileSize:'8.7 MB',pages:'30 slides'},
+  {id:6,title:'Data Journalism Fundamentals',description:'Guide to data-driven storytelling with Excel templates.',type:'powerpoint',price:1200,fileName:'data_journalism.zip',fileSize:'15.2 MB',pages:'55 slides'}
 ];
-const DEFAULT_REVIEWS={
+const DEFAULT_REVIEWS = {
   1:[{name:'Aaliya M.',stars:5,text:'Incredibly well-researched. Used in my journalism class — students were blown away.',tag:'classroom ready',date:'Mar 2025'},{name:'Priya T.',stars:5,text:'Made me rethink how I write investigative features.',tag:'inspiring',date:'Feb 2025'}],
   2:[{name:'Fatima A.',stars:5,text:'Perfect for media law research. Nuanced antitrust analysis.',tag:'academic',date:'Mar 2025'},{name:'Leila C.',stars:4,text:'Dense but rewarding. EU section insightful.',tag:'detailed',date:'Feb 2025'}],
   3:[{name:'Nadia S.',stars:5,text:'The field reporting is visceral and human.',tag:'powerful',date:'Apr 2025'},{name:'Blessing O.',stars:5,text:'Assigned for Earth Day. Accessible without dumbing down.',tag:'classroom',date:'Mar 2025'}],
@@ -351,41 +347,46 @@ const DEFAULT_REVIEWS={
   6:[{name:'Joy F.',stars:5,text:'Excel templates alone are worth 10x the price.',tag:'essential',date:'Apr 2025'},{name:'Morgan A.',stars:5,text:'Zero data skills before this. Now I make charts for every lesson.',tag:'beginner-friendly',date:'Mar 2025'}]
 };
 
-function getProds(){const s=localStorage.getItem('pressroom_products');return s?JSON.parse(s):DEFAULT_PRODUCTS;}
-function saveProds(p){localStorage.setItem('pressroom_products',JSON.stringify(p));}
-function getOrders(){return JSON.parse(localStorage.getItem('pressroom_orders')||'[]');}
-function getRevs(id){const s=localStorage.getItem(`reviews_${id}`);return s?JSON.parse(s):(DEFAULT_REVIEWS[id]||[]);}
-function allRevs(){return getProds().flatMap(p=>getRevs(p.id).map(r=>({...r,productId:p.id,productTitle:p.title})));}
-function avgR(revs){return revs.length?revs.reduce((s,r)=>s+r.stars,0)/revs.length:0;}
-function starStr(n){return '★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n));}
+function getProds()  { const s=localStorage.getItem('pressroom_products'); return s?JSON.parse(s):DEFAULT_PRODUCTS; }
+function saveProds(p){ localStorage.setItem('pressroom_products',JSON.stringify(p)); }
+function getOrders() { return JSON.parse(localStorage.getItem('pressroom_orders')||'[]'); }
+function getRevs(id) { const s=localStorage.getItem(`reviews_${id}`); return s?JSON.parse(s):(DEFAULT_REVIEWS[id]||[]); }
+function allRevs()   { return getProds().flatMap(p=>getRevs(p.id).map(r=>({...r,productId:p.id,productTitle:p.title}))); }
+function avgR(revs)  { return revs.length?revs.reduce((s,r)=>s+r.stars,0)/revs.length:0; }
+function starStr(n)  { return '★'.repeat(Math.round(n))+'☆'.repeat(5-Math.round(n)); }
 
-function showPage(name,el){
+function showPage(name, el) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
-  if(el)el.classList.add('active');
+  if (el) el.classList.add('active');
   ({dashboard:renderDash,products:renderProds,orders:renderOrders,reviews:renderRevs})[name]?.();
 }
 
-function renderDash(){
-  const orders=getOrders();const prods=getProds();
+function renderDash() {
+  const orders=getOrders(); const prods=getProds();
   const rev=orders.reduce((s,o)=>s+Number(o.total),0);
-  const allR=allRevs();const avg=avgR(allR);
+  const allR=allRevs(); const avg=avgR(allR);
   document.getElementById('orders-badge').textContent=orders.length;
   const bars=[12,8,18,14,22,16,24];
   document.getElementById('stats-row').innerHTML=`
-    <div class="scard" style="--sc-color:var(--teal)"><div class="sc-lbl">Total Revenue</div><div class="sc-val teal">${peso(rev)}</div><div class="sc-sub">All time</div><div class="mini-chart">${bars.map(h=>`<div class="mc-bar" style="height:${(h/24)*100}%;background:rgba(13,115,119,.35)"></div>`).join('')}</div></div>
-    <div class="scard" style="--sc-color:var(--amber)"><div class="sc-lbl">Total Orders</div><div class="sc-val amber">${orders.length}</div><div class="sc-sub">All time</div></div>
-    <div class="scard" style="--sc-color:#e8a030"><div class="sc-lbl">Avg. Rating</div><div class="sc-val" style="color:#c2750a">${avg.toFixed(1)}★</div><div class="sc-sub">${allR.length} reviews total</div></div>
-    <div class="scard" style="--sc-color:var(--green)"><div class="sc-lbl">Products Live</div><div class="sc-val green">${prods.length}</div><div class="sc-sub">In your store</div></div>`;
+    <div class="scard" style="--sc-color:var(--crimson)"><div class="sc-lbl">Total Revenue</div><div class="sc-val cr">${peso(rev)}</div><div class="sc-sub">All time</div>
+      <div class="mini-chart">${bars.map(h=>`<div class="mc-bar" style="height:${(h/24)*100}%;background:rgba(139,26,26,.35)"></div>`).join('')}</div>
+    </div>
+    <div class="scard" style="--sc-color:var(--gold)"><div class="sc-lbl">Total Orders</div><div class="sc-val am">${orders.length}</div><div class="sc-sub">All time</div></div>
+    <div class="scard" style="--sc-color:#c2750a"><div class="sc-lbl">Avg. Rating</div><div class="sc-val" style="color:var(--gold)">${avg.toFixed(1)}★</div><div class="sc-sub">${allR.length} reviews total</div></div>
+    <div class="scard" style="--sc-color:var(--green)"><div class="sc-lbl">Products Live</div><div class="sc-val gr">${prods.length}</div><div class="sc-sub">In your store</div></div>`;
+
   const salesMap={};
   orders.forEach(o=>(o.items||[]).forEach(i=>{salesMap[i.id]=(salesMap[i.id]||0)+1;}));
   const sorted=[...prods].sort((a,b)=>(salesMap[b.id]||0)-(salesMap[a.id]||0));
   document.getElementById('top-prods-list').innerHTML=sorted.slice(0,5).map((p,i)=>`
-    <div class="tp-row">${'<div class="tp-rank">'+(i+1)+'</div>'}${tpCover(p)}
+    <div class="tp-row">
+      <div class="tp-rank">${i+1}</div>${tpCover(p)}
       <div class="tp-name">${p.title.substring(0,30)}…</div>
       <div class="tp-price">${peso(p.price)}</div>
     </div>`).join('')||'<div style="font-size:.82rem;color:var(--mid);padding:.5rem 0">No products yet</div>';
+
   const recR=allRevs().slice(0,4);
   document.getElementById('recent-revs-list').innerHTML=recR.length?recR.map(r=>`
     <div class="tp-row" style="flex-direction:column;align-items:flex-start;gap:.15rem">
@@ -395,6 +396,7 @@ function renderDash(){
       </div>
       <div style="font-size:.72rem;color:var(--mid)">${r.productTitle?.substring(0,32)}…</div>
     </div>`).join(''):'<div style="font-size:.82rem;color:var(--mid);padding:.5rem 0">No reviews yet</div>';
+
   const tb=document.getElementById('dash-orders');
   if(!orders.length){tb.innerHTML='<tr><td colspan="6"><div class="empty-table">No orders yet — share your store!</div></td></tr>';return;}
   tb.innerHTML=orders.slice().reverse().slice(0,6).map(o=>`
@@ -402,29 +404,33 @@ function renderDash(){
       <td style="font-family:monospace;font-size:.7rem;color:var(--muted)">${o.id}</td>
       <td>${o.email}</td>
       <td style="color:var(--mid)">${(o.items||[]).length} file${(o.items||[]).length!==1?'s':''}</td>
-      <td style="font-family:'Fraunces',serif;font-size:1rem">${peso(o.total)}</td>
+      <td style="font-family:Georgia,serif;font-size:1rem">${peso(o.total)}</td>
       <td><span class="badge badge-paid">✓ Paid</span></td>
       <td style="color:var(--mid)">${new Date(o.date).toLocaleDateString('en-PH')}</td>
     </tr>`).join('');
 }
 
-function renderProds(){
-  const prods=getProds();const tb=document.getElementById('prods-body');
+function renderProds() {
+  const prods=getProds(); const tb=document.getElementById('prods-body');
   if(!prods.length){tb.innerHTML='<tr><td colspan="7"><div class="empty-table">No products yet. Add one!</div></td></tr>';return;}
   tb.innerHTML=prods.map(p=>{
-    const revs=getRevs(p.id);const avg=avgR(revs);
+    const revs=getRevs(p.id); const avg=avgR(revs);
     return `<tr>
       <td>${tinyBook(p)}</td>
       <td style="max-width:200px"><span style="font-weight:600;color:var(--ink)">${p.title}</span></td>
       <td><span class="badge ${p.type==='journalism'?'badge-j':'badge-p'}">${p.type}</span></td>
-      <td style="font-family:'Fraunces',serif;font-size:1rem">${peso(p.price)}</td>
+      <td style="font-family:Georgia,serif;font-size:1rem">${peso(p.price)}</td>
       <td style="font-family:monospace;font-size:.7rem;color:var(--muted)">${p.fileName}</td>
       <td><span class="star-disp" style="font-size:.68rem">${starStr(avg)}</span> <span style="font-size:.72rem;color:var(--mid)">(${revs.length})</span></td>
-      <td><button class="act-btn" onclick="editProd(${p.id})">Edit</button><button class="act-btn del" onclick="delProd(${p.id})">Delete</button></td>
-    </tr>`;}).join('');
+      <td>
+        <button class="act-btn" onclick="editProd(${p.id})">Edit</button>
+        <button class="act-btn del" onclick="delProd(${p.id})">Delete</button>
+      </td>
+    </tr>`;
+  }).join('');
 }
 
-function renderOrders(){
+function renderOrders() {
   const orders=getOrders();
   document.getElementById('orders-badge').textContent=orders.length;
   const tb=document.getElementById('orders-body');
@@ -434,21 +440,21 @@ function renderOrders(){
       <td style="font-family:monospace;font-size:.7rem;color:var(--muted)">${o.id}</td>
       <td>${o.email}</td>
       <td style="font-size:.8rem;color:var(--mid)">${(o.items||[]).slice(0,2).map(i=>i.title?.substring(0,15)+'…').join(', ')}</td>
-      <td style="font-family:'Fraunces',serif;font-size:1rem">${peso(o.total)}</td>
+      <td style="font-family:Georgia,serif;font-size:1rem">${peso(o.total)}</td>
       <td><span class="badge badge-paid">✓ Paid</span></td>
       <td><span class="badge ${o.delivered?'badge-sent':'badge-pending'}">${o.delivered?'✓ Sent':'Pending'}</span></td>
       <td style="color:var(--mid)">${new Date(o.date).toLocaleDateString('en-PH')}</td>
       <td><button class="resend-btn" onclick="resend('${o.email}')">Resend</button></td>
     </tr>`).join('');
 }
-function resend(email){alert('📬 Resending files to: '+email+'\n\nIn production: POST /api/resend-order');}
+function resend(email) { alert('📬 Resending files to: '+email+'\n\nIn production: POST /api/resend-order'); }
 
-function renderRevs(){
-  const all=allRevs();const avg=avgR(all);const five=all.filter(r=>r.stars===5).length;
+function renderRevs() {
+  const all=allRevs(); const avg=avgR(all); const five=all.filter(r=>r.stars===5).length;
   document.getElementById('rev-stats').innerHTML=`
-    <div class="scard" style="--sc-color:#e8a030"><div class="sc-lbl">Avg. Rating</div><div class="sc-val" style="color:var(--amber)">${avg.toFixed(1)}★</div><div class="sc-sub">Across all products</div></div>
-    <div class="scard" style="--sc-color:var(--amber)"><div class="sc-lbl">Total Reviews</div><div class="sc-val amber">${all.length}</div><div class="sc-sub">From real buyers</div></div>
-    <div class="scard" style="--sc-color:var(--green)"><div class="sc-lbl">5-Star Reviews</div><div class="sc-val green">${five}</div><div class="sc-sub">${all.length?Math.round(five/all.length*100):0}% of total</div></div>`;
+    <div class="scard" style="--sc-color:#c2750a"><div class="sc-lbl">Avg. Rating</div><div class="sc-val" style="color:var(--gold)">${avg.toFixed(1)}★</div><div class="sc-sub">Across all products</div></div>
+    <div class="scard" style="--sc-color:var(--gold)"><div class="sc-lbl">Total Reviews</div><div class="sc-val am">${all.length}</div><div class="sc-sub">From real buyers</div></div>
+    <div class="scard" style="--sc-color:var(--green)"><div class="sc-lbl">5-Star Reviews</div><div class="sc-val gr">${five}</div><div class="sc-sub">${all.length?Math.round(five/all.length*100):0}% of total</div></div>`;
   document.getElementById('reviews-grid').innerHTML=all.length?all.map(r=>`
     <div class="rev-card">
       <div class="rev-prod">✦ ${r.productTitle?.substring(0,38)}${r.productTitle?.length>38?'…':''}</div>
@@ -461,39 +467,48 @@ function renderRevs(){
     </div>`).join(''):'<div class="empty-table" style="grid-column:1/-1">No reviews yet</div>';
 }
 
-function openProdModal(){
+/* PRODUCT MODAL */
+function openProdModal() {
   document.getElementById('modal-title').textContent='Add Product';
   document.getElementById('eid').value='';
   ['pt','pd','pf','ps','pg'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('pp').value='';document.getElementById('ptype').value='journalism';
+  document.getElementById('pp').value=''; document.getElementById('ptype').value='journalism';
   document.getElementById('prod-modal').classList.add('open');
 }
-function editProd(id){
-  const p=getProds().find(x=>x.id===id);if(!p)return;
+function editProd(id) {
+  const p=getProds().find(x=>x.id===id); if(!p) return;
   document.getElementById('modal-title').textContent='Edit Product';
   document.getElementById('eid').value=id;
-  document.getElementById('pt').value=p.title;document.getElementById('pd').value=p.description;
-  document.getElementById('ptype').value=p.type;document.getElementById('pp').value=p.price;
-  document.getElementById('pf').value=p.fileName;document.getElementById('ps').value=p.fileSize;
+  document.getElementById('pt').value=p.title; document.getElementById('pd').value=p.description;
+  document.getElementById('ptype').value=p.type; document.getElementById('pp').value=p.price;
+  document.getElementById('pf').value=p.fileName; document.getElementById('ps').value=p.fileSize;
   document.getElementById('pg').value=p.pages;
   document.getElementById('prod-modal').classList.add('open');
 }
-function closeProdModalClick(e){if(e.target===document.getElementById('prod-modal'))document.getElementById('prod-modal').classList.remove('open');}
-function saveProd(){
-  const title=document.getElementById('pt').value.trim();const desc=document.getElementById('pd').value.trim();const price=parseFloat(document.getElementById('pp').value);
+function closeProdModalClick(e) { if(e.target===document.getElementById('prod-modal')) document.getElementById('prod-modal').classList.remove('open'); }
+function saveProd() {
+  const title=document.getElementById('pt').value.trim();
+  const desc=document.getElementById('pd').value.trim();
+  const price=parseFloat(document.getElementById('pp').value);
   if(!title||!desc||isNaN(price)){alert('Please fill in title, description and price.');return;}
-  const prods=getProds();const eid=parseInt(document.getElementById('eid').value);
-  const prod={id:eid||Date.now(),title,description:desc,type:document.getElementById('ptype').value,price,fileName:document.getElementById('pf').value.trim()||title.toLowerCase().replace(/\s+/g,'_')+'.zip',fileSize:document.getElementById('ps').value.trim()||'N/A',pages:document.getElementById('pg').value.trim()||''};
+  const prods=getProds(); const eid=parseInt(document.getElementById('eid').value);
+  const prod={
+    id: eid||Date.now(), title, description:desc,
+    type: document.getElementById('ptype').value, price,
+    fileName: document.getElementById('pf').value.trim()||title.toLowerCase().replace(/\s+/g,'_')+'.zip',
+    fileSize: document.getElementById('ps').value.trim()||'N/A',
+    pages: document.getElementById('pg').value.trim()||''
+  };
   if(eid){const idx=prods.findIndex(p=>p.id===eid);if(idx!==-1)prods[idx]=prod;}else prods.push(prod);
-  saveProds(prods);document.getElementById('prod-modal').classList.remove('open');renderProds();
+  saveProds(prods); document.getElementById('prod-modal').classList.remove('open'); renderProds();
 }
-function delProd(id){
-  if(!confirm('Delete this product? This cannot be undone.'))return;
-  saveProds(getProds().filter(p=>p.id!==id));renderProds();
+function delProd(id) {
+  if(!confirm('Delete this product? This cannot be undone.')) return;
+  saveProds(getProds().filter(p=>p.id!==id)); renderProds();
 }
-function saveSetting(){
+function saveSetting() {
   const fb=document.getElementById('save-feedback');
-  fb.classList.add('show');setTimeout(()=>fb.classList.remove('show'),2500);
+  fb.classList.add('show'); setTimeout(()=>fb.classList.remove('show'),2500);
 }
 
 renderDash();
