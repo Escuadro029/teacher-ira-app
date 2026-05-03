@@ -924,12 +924,12 @@ document.getElementById('ttrack').innerHTML = [...tI,...tI].map(t=>`<span${t==='
 
 /* ── COVER DESIGNS ── */
 const CD = {
-  1: { bg: 'linear-gradient(145deg,#5a0e0e,#1a0505)', label: 'Journalism', color: '#f9d9cc' }, /* pale blush on darkest red */
-  2: { bg: 'linear-gradient(145deg,#7a1515,#1a0a0a)', label: 'Feature',    color: '#f2b3a0' }, /* light salmon on dark crimson */
-  3: { bg: 'linear-gradient(145deg,#b03020,#5a0e0e)', label: 'Long-Form',  color: '#fde8e8' }, /* soft white-pink on brick red */
-  4: { bg: 'linear-gradient(145deg,#c0392b,#7a1515)', label: 'Slides',     color: '#f9cfc0' }, /* light peach on classic red */
-  5: { bg: 'linear-gradient(145deg,#e05c4b,#b03020)', label: 'Template',   color: '#fff0ee' }, /* near white on coral red */
-  6: { bg: 'linear-gradient(145deg,#e88070,#c0392b)', label: 'Guide',      color: '#5a0e0e' }, /* darkest red on lightest cover */
+  1: { bg: 'linear-gradient(145deg,#1a0505,#0a0101)', label: 'Journalism' }, /* near black → pure black red */
+  2: { bg: 'linear-gradient(145deg,#2d0808,#1a0505)', label: 'Essay & Article Writing'    }, /* very dark maroon → near black */
+  3: { bg: 'linear-gradient(145deg,#4a0a0a,#2d0808)', label: 'School Paper Layout'  }, /* deep maroon → very dark */
+  4: { bg: 'linear-gradient(145deg,#5a0e0e,#3d0909)', label: 'Lesson Plans'     }, /* dark maroon → deep maroon */
+  5: { bg: 'linear-gradient(145deg,#6b1111,#4a0a0a)', label: 'PPT Lessons'   }, /* maroon → dark maroon */
+  6: { bg: 'linear-gradient(145deg,#7a1515,#5a0e0e)', label: 'Canva Templates'      } /* rich maroon → maroon */
 };
 function buildCover(p, w='100%', h='100%') {
   const d = CD[p.id]||CD[1];

@@ -1,8 +1,92 @@
 [
-  {"id":1,"title":"Column Writing Factsheets","description":"2026 Ready-made Contest Factsheets Column Writing Ready-made factsheets where students write full column articles using various styles and 2026 local and worldwide issues. Includes PPT lecture, PDF lecture, and answer keys.","type":"journalism","price":400.00,"fileName":"column_writing_factsheets_2026.zip","fileSize":"2.4 MB","pages":"18 pages"},
-  {"id":2,"title":"Copyediting and Headline Writing Factsheets","description":"2026 Ready-made Contest Factsheets Copyediting and Headline Writing Ready-made factsheets for editing tasks and headline writing using APA-style rules, grammar, symbols, and different types of headlines. Includes PPT lecture, PDF lecture, drills, and answer keys.","type":"journalism","price":400,"fileName":"copyediting_headline_writing_factsheets_2026.zip","fileSize":"1.8 MB","pages":"24 pages"},
-  {"id":3,"title":"Editorial Writing Factsheets","description":"2026 Ready-made Contest Factsheets Editorial Writing eady-made factsheets where students write full editorial articles based on 2026 issues. Includes PPT lecture, PDF lecture, and answer keys.","type":"journalism","price":1000,"fileName":"climate_migration.zip","fileSize":"5.1 MB","pages":"32 pages"},
-  {"id":4,"title":"Executive Leadership Masterclass Deck","description":"Professional 45-slide deck for C-suite training. Covers decision frameworks, team dynamics & strategic communication.","type":"powerpoint","price":1400,"fileName":"leadership_deck.zip","fileSize":"12.3 MB","pages":"45 slides"},
-  {"id":5,"title":"Startup Pitch Deck Template Pro","description":"Polished investor-ready pitch template with 30 slides, editable charts, and built-in storytelling structure.","type":"powerpoint","price":1950,"fileName":"pitch_deck_pro.zip","fileSize":"8.7 MB","pages":"30 slides"},
-  {"id":6,"title":"Data Journalism Fundamentals","description":"A guide to data-driven storytelling with Excel and chart templates for journalists and communicators.","type":"powerpoint","price":1200,"fileName":"data_journalism.zip","fileSize":"15.2 MB","pages":"55 slides"}
+  {
+    "id": 1,
+    "title": "Column Writing Factsheets",
+    "description": "2026 Ready-made Contest Factsheets Column Writing Ready-made factsheets where students write full column articles using various styles and 2026 local and worldwide issues. Includes PPT lecture, PDF lecture, and answer keys.",
+    "type": "journalism",
+    "price": 400,
+    "fileName": "column_writing_factsheets_2026.zip",
+    "fileSize": "2.4 MB",
+    "pages": "18 pages"
+  },
+  {
+    "id": 2,
+    "title": "Copyediting and Headline Writing Factsheets",
+    "description": "2026 Ready-made Contest Factsheets Copyediting and Headline Writing Ready-made factsheets for editing tasks and headline writing using APA-style rules, grammar, symbols, and different types of headlines. Includes PPT lecture, PDF lecture, drills, and answer keys.",
+    "type": "journalism",
+    "price": 400,
+    "fileName": "copyediting_headline_writing_factsheets_2026.zip",
+    "fileSize": "1.8 MB",
+    "pages": "24 pages"
+  },
+  {
+    "id": 3,
+    "title": "Editorial Writing Factsheets",
+    "description": "2026 Ready-made Contest Factsheets Editorial Writing eady-made factsheets where students write full editorial articles based on 2026 issues. Includes PPT lecture, PDF lecture, and answer keys.",
+    "type": "journalism",
+    "price": 400,
+    "fileName": "editorial_writing_factsheets_2026.zip",
+    "fileSize": "5.1 MB",
+    "pages": "32 pages"
+  },
+  {
+    "id": 4,
+    "title": "News Writing Factsheets",
+    "description": "2026 Ready-made Contest Factsheets News Writing Ready-made factsheets where students write complete news articles using 2026 current events. Includes PPT lecture, PDF lecture, and answer keys.",
+    "type": "journalism",
+    "price": 400,
+    "fileName": "news_writing_factsheets_2026.zip",
+    "fileSize": "12.3 MB",
+    "pages": "45 slides"
+  },
+  {
+    "id": 5,
+    "title": "Pagsulat ng Agham at Teknolohiya Factsheets",
+    "description": "2026 Ready-made Contest Factsheets Pagsulat ng Agham at Teknolohiya Ready-made factsheets kung saan ang mga mag-aaral ay magsusulat ng buong artikulo tungkol sa agham at teknolohiya gamit ang 2026 worldwide issues. May kasamang PPT lecture, PDF lecture, at answer keys.",
+    "type": "journalism",
+    "price": 400,
+    "fileName": "pagsulat_ng_agham_at_teknolohiya_factsheets_2026.zip",
+    "fileSize": "8.7 MB",
+    "pages": "30 slides"
+  },
+  {
+    "id": 6,
+    "title": "Pagsulat ng Balita Factsheets",
+    "description": "2026 Ready-made Contest Factsheets Pagsulat ng Balita Ready-made factsheets kung saan ang mga mag-aaral ay magsusulat ng kumpletong balitang artikulo gamit ang 2026 issues. May kasamang PPT lecture, PDF lecture, at answer keys.",
+    "type": "journalism",
+    "price": 400,
+    "fileName": "pagsulat_ng_balita_factsheets_2026.zip",
+    "fileSize": "15.2 MB",
+    "pages": "55 slides"
+  },
+  {
+    "id": 7,
+    "title": "Pagsulat ng Editoryal Factsheets",
+    "description": "2026 Ready-made Contest Factsheets Pagsulat ng Editoryal Ready-made factsheets kung saan ang mga mag-aaral ay magsusulat ng buong editorial articles batay sa 2026 issues. May kasamang PPT lecture, PDF lecture, at answer keys.",
+    "type": "journalism",
+    "price": 400,
+    "fileName": "pagsulat_ng_editoryal_factsheets_2026.zip",
+    "fileSize": "15.2 MB",
+    "pages": "55 slides"
+  },
+  {
+    "id": 8,
+    "title": "Pagsulat ng Lathalain Factsheets",
+    "description": "2026 Ready-made Contest Factsheets Pagsulat ng Lathalain Ready-made factsheets kung saan ang mga mag-aaral ay magsusulat ng feature articles gamit ang storytelling at 2026 human-interest topics. May kasamang PPT lecture, PDF lecture, at answer keys.",
+    "type": "journalism",
+    "price": 400,
+    "fileName": "pagsulat_ng_lathalain_factsheets_2026.zip",
+    "fileSize": "15.2 MB",
+    "pages": "55 slides"
+  },
+  {
+    "id": 9,
+    "title": "Pagwawasto ng Sipi at Pag-uulo ng Balita Factsheets",
+    "description": "2026 Ready-made Contest Factsheets Pagwawasto ng Sipi at Pag-uulo ng Balita Ready-made factsheets para sa copyediting, grammar correction, at headline writing outputs. May kasamang PPT lecture, PDF lecture, at answer keys.",
+    "type": "journalism",
+    "price": 400,
+    "fileName": "pagwawasto_ng_sipi_at_paguulo_ng_balita_factsheets_20.zip",
+    "fileSize": "15.2 MB",
+    "pages": "55 slides"
+  }
 ]
