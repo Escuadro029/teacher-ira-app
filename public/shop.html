@@ -710,13 +710,17 @@
 <!-- HEADER -->
 <header>
 <a href="shop.html">
-<img src="/assets/logo/pressfilesv2.gif" alt="Pressfiles by Teacher Ira" style="height:150px;width:auto;display:block;"/>
+<img src="/assets/logo/pressfilesv2.gif" alt="Pressfiles by Teacher Ira" style="height:80px;width:auto;display:block;"/>
 </a>
   <div class="header-right">
     <a class="hlink" href="admin.html">Admin</a>
-    <button class="cart-btn" onclick="openCart()">
-      🛒 Cart <span id="cart-count">0</span>
-    </button>
+  <button class="cart-btn" onclick="openCart()">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+  </svg>
+  Cart <span id="cart-count">0</span>
+</button>
   </div>
 </header>
 
@@ -732,7 +736,7 @@
     </div>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-v">6+</div><div class="hstat-l">Digital Files</div></div>
+    <div class="hstat"><div class="hstat-v">100+</div><div class="hstat-l">Digital Files</div></div>
     <div class="hstat"><div class="hstat-v">⚡</div><div class="hstat-l">Instant Delivery</div></div>
     <div class="hstat"><div class="hstat-v">4.9★</div><div class="hstat-l">Avg. Rating</div></div>
     <div class="hstat"><div class="hstat-v">.zip</div><div class="hstat-l">Ready to Open</div></div>
@@ -914,7 +918,7 @@
 const peso = n => '₱' + Number(n).toLocaleString('en-PH', {minimumFractionDigits:2,maximumFractionDigits:2});
 
 /* ── TICKER ── */
-const tI = ['📰 Journalism Articles','·','📊 Presentation Decks','·','⚡ Instant ZIP Delivery','·','⭐ 4.9 Average Rating','·','🎓 For Educators & Students','·','pressfiles & Digital Services','·'];
+const tI = ['📰 Journalism Files ','·','📊 Essay & Article Writing','·','⚡ School Paper Layout','·','⭐ Lesson Plans','·','🎓 PPT Lessons','·','Canva Templates','·','Layout & Design Services','·','Logo Design','·','Website Development Services','·'];
 document.getElementById('ttrack').innerHTML = [...tI,...tI].map(t=>`<span${t==='·'?' class="sep"':''}>${t}</span>`).join('');
 
 /* ── COVER DESIGNS ── */
