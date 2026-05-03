@@ -11,9 +11,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
     <style>
-        /* ── SHOP-SPECIFIC STYLES ── */
-
-        /* HERO */
+        /* ── HERO ── */
         .hero {
             padding: 3.5rem clamp(1.5rem, 5vw, 3rem) 3rem;
             border-bottom: 1px solid var(--border);
@@ -51,7 +49,7 @@
 
         .hero-title em {
             font-style: italic;
-            color: var(--crimson);
+            color: #000000;
         }
 
         .hero-desc {
@@ -97,7 +95,7 @@
             font-weight: 500;
         }
 
-        /* SECTION HEAD */
+        /* ── SECTION HEAD ── */
         .section-head {
             display: flex;
             justify-content: space-between;
@@ -145,7 +143,7 @@
             border-color: var(--crimson);
         }
 
-        /* CAROUSEL */
+        /* ── CAROUSEL ── */
         .c-outer {
             padding: 1rem clamp(1.5rem, 5vw, 3rem) 1.5rem;
             border-bottom: 1px solid var(--border);
@@ -182,7 +180,7 @@
             cursor: grabbing;
         }
 
-        /* BOOK CARD */
+        /* ── BOOK CARD ── */
         .book-card {
             flex: 0 0 185px;
             display: flex;
@@ -238,7 +236,6 @@
             z-index: 10;
         }
 
-        /* Card info below book */
         .card-info {
             padding: 0 .1rem;
         }
@@ -254,16 +251,6 @@
             text-transform: uppercase;
             letter-spacing: .06em;
             margin-bottom: .38rem;
-        }
-
-        .ctype-badge.j {
-            background: var(--crimson-light);
-            color: var(--crimson);
-        }
-
-        .ctype-badge.p {
-            background: var(--gold-lt);
-            color: var(--gold);
         }
 
         .c-card-title {
@@ -320,7 +307,50 @@
             background: var(--green);
         }
 
-        /* FILTER BAR */
+        /* ── TYPE BADGE COLORS (all variants) ── */
+        .ctype-badge.j,
+        .pcard-type.j,
+        .modal-type-badge.j {
+            background: var(--crimson-light);
+            color: var(--crimson);
+        }
+
+        .ctype-badge.e,
+        .pcard-type.e,
+        .modal-type-badge.e {
+            background: #f0f4ff;
+            color: #3b5bdb;
+        }
+
+        .ctype-badge.s,
+        .pcard-type.s,
+        .modal-type-badge.s {
+            background: #fff8e6;
+            color: #c2750a;
+        }
+
+        .ctype-badge.l,
+        .pcard-type.l,
+        .modal-type-badge.l {
+            background: #e8f5ed;
+            color: #1a6b3c;
+        }
+
+        .ctype-badge.ppt,
+        .pcard-type.ppt,
+        .modal-type-badge.ppt {
+            background: #fff0f0;
+            color: #c0392b;
+        }
+
+        .ctype-badge.c,
+        .pcard-type.c,
+        .modal-type-badge.c {
+            background: #f3e8ff;
+            color: #7c3aed;
+        }
+
+        /* ── FILTER BAR ── */
         .filter-bar {
             padding: .85rem clamp(1.5rem, 5vw, 3rem);
             display: flex;
@@ -338,7 +368,7 @@
             margin-right: .2rem;
         }
 
-        /* PRODUCT GRID */
+        /* ── PRODUCT GRID ── */
         .grid-section {
             padding: 1.5rem clamp(1.5rem, 5vw, 3rem);
         }
@@ -363,7 +393,7 @@
             gap: 1.2rem;
         }
 
-        /* PRODUCT CARD */
+        /* ── PRODUCT CARD ── */
         .pcard {
             background: var(--bg);
             border: 1px solid var(--border);
@@ -449,16 +479,6 @@
             text-transform: uppercase;
             letter-spacing: .06em;
             align-self: flex-start;
-        }
-
-        .pcard-type.j {
-            background: var(--crimson-light);
-            color: var(--crimson);
-        }
-
-        .pcard-type.p {
-            background: var(--gold-lt);
-            color: var(--gold);
         }
 
         .pcard-title {
@@ -628,16 +648,6 @@
             letter-spacing: .06em;
         }
 
-        .modal-type-badge.j {
-            background: var(--crimson-light);
-            color: var(--crimson);
-        }
-
-        .modal-type-badge.p {
-            background: var(--gold-lt);
-            color: var(--gold);
-        }
-
         .modal-title-full {
             font-family: Georgia, serif;
             font-size: 1.42rem;
@@ -721,7 +731,7 @@
             background: var(--green);
         }
 
-        /* PREVIEW STRIP */
+        /* ── PREVIEW STRIP ── */
         .preview-strip {
             border-top: 1px solid var(--border);
             padding: 1.25rem 1.5rem;
@@ -865,7 +875,7 @@
             z-index: 4;
         }
 
-        /* FAKE PAGE STYLES */
+        /* ── FAKE PAGE STYLES ── */
         .fp-j {
             background: #fff;
             width: 148px;
@@ -1039,7 +1049,7 @@
             border-radius: 2px 2px 0 0;
         }
 
-        /* REVIEWS SECTION */
+        /* ── REVIEWS ── */
         .reviews-section {
             border-top: 1px solid var(--border);
             padding: 1.25rem 1.5rem 1.8rem;
@@ -1077,7 +1087,6 @@
             background: var(--crimson-light);
         }
 
-        /* Rating breakdown */
         .rb-wrap {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -1228,7 +1237,7 @@
             background: var(--crimson-dark);
         }
 
-        /* CART DRAWER */
+        /* ── CART DRAWER ── */
         .overlay {
             display: none;
             position: fixed;
@@ -1404,7 +1413,7 @@
             transform: translateY(-1px);
         }
 
-        /* REVIEW POPUP */
+        /* ── REVIEW POPUP ── */
         .rp-overlay {
             display: none;
             position: fixed;
@@ -1715,6 +1724,33 @@
             background: var(--crimson-dark);
         }
 
+        /* ── LOADING ── */
+        .grid-loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: .84rem;
+            color: var(--mid);
+            grid-column: 1/-1;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border);
+            border-top-color: var(--crimson);
+            border-radius: 50%;
+            animation: spin .7s linear infinite;
+            margin-right: .5rem;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         @media (max-width: 760px) {
             .hero {
                 grid-template-columns: 1fr;
@@ -1733,7 +1769,6 @@
             }
         }
     </style>
-    <script src="product.js"></script>
 </head>
 
 <body>
@@ -1766,10 +1801,10 @@
     <!-- HERO -->
     <section class="hero">
         <div>
-            <div class="hero-badge"> Complete Digital Services for Students, Teachers & Businesses</div>
-            <h1 class="hero-title"><em>Download today</em></h1>
+            <div class="hero-badge">Complete Digital Services for Students, Teachers &amp; Businesses</div>
+            <h1 class="hero-title"><em>Download today.</em></h1>
             <p class="hero-desc">Fast, creative, and professionally made outputs delivered online. From academic
-                materials to branding and website solutions — we’ve got you covered.</p>
+                materials to branding and website solutions — we've got you covered.</p>
             <div class="hero-actions">
                 <button class="btn-primary"
                     onclick="document.querySelector('.section-head').scrollIntoView({behavior:'smooth'})">Browse Files
@@ -1818,18 +1853,20 @@
     <div class="filter-bar">
         <span class="filter-lbl">Filter:</span>
         <button class="chip active" onclick="filterP('all',this)">All Files</button>
-        <button class="chip" onclick="filterP('journalism',this)"> Journalism</button>
-        <button class="chip" onclick="filterP('powerpoint',this)"> Essay & Article Writing</button>
-        <button class="chip" onclick="filterP('powerpoint',this)"> School Paper Layout </button>
-        <button class="chip" onclick="filterP('powerpoint',this)"> Lesson Plans</button>
-        <button class="chip" onclick="filterP('powerpoint',this)"> PPT Lessons</button>
-        <button class="chip" onclick="filterP('powerpoint',this)"> Canva Templates</button>
+        <button class="chip" onclick="filterP('journalism',this)">📰 Journalism</button>
+        <button class="chip" onclick="filterP('essay-article-writing',this)">✍️ Essay &amp; Article</button>
+        <button class="chip" onclick="filterP('school-paper-layout',this)">📄 School Paper</button>
+        <button class="chip" onclick="filterP('lesson-plans',this)">📋 Lesson Plans</button>
+        <button class="chip" onclick="filterP('ppt-lessons',this)">📊 PPT Lessons</button>
+        <button class="chip" onclick="filterP('canva-templates',this)">🎨 Canva Templates</button>
     </div>
     <section class="grid-section">
         <div class="grid-header">
-            <div class="grid-title">All Files</div>
+            <div class="grid-title" id="grid-title">All Files</div>
         </div>
-        <div class="pgrid" id="pgrid"></div>
+        <div class="pgrid" id="pgrid">
+            <div class="grid-loading"><span class="loading-spinner"></span>Loading products…</div>
+        </div>
     </section>
 
     <!-- PRODUCT MODAL -->
@@ -1861,7 +1898,6 @@
                     <button class="modal-add-btn" id="modal-add-btn"></button>
                 </div>
             </div>
-            <!-- PREVIEW STRIP with left/right arrows -->
             <div class="preview-strip">
                 <div class="strip-label">📄 File Preview <span>Pages 3+ blurred — buy to read in full</span></div>
                 <div class="preview-nav">
@@ -1911,8 +1947,8 @@
                 <span class="rp-icon">🎁</span>
                 <div class="rp-eyebrow">✦ Exclusive Buyer Offer</div>
                 <div class="rp-title">Enjoyed your purchase?<br>Get rewarded.</div>
-                <p class="rp-body">Leave an honest review for a file you've purchased and receive a <strong>₱200 promo
-                        code</strong> for your next order.</p>
+                <p class="rp-body">Leave an honest review and receive a <strong>₱200 promo code</strong> for your next
+                    order.</p>
                 <div class="rp-promo-box">
                     <div class="rp-promo-ico">🏷️</div>
                     <div class="rp-promo-text">
@@ -1956,8 +1992,8 @@
             <div id="rp-reveal" style="display:none;text-align:center">
                 <span class="rp-icon">🎉</span>
                 <div class="rp-title" style="font-size:1.35rem;margin-bottom:.4rem">Your Code is Ready!</div>
-                <p class="rp-body" style="text-align:center;margin-bottom:.5rem;font-size:.85rem">Thank you for your
-                    review! Here's your exclusive discount:</p>
+                <p class="rp-body" style="text-align:center;margin-bottom:.5rem;font-size:.85rem">Thank you! Here's your
+                    exclusive discount:</p>
                 <div class="rp-code-note" style="margin-bottom:.3rem">Copy &amp; save this code</div>
                 <div class="rp-code-box">
                     <span id="rp-code-text">PRESS200</span>
@@ -1981,26 +2017,47 @@
         /* ── HELPERS ── */
         const peso = n => '₱' + Number(n).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+        /* ── TYPE MAP ── */
+        const TYPE_MAP = {
+            'journalism': { label: '📰 Journalism', cls: 'j' },
+            'essay-article-writing': { label: '✍️ Essay & Article Writing', cls: 'e' },
+            'school-paper-layout': { label: '📄 School Paper Layout', cls: 's' },
+            'lesson-plans': { label: '📋 Lesson Plans', cls: 'l' },
+            'ppt-lessons': { label: '📊 PPT Lessons', cls: 'ppt' },
+            'canva-templates': { label: '🎨 Canva Templates', cls: 'c' },
+        };
+        function getType(type) {
+            return TYPE_MAP[type] || { label: type, cls: 'j' };
+        }
+
         /* ── TICKER ── */
-        const tI = [' Journalism Files ', '·', ' Essay & Article Writing', '·', ' School Paper Layout', '·', ' Lesson Plans', '·', ' PPT Lessons', '·', ' Canva Templates', '·', ' Layout & Design Services', '·', ' Logo Design', '·', ' Website Development Services', '·'];
+        const tI = ['📰 Journalism Files', '·', '✍️ Essay & Article Writing', '·', '📄 School Paper Layout', '·', '📋 Lesson Plans', '·', '📊 PPT Lessons', '·', '🎨 Canva Templates', '·', 'pressfiles & Digital Services · by Teacher Ira', '·'];
         document.getElementById('ttrack').innerHTML = [...tI, ...tI].map(t => `<span${t === '·' ? ' class="sep"' : ''}>${t}</span>`).join('');
 
         /* ── COVER DESIGNS ── */
         const CD = {
-            1: { bg: 'linear-gradient(145deg,#1a0505,#0a0101)', label: 'Journalism' }, /* near black → pure black red */
-            2: { bg: 'linear-gradient(145deg,#2d0808,#1a0505)', label: 'Essay & Article Writing' }, /* very dark maroon → near black */
-            3: { bg: 'linear-gradient(145deg,#4a0a0a,#2d0808)', label: 'School Paper Layout' }, /* deep maroon → very dark */
-            4: { bg: 'linear-gradient(145deg,#5a0e0e,#3d0909)', label: 'Lesson Plans' }, /* dark maroon → deep maroon */
-            5: { bg: 'linear-gradient(145deg,#6b1111,#4a0a0a)', label: 'PPT Lessons' }, /* maroon → dark maroon */
-            6: { bg: 'linear-gradient(145deg,#7a1515,#5a0e0e)', label: 'Canva Templates' } /* rich maroon → maroon */
+            1: { bg: 'linear-gradient(145deg,#1a0505,#0a0101)' },
+            2: { bg: 'linear-gradient(145deg,#2d0808,#1a0505)' },
+            3: { bg: 'linear-gradient(145deg,#4a0a0a,#2d0808)' },
+            4: { bg: 'linear-gradient(145deg,#5a0e0e,#3d0909)' },
+            5: { bg: 'linear-gradient(145deg,#6b1111,#4a0a0a)' },
+            6: { bg: 'linear-gradient(145deg,#7a1515,#5a0e0e)' },
+            7: { bg: 'linear-gradient(145deg,#3d0909,#1a0505)' },
+            8: { bg: 'linear-gradient(145deg,#5c0f0f,#2d0808)' },
+            9: { bg: 'linear-gradient(145deg,#6e1212,#3d0909)' },
         };
+        function getCoverBg(p) {
+            const idx = ((p.id - 1) % 9) + 1;
+            return (CD[idx] || CD[1]).bg;
+        }
         function buildCover(p, w = '100%', h = '100%') {
-            const d = CD[p.id] || CD[1];
+            const bg = getCoverBg(p);
+            const t = getType(p.type);
             const s = p.title.length > 38 ? p.title.substring(0, 38) + '…' : p.title;
-            return `<div style="width:${w};height:${h};background:${d.bg};position:relative;overflow:hidden">
+            return `<div style="width:${w};height:${h};background:${bg};position:relative;overflow:hidden">
     <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 70% 30%,rgba(255,255,255,.06) 0%,transparent 65%)"></div>
     <div class="bc-inner">
-      <span class="bc-label">${d.label}</span>
+      <span class="bc-label">${t.label}</span>
       <div class="bc-title">${s}</div>
       <div class="bc-bottom">
         <div class="bc-author">pressfiles originals</div>
@@ -2013,30 +2070,30 @@
 
         /* ── PREVIEW DATA ── */
         const PREVIEWS = {
-            1: [{ type: 'j', page: 1, hl: 'The Hidden Crisis: Mental Health in Schools', by: 'An investigation into a system failing its students', dc: 'A', pq: '"One in five students experiences a mental health condition."', img: true, blur: false, l1: 8, l2: 7 },
-            { type: 'j', page: 2, hl: 'Part I: The Invisible Weight', by: '', dc: 'W', pq: '"Teachers describe classrooms where anxiety is the new normal."', img: false, blur: false, l1: 9, l2: 8 },
-            { type: 'j', page: 3, hl: 'Data & Methodology', by: '', dc: 'O', pq: '', img: true, blur: true, l1: 7, l2: 6 },
-            { type: 'j', page: 4, hl: 'Voices from the Hallway', by: '', dc: 'S', pq: '', img: false, blur: true, l1: 8, l2: 7 }],
-            2: [{ type: 'j', page: 1, hl: 'Tech Giants & Antitrust: A Deep Dive', by: 'How Silicon Valley rewrote competition', dc: 'I', pq: '"Five firms control more than $8 trillion in market value."', img: true, blur: false, l1: 8, l2: 7 },
-            { type: 'j', page: 2, hl: 'Part I: The Monopoly Machine', by: '', dc: 'F', pq: '"Regulators in Brussels, Washington & London are asking the same questions."', img: false, blur: false, l1: 9, l2: 8 },
-            { type: 'j', page: 3, hl: 'Case Study: Search & Advertising', by: '', dc: 'G', pq: '', img: true, blur: true, l1: 7, l2: 6 },
-            { type: 'j', page: 4, hl: 'What Comes Next', by: '', dc: 'T', pq: '', img: false, blur: true, l1: 8, l2: 7 }],
-            3: [{ type: 'j', page: 1, hl: 'Climate Migration: The Untold Story', by: 'Field reports from the frontlines', dc: 'T', pq: '"By 2050, 200 million could be displaced."', img: true, blur: false, l1: 8, l2: 7 },
-            { type: 'j', page: 2, hl: 'Mekong Delta: Rising Waters', by: '', dc: 'H', pq: '"She has farmed this land for forty years."', img: false, blur: false, l1: 9, l2: 8 },
-            { type: 'j', page: 3, hl: 'The Numbers Behind the Narrative', by: '', dc: 'C', pq: '', img: true, blur: true, l1: 7, l2: 6 },
-            { type: 'j', page: 4, hl: 'Paths Forward', by: '', dc: 'I', pq: '', img: false, blur: true, l1: 8, l2: 7 }],
-            4: [{ type: 's', page: 1, bg: 'linear-gradient(135deg,#1a2a1a,#2d4a2d)', title: 'Executive Leadership Masterclass', bullets: ['45 slides · C-Suite ready', 'Evidence-based frameworks', 'Editable templates'], accent: '#6db86d', pct: 100, bars: null },
-            { type: 's', page: 2, bg: 'linear-gradient(135deg,#1a2a1a,#2d4a2d)', title: 'Module 1: Decision Frameworks', bullets: ['OODA Loop methodology', 'Risk vs reward matrix', 'Case studies'], accent: '#6db86d', pct: 20, bars: null },
-            { type: 's', page: 3, bg: 'linear-gradient(135deg,#1a2a1a,#2d4a2d)', title: 'Team Dynamics Model', bullets: null, accent: '#6db86d', pct: 40, bars: [60, 85, 40, 70, 90] },
-            { type: 's', page: 4, bg: 'linear-gradient(135deg,#1a2a1a,#2d4a2d)', title: 'Strategic Communication', bullets: ['Message architecture', 'Stakeholder mapping', 'Influence & persuasion'], accent: '#6db86d', pct: 60, bars: null }],
-            5: [{ type: 's', page: 1, bg: 'linear-gradient(150deg,#2a1a3a,#4a2060)', title: 'Startup Pitch Deck Pro', bullets: ['30 investor-ready slides', 'Built-in story arc', 'Fully editable'], accent: '#a06ad8', pct: 100, bars: null },
-            { type: 's', page: 2, bg: 'linear-gradient(150deg,#2a1a3a,#4a2060)', title: 'Slide 3 · The Problem', bullets: ['Define the pain point', 'Market gap analysis', 'Why now?'], accent: '#a06ad8', pct: 10, bars: null },
-            { type: 's', page: 3, bg: 'linear-gradient(150deg,#2a1a3a,#4a2060)', title: 'Market Opportunity', bullets: null, accent: '#a06ad8', pct: 30, bars: [45, 75, 60, 90, 55] },
-            { type: 's', page: 4, bg: 'linear-gradient(150deg,#2a1a3a,#4a2060)', title: 'Go-To-Market Strategy', bullets: ['Phase 1: Early adopters', 'Phase 2: Scale', 'Phase 3: Expansion'], accent: '#a06ad8', pct: 50, bars: null }],
-            6: [{ type: 's', page: 1, bg: 'linear-gradient(145deg,#0f2535,#1a4060)', title: 'Data Journalism Fundamentals', bullets: ['55 slides + Excel templates', 'For journalists & comms', 'Includes real datasets'], accent: '#50b8d8', pct: 100, bars: null },
-            { type: 's', page: 2, bg: 'linear-gradient(145deg,#0f2535,#1a4060)', title: 'Chapter 1: Finding the Story', bullets: ['Where to find public data', 'Cleaning messy datasets', 'Spotting the narrative'], accent: '#50b8d8', pct: 15, bars: null },
-            { type: 's', page: 3, bg: 'linear-gradient(145deg,#0f2535,#1a4060)', title: 'Visualizing Data', bullets: null, accent: '#50b8d8', pct: 35, bars: [50, 80, 65, 45, 90] },
-            { type: 's', page: 4, bg: 'linear-gradient(145deg,#0f2535,#1a4060)', title: 'Tools & Templates', bullets: ['Excel chart templates', 'Datawrapper walkthrough', 'Case study: COVID data'], accent: '#50b8d8', pct: 55, bars: null }]
+            1: [{ type: 'j', page: 1, hl: 'Column Writing Factsheets 2026', by: 'Contest-ready journalism materials', dc: 'C', pq: '"Develop your voice through column writing."', img: true, blur: false, l1: 8, l2: 7 },
+            { type: 'j', page: 2, hl: 'Sample Column: Opinion & Analysis', by: '', dc: 'O', pq: '"A great column argues, informs, and moves."', img: false, blur: false, l1: 9, l2: 8 },
+            { type: 'j', page: 3, hl: 'Factsheet Templates & Guides', by: '', dc: 'F', pq: '', img: true, blur: true, l1: 7, l2: 6 },
+            { type: 'j', page: 4, hl: 'Answer Keys & Scoring Rubrics', by: '', dc: 'A', pq: '', img: false, blur: true, l1: 8, l2: 7 }],
+            2: [{ type: 'j', page: 1, hl: 'Copyediting & Headline Writing 2026', by: 'APA-style editing drills and headline types', dc: 'C', pq: '"Precision in editing defines great journalism."', img: true, blur: false, l1: 8, l2: 7 },
+            { type: 'j', page: 2, hl: 'Grammar & Symbol Correction', by: '', dc: 'G', pq: '', img: false, blur: false, l1: 9, l2: 8 },
+            { type: 'j', page: 3, hl: 'Headline Writing Exercises', by: '', dc: 'H', pq: '', img: true, blur: true, l1: 7, l2: 6 },
+            { type: 'j', page: 4, hl: 'Drills & Answer Keys', by: '', dc: 'D', pq: '', img: false, blur: true, l1: 8, l2: 7 }],
+            3: [{ type: 'j', page: 1, hl: 'Editorial Writing Factsheets 2026', by: '2026 current events editorial prompts', dc: 'E', pq: '"The editorial is the newspaper\'s conscience."', img: true, blur: false, l1: 8, l2: 7 },
+            { type: 'j', page: 2, hl: 'Sample Editorials & Structures', by: '', dc: 'S', pq: '', img: false, blur: false, l1: 9, l2: 8 },
+            { type: 'j', page: 3, hl: 'Writing Prompts by Issue', by: '', dc: 'W', pq: '', img: true, blur: true, l1: 7, l2: 6 },
+            { type: 'j', page: 4, hl: 'Rubrics & Answer Keys', by: '', dc: 'R', pq: '', img: false, blur: true, l1: 8, l2: 7 }],
+            4: [{ type: 's', page: 1, bg: 'linear-gradient(135deg,#5a0e0e,#3d0909)', title: 'News Writing Factsheets 2026', bullets: ['2026 current events', 'Complete news articles', 'PPT + PDF lecture'], accent: '#e07070', pct: 100, bars: null },
+            { type: 's', page: 2, bg: 'linear-gradient(135deg,#5a0e0e,#3d0909)', title: 'Inverted Pyramid Structure', bullets: ['Who What When Where Why', 'Lead writing tips', 'Source attribution'], accent: '#e07070', pct: 25, bars: null },
+            { type: 's', page: 3, bg: 'linear-gradient(135deg,#5a0e0e,#3d0909)', title: 'Sample News Articles', bullets: null, accent: '#e07070', pct: 50, bars: [70, 85, 60, 90, 75] },
+            { type: 's', page: 4, bg: 'linear-gradient(135deg,#5a0e0e,#3d0909)', title: 'Answer Keys Included', bullets: ['Full scoring rubrics', 'Teacher notes', 'Common mistakes'], accent: '#e07070', pct: 75, bars: null }],
+            5: [{ type: 's', page: 1, bg: 'linear-gradient(135deg,#6b1111,#4a0a0a)', title: 'Pagsulat ng Agham at Teknolohiya', bullets: ['2026 worldwide issues', 'Filipino science writing', 'PPT + PDF lecture'], accent: '#e89090', pct: 100, bars: null },
+            { type: 's', page: 2, bg: 'linear-gradient(135deg,#6b1111,#4a0a0a)', title: 'Mga Paksa at Pamamaraan', bullets: ['Agham at kalikasan', 'Teknolohiya at lipunan', 'Panturong hakbang'], accent: '#e89090', pct: 25, bars: null },
+            { type: 's', page: 3, bg: 'linear-gradient(135deg,#6b1111,#4a0a0a)', title: 'Halimbawa ng Artikulo', bullets: null, accent: '#e89090', pct: 50, bars: [65, 80, 55, 85, 70] },
+            { type: 's', page: 4, bg: 'linear-gradient(135deg,#6b1111,#4a0a0a)', title: 'Susi sa Pagwawasto', bullets: ['Rubrics ng pagmamarka', 'Mga tala ng guro', 'Madalas na pagkakamali'], accent: '#e89090', pct: 75, bars: null }],
+            6: [{ type: 's', page: 1, bg: 'linear-gradient(135deg,#7a1515,#5a0e0e)', title: 'Pagsulat ng Balita 2026', bullets: ['2026 na mga balita', 'Kumpletong artikulo', 'PPT + PDF lecture'], accent: '#f0a0a0', pct: 100, bars: null },
+            { type: 's', page: 2, bg: 'linear-gradient(135deg,#7a1515,#5a0e0e)', title: 'Istraktura ng Balita', bullets: ['Piramideng baligtad', 'Pagsulat ng lead', 'Mga sanggunian'], accent: '#f0a0a0', pct: 25, bars: null },
+            { type: 's', page: 3, bg: 'linear-gradient(135deg,#7a1515,#5a0e0e)', title: 'Mga Halimbawang Balita', bullets: null, accent: '#f0a0a0', pct: 50, bars: [75, 90, 65, 80, 85] },
+            { type: 's', page: 4, bg: 'linear-gradient(135deg,#7a1515,#5a0e0e)', title: 'Kasama ang Susi sa Sagot', bullets: ['Buong rubrics', 'Tala ng guro', 'Mga karaniwang pagkakamali'], accent: '#f0a0a0', pct: 75, bars: null }],
         };
         function renderPP(pg, total) {
             if (pg.type === 'j') {
@@ -2071,68 +2128,57 @@
         }
 
         /* ── REVIEWS ── */
-        const DEFAULT_REVIEWS = {
-            1: [{ name: 'Aaliya M.', stars: 5, text: 'Incredibly well-researched. Used in my journalism class — students were blown away.', tag: 'classroom ready', date: 'Mar 2025' }, { name: 'Priya T.', stars: 5, text: 'Made me rethink how I write investigative features. Worth every centavo.', tag: 'inspiring', date: 'Feb 2025' }, { name: 'Jordan K.', stars: 4, text: 'Solid long-form piece. Data is well-cited and narrative flows beautifully.', tag: 'well-written', date: 'Jan 2025' }],
-            2: [{ name: 'Fatima A.', stars: 5, text: 'Perfect for media law research. Nuanced antitrust analysis.', tag: 'academic', date: 'Mar 2025' }, { name: 'Leila C.', stars: 4, text: 'Dense but rewarding. EU section is insightful.', tag: 'detailed', date: 'Feb 2025' }],
-            3: [{ name: 'Nadia S.', stars: 5, text: 'The field reporting is visceral and human. Journalism at its best.', tag: 'powerful', date: 'Apr 2025' }, { name: 'Blessing O.', stars: 5, text: 'Assigned for Earth Day. Accessible without dumbing down the science.', tag: 'classroom ready', date: 'Mar 2025' }],
-            4: [{ name: 'Aisha R.', stars: 5, text: 'Decision framework slides alone were worth the price. Adapted for a PD session.', tag: 'PD approved', date: 'Mar 2025' }, { name: 'Karen L.', stars: 5, text: 'Board presentation loved it. Looked so professional.', tag: 'board-ready', date: 'Feb 2025' }],
-            5: [{ name: 'Sofia B.', stars: 5, text: 'Got my first investor meeting using this template!', tag: 'investor approved', date: 'Mar 2025' }, { name: 'Tara V.', stars: 5, text: 'So easy to customize. Swapped colors in 20 minutes.', tag: 'easy to edit', date: 'Feb 2025' }],
-            6: [{ name: 'Joy F.', stars: 5, text: 'Excel templates alone are worth 10x the price.', tag: 'essential', date: 'Apr 2025' }, { name: 'Morgan A.', stars: 5, text: 'Zero data skills before this. Now I make charts for every lesson.', tag: 'beginner-friendly', date: 'Mar 2025' }]
-        };
-        function getRevs(id) { const s = localStorage.getItem(`reviews_${id}`); return s ? JSON.parse(s) : (DEFAULT_REVIEWS[id] || []); }
+        function getRevs(id) { const s = localStorage.getItem(`reviews_${id}`); return s ? JSON.parse(s) : []; }
         function saveRev(id, r) { const a = getRevs(id); a.unshift(r); localStorage.setItem(`reviews_${id}`, JSON.stringify(a)); }
         function avgR(revs) { return revs.length ? revs.reduce((s, r) => s + r.stars, 0) / revs.length : 0; }
         function starStr(n) { return '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n)); }
 
-        /* ── PRODUCTS ── */
-        // function getProds() {
-        //   const s = localStorage.getItem('pressroom_products');
-        //   if (s) return JSON.parse(s);
-        //   return [
-        //     {id:1,title:'The Hidden Crisis: Mental Health in Schools',description:'An in-depth investigative piece exploring the growing mental health epidemic in public schools, with exclusive interviews and data analysis.',type:'journalism',price:650,fileName:'mental_health_schools.zip',fileSize:'2.4 MB',pages:'18 pages'},
-        //     {id:2,title:'Tech Giants & Antitrust: A Deep Dive',description:'Comprehensive feature examining how Silicon Valley monopolies reshape regulatory landscapes across three continents.',type:'journalism',price:850,fileName:'tech_antitrust.zip',fileSize:'1.8 MB',pages:'24 pages'},
-        //     {id:3,title:'Climate Migration: The Untold Story',description:'Award-winning long-form piece documenting climate refugees from Southeast Asia with original field reporting.',type:'journalism',price:1000,fileName:'climate_migration.zip',fileSize:'5.1 MB',pages:'32 pages'},
-        //     {id:4,title:'Executive Leadership Masterclass Deck',description:'Professional 45-slide deck for C-suite training. Covers decision frameworks, team dynamics & strategic communication.',type:'powerpoint',price:1400,fileName:'leadership_deck.zip',fileSize:'12.3 MB',pages:'45 slides'},
-        //     {id:5,title:'Startup Pitch Deck Template Pro',description:'Polished investor-ready pitch template with 30 slides, editable charts, and built-in storytelling structure.',type:'powerpoint',price:1950,fileName:'pitch_deck_pro.zip',fileSize:'8.7 MB',pages:'30 slides'},
-        //     {id:6,title:'Data Journalism Fundamentals',description:'A guide to data-driven storytelling with Excel and chart templates for journalists and communicators.',type:'powerpoint',price:1200,fileName:'data_journalism.zip',fileSize:'15.2 MB',pages:'55 slides'}
-        //   ];
-        // }
-
-        // Call this once on page load — stores products in memory
+        /* ── PRODUCTS (from DB) ── */
         let PRODUCTS_CACHE = [];
 
         async function loadProds() {
-            const s = localStorage.getItem('pressroom_products');
-            if (s) { PRODUCTS_CACHE = JSON.parse(s); return; }
-            const res = await fetch('/api/products');
-            PRODUCTS_CACHE = await res.json();
+            try {
+                const res = await fetch('/api/products');
+                if (res.ok) {
+                    PRODUCTS_CACHE = await res.json();
+                } else {
+                    console.error('Failed to load products');
+                }
+            } catch (err) {
+                console.error('Error loading products:', err.message);
+            }
         }
-
-        // Keep getProds() synchronous everywhere else — nothing else changes
-        function getProds() {
-            return PRODUCTS_CACHE;
-        }
+        function getProds() { return PRODUCTS_CACHE; }
 
         /* ── STATE ── */
         let cart = JSON.parse(localStorage.getItem('pressroom_cart') || '[]');
-        const saveCart = () => localStorage.setItem('pressroom_cart', JSON.stringify(cart));
         let currentId = null, selectedStars = 0, showForm = false, rpStars = 0;
+        let currentFilter = 'all';
+        const saveCart = () => localStorage.setItem('pressroom_cart', JSON.stringify(cart));
 
         /* ── CAROUSEL ── */
         function renderCarousel() {
-            const track = document.getElementById('ctrack'); track.innerHTML = '';
-            getProds().forEach((p, i) => {
-                const revs = getRevs(p.id); const avg = avgR(revs); const inCart = !!cart.find(c => c.id === p.id);
-                const d = document.createElement('div'); d.className = 'book-card'; d.style.animationDelay = (i * .07) + 's';
+            const track = document.getElementById('ctrack');
+            track.innerHTML = '';
+            const featured = getProds().filter(p => p.isFeatured);
+            const display = featured.length ? featured : getProds().slice(0, 8);
+            display.forEach((p, i) => {
+                const revs = getRevs(p.id);
+                const avg = avgR(revs);
+                const inCart = !!cart.find(c => c.id === p.id);
+                const t = getType(p.type);
+                const d = document.createElement('div');
+                d.className = 'book-card';
+                d.style.animationDelay = (i * .07) + 's';
                 d.innerHTML = `
       <div class="book-wrap">
         <div class="book-cover" onclick="openModal(${p.id})">${buildCover(p)}</div>
       </div>
       <div class="card-info">
-        <div class="ctype-badge ${p.type === 'journalism' ? 'j' : 'p'}">${p.type === 'journalism' ? '📰 Journalism' : '📊 Slides'}</div>
+        <div class="ctype-badge ${t.cls}">${t.label}</div>
         <div class="c-card-title">${p.title.length > 42 ? p.title.substring(0, 42) + '…' : p.title}</div>
         <div><span class="c-stars">${starStr(avg)}</span></div>
-        <div class="c-pages">${p.pages}</div>
+        <div class="c-pages">${p.pages || ''}</div>
         <div class="c-bot">
           <span class="c-price">${peso(p.price)}</span>
           <button class="add-sm${inCart ? ' added' : ''}" onclick="addToCart(${p.id})">${inCart ? '✓ Added' : '+ Add'}</button>
@@ -2155,24 +2201,46 @@
 
         /* ── GRID ── */
         function renderGrid(filter = 'all') {
-            const grid = document.getElementById('pgrid'); grid.innerHTML = '';
-            getProds().forEach((p, i) => {
-                if (filter !== 'all' && p.type !== filter) return;
-                const revs = getRevs(p.id); const avg = avgR(revs); const inCart = !!cart.find(c => c.id === p.id);
-                const d = document.createElement('div'); d.className = 'pcard'; d.style.animationDelay = (i * .05) + 's';
+            currentFilter = filter;
+            const grid = document.getElementById('pgrid');
+            const title = document.getElementById('grid-title');
+            grid.innerHTML = '';
+
+            const prods = getProds().filter(p => filter === 'all' || p.type === filter);
+
+            // Update grid title
+            if (filter === 'all') {
+                title.textContent = 'All Files';
+            } else {
+                title.textContent = getType(filter).label + ' Files';
+            }
+
+            if (!prods.length) {
+                grid.innerHTML = `<div class="grid-loading">No products found for this category.</div>`;
+                return;
+            }
+
+            prods.forEach((p, i) => {
+                const revs = getRevs(p.id);
+                const avg = avgR(revs);
+                const inCart = !!cart.find(c => c.id === p.id);
+                const t = getType(p.type);
+                const d = document.createElement('div');
+                d.className = 'pcard';
+                d.style.animationDelay = (i * .05) + 's';
                 d.innerHTML = `
       <div class="pcard-thumb">
         <div class="pcard-thumb-inner">${buildCover(p, '100%', '100%')}</div>
         <button class="view-overlay" onclick="openModal(${p.id})"><span>Preview + Reviews</span></button>
       </div>
       <div class="pcard-body">
-        <span class="pcard-type ${p.type === 'journalism' ? 'j' : 'p'}">${p.type === 'journalism' ? '📰 Journalism' : '📊 Slides'}</span>
+        <span class="pcard-type ${t.cls}">${t.label}</span>
         <div class="pcard-title">${p.title}</div>
         <div class="pcard-rating">
           <span class="pcard-stars">${starStr(avg)}</span>
           <span class="pcard-rc">${avg.toFixed(1)} · ${revs.length} reviews</span>
         </div>
-        <div class="pcard-meta">${p.pages} · ${p.fileSize}</div>
+        <div class="pcard-meta">${p.pages || ''} ${p.fileSize ? '· ' + p.fileSize : ''}</div>
         <div class="pcard-footer">
           <span class="pcard-price">${peso(p.price)}</span>
           <button class="padd${inCart ? ' added' : ''}" onclick="addToCart(${p.id})">${inCart ? '✓ Added' : '+ Add'}</button>
@@ -2181,6 +2249,7 @@
                 grid.appendChild(d);
             });
         }
+
         function filterP(type, btn) {
             document.querySelectorAll('.chip').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -2190,21 +2259,29 @@
         /* ── MODAL ── */
         function openModal(id) {
             currentId = id; selectedStars = 0; showForm = false;
-            const p = getProds().find(x => x.id === id); if (!p) return;
-            const revs = getRevs(id); const avg = avgR(revs); const inCart = !!cart.find(c => c.id === id);
+            const p = getProds().find(x => x.id === id);
+            if (!p) return;
+            const revs = getRevs(id);
+            const avg = avgR(revs);
+            const inCart = !!cart.find(c => c.id === id);
+            const t = getType(p.type);
 
             document.getElementById('modal-book').innerHTML = buildCover(p, '100%', '100%');
 
             const tb = document.getElementById('modal-type-badge');
-            tb.textContent = p.type === 'journalism' ? '📰 Journalism' : '📊 Slides';
-            tb.className = 'modal-type-badge ' + (p.type === 'journalism' ? 'j' : 'p');
+            tb.textContent = t.label;
+            tb.className = 'modal-type-badge ' + t.cls;
+
             document.getElementById('modal-header-title').textContent = p.title.length > 45 ? p.title.substring(0, 45) + '…' : p.title;
             document.getElementById('modal-title-text').textContent = p.title;
             document.getElementById('modal-stars-disp').textContent = starStr(avg);
             document.getElementById('modal-avg-disp').textContent = avg.toFixed(1);
             document.getElementById('modal-rcount-disp').textContent = `(${revs.length} reviews)`;
             document.getElementById('modal-desc-text').textContent = p.description;
-            document.getElementById('modal-meta-row').innerHTML = `<div class="meta-tag">✦ ${p.pages}</div><div class="meta-tag">📦 ${p.fileSize}</div><div class="meta-tag">${p.type === 'journalism' ? 'Article' : 'Presentation'}</div>`;
+            document.getElementById('modal-meta-row').innerHTML = `
+    <div class="meta-tag">✦ ${p.pages || 'Digital File'}</div>
+    <div class="meta-tag">📦 ${p.fileSize || 'ZIP'}</div>
+    <div class="meta-tag">${t.label}</div>`;
             document.getElementById('modal-price-disp').textContent = peso(p.price);
 
             const ab = document.getElementById('modal-add-btn');
@@ -2216,7 +2293,8 @@
             document.getElementById('preview-scroll').innerHTML = pages.map(pg => renderPP(pg, pages.length)).join('');
             setupDrag(document.getElementById('preview-scroll'));
 
-            renderRB(revs); renderRevsList(revs);
+            renderRB(revs);
+            renderRevsList(revs);
             document.getElementById('write-btn').textContent = '+ Write a Review';
             document.getElementById('review-form-wrap').innerHTML = '';
 
@@ -2286,7 +2364,7 @@
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             saveRev(currentId, { name, stars: selectedStars, text, tag: tag || null, date: `${months[now.getMonth()]} ${now.getFullYear()}` });
             const revs = getRevs(currentId);
-            renderRB(revs); renderRevsList(revs); toggleReviewForm(); renderCarousel(); renderGrid();
+            renderRB(revs); renderRevsList(revs); toggleReviewForm(); renderCarousel(); renderGrid(currentFilter);
             const avg = avgR(revs);
             document.getElementById('modal-stars-disp').textContent = starStr(avg);
             document.getElementById('modal-avg-disp').textContent = avg.toFixed(1);
@@ -2300,11 +2378,11 @@
         function addToCart(id) {
             const p = getProds().find(x => x.id === id);
             if (!p || cart.find(c => c.id === id)) return;
-            cart.push(p); saveCart(); updateCart(); renderCarousel(); renderGrid();
+            cart.push(p); saveCart(); updateCart(); renderCarousel(); renderGrid(currentFilter);
             const cnt = document.getElementById('cart-count');
             cnt.style.transform = 'scale(1.5)'; setTimeout(() => cnt.style.transform = '', 350);
         }
-        function removeFromCart(id) { cart = cart.filter(c => c.id !== id); saveCart(); updateCart(); renderCarousel(); renderGrid(); }
+        function removeFromCart(id) { cart = cart.filter(c => c.id !== id); saveCart(); updateCart(); renderCarousel(); renderGrid(currentFilter); }
         function updateCart() {
             document.getElementById('cart-count').textContent = cart.length;
             document.getElementById('ctotal').textContent = peso(cart.reduce((s, i) => s + Number(i.price), 0));
@@ -2314,7 +2392,7 @@
     <div class="ci">
       <div>
         <div class="ci-name">${item.title}</div>
-        <div class="ci-meta">${item.type} · ${item.fileSize}</div>
+        <div class="ci-meta">${getType(item.type).label} · ${item.fileSize || ''}</div>
         <button class="ci-rm" onclick="removeFromCart(${item.id})">Remove</button>
       </div>
       <div class="ci-price">${peso(Number(item.price))}</div>
@@ -2361,7 +2439,7 @@
             document.getElementById('rp-code-text').textContent = code;
             document.getElementById('rp-form').style.display = 'none';
             document.getElementById('rp-reveal').style.display = 'block';
-            renderCarousel(); renderGrid();
+            renderCarousel(); renderGrid(currentFilter);
         }
         function copyRpCode() {
             const code = document.getElementById('rp-code-text').textContent;
@@ -2370,11 +2448,11 @@
             });
         }
 
-        // Replace your current init block with this
+        /* ── INIT ── */
         async function init() {
             await loadProds();
             renderCarousel();
-            renderGrid();
+            renderGrid('all');
             updateCart();
             checkAndShowReviewPopup();
         }
