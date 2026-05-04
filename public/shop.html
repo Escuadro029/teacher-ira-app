@@ -1785,7 +1785,7 @@
                 style="height:80px;width:auto;display:block;" />
         </a>
         <div class="header-right">
-            <a class="hlink" href="admin.html">Admin</a>
+            <div id="auth-header"></div>
             <button class="cart-btn" onclick="openCart()">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -1853,12 +1853,12 @@
     <div class="filter-bar">
         <span class="filter-lbl">Filter:</span>
         <button class="chip active" onclick="filterP('all',this)">All Files</button>
-        <button class="chip" onclick="filterP('journalism',this)">📰 Journalism</button>
-        <button class="chip" onclick="filterP('essay-article-writing',this)">✍️ Essay &amp; Article</button>
-        <button class="chip" onclick="filterP('school-paper-layout',this)">📄 School Paper</button>
-        <button class="chip" onclick="filterP('lesson-plans',this)">📋 Lesson Plans</button>
-        <button class="chip" onclick="filterP('ppt-lessons',this)">📊 PPT Lessons</button>
-        <button class="chip" onclick="filterP('canva-templates',this)">🎨 Canva Templates</button>
+        <button class="chip" onclick="filterP('journalism',this)"> Journalism</button>
+        <button class="chip" onclick="filterP('essay-article-writing',this)"> Essay &amp; Article</button>
+        <button class="chip" onclick="filterP('school-paper-layout',this)"> School Paper</button>
+        <button class="chip" onclick="filterP('lesson-plans',this)"> Lesson Plans</button>
+        <button class="chip" onclick="filterP('ppt-lessons',this)"> PPT Lessons</button>
+        <button class="chip" onclick="filterP('canva-templates',this)"> Canva Templates</button>
     </div>
     <section class="grid-section">
         <div class="grid-header">
@@ -2010,21 +2010,65 @@
     <footer>
         <div class="footer-logo">pressfiles.</div>
         <p>Digital files only · No physical shipping · Instant email delivery</p>
-        <p><a href="admin.html">Admin Portal</a></p>
+        <p id="footer-admin-link"></p>
     </footer>
 
     <script>
+        /* ── AUTH STATE ── */
+        function getAuthUser() {
+            try {
+                const s = localStorage.getItem('pf_user');
+                return s ? JSON.parse(s) : null;
+            } catch { return null; } ß
+        }
+
+        function renderAuthHeader() {
+            const user = getAuthUser();
+            const el = document.getElementById('auth-header');
+            const foot = document.getElementById('footer-admin-link');
+
+            if (!user) {
+                // Not logged in — show login link
+                el.innerHTML = `
+      <a class="hlink" href="login.html">Sign In</a>
+      <a class="hlink" href="register.html" style="background:var(--crimson-light);color:var(--crimson);border-radius:6px;padding:.3rem .75rem;font-weight:700;">Register</a>`;
+                if (foot) foot.innerHTML = '';
+                return;
+            }
+
+            if (user.role === 'admin' || user.role === 'staff') {
+                // Admin/Staff — show admin link + name + logout
+                el.innerHTML = `
+      <a class="hlink" href="admin.html" style="color:var(--crimson);font-weight:700;">⚙ Admin</a>
+      <span style="font-size:.78rem;color:var(--mid);font-weight:600;">${user.fullName.split(' ')[0]}</span>
+      <button onclick="logout()" style="background:transparent;border:1px solid var(--border);border-radius:6px;padding:.3rem .75rem;font-size:.75rem;font-weight:600;color:var(--mid);cursor:pointer;">Sign Out</button>`;
+                if (foot) foot.innerHTML = `<a href="admin.html" style="color:var(--mid);text-decoration:none;">Admin Portal</a>`;
+            } else {
+                // Buyer — show account link + name + logout
+                el.innerHTML = `
+      <a class="hlink" href="account.html">👤 ${user.fullName.split(' ')[0]}</a>
+      <button onclick="logout()" style="background:transparent;border:1px solid var(--border);border-radius:6px;padding:.3rem .75rem;font-size:.75rem;font-weight:600;color:var(--mid);cursor:pointer;">Sign Out</button>`;
+                if (foot) foot.innerHTML = '';
+            }
+        }
+
+        async function logout() {
+            try { await fetch('/api/auth/logout', { method: 'POST' }); } catch { }
+            localStorage.removeItem('pf_token');
+            localStorage.removeItem('pf_user');
+            window.location.reload();
+        }
         /* ── HELPERS ── */
         const peso = n => '₱' + Number(n).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
         /* ── TYPE MAP ── */
         const TYPE_MAP = {
-            'journalism': { label: '📰 Journalism', cls: 'j' },
-            'essay-article-writing': { label: '✍️ Essay & Article Writing', cls: 'e' },
-            'school-paper-layout': { label: '📄 School Paper Layout', cls: 's' },
-            'lesson-plans': { label: '📋 Lesson Plans', cls: 'l' },
-            'ppt-lessons': { label: '📊 PPT Lessons', cls: 'ppt' },
-            'canva-templates': { label: '🎨 Canva Templates', cls: 'c' },
+            'journalism': { label: ' Journalism', cls: 'j' },
+            'essay-article-writing': { label: ' Essay & Article Writing', cls: 'e' },
+            'school-paper-layout': { label: ' School Paper Layout', cls: 's' },
+            'lesson-plans': { label: ' Lesson Plans', cls: 'l' },
+            'ppt-lessons': { label: ' PPT Lessons', cls: 'ppt' },
+            'canva-templates': { label: ' Canva Templates', cls: 'c' },
         };
         function getType(type) {
             return TYPE_MAP[type] || { label: type, cls: 'j' };
@@ -2455,6 +2499,7 @@
             renderGrid('all');
             updateCart();
             checkAndShowReviewPopup();
+            renderAuthHeader(); // ← add this
         }
 
         init();

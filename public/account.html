@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Account — Pressfiles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;0,900;1,300;1,500;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { background: var(--surface); }
+
+    .account-layout {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem clamp(1rem,4vw,2rem);
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    /* SIDEBAR */
+    .acc-sidebar { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; position: sticky; top: 80px; }
+    .acc-profile  { padding: 1.5rem; border-bottom: 1px solid var(--border); text-align: center; }
+    .acc-avatar   { width: 64px; height: 64px; border-radius: 50%; background: var(--crimson-light); border: 2px solid var(--crimson-mid); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto .75rem; font-family: Georgia, serif; font-weight: 700; color: var(--crimson); }
+    .acc-name     { font-family: Georgia, serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: .2rem; }
+    .acc-email    { font-size: .72rem; color: var(--mid); margin-bottom: .5rem; }
+    .acc-role-badge { display: inline-block; background: var(--crimson-light); color: var(--crimson); border-radius: 4px; padding: .15rem .55rem; font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+
+    .acc-nav { padding: .75rem 0; }
+    .acc-nav-item { padding: .65rem 1.2rem; font-size: .8rem; font-weight: 600; color: var(--mid); cursor: pointer; display: flex; align-items: center; gap: .6rem; transition: all .18s; border-left: 2.5px solid transparent; }
+    .acc-nav-item:hover  { color: var(--ink); background: rgba(0,0,0,.03); }
+    .acc-nav-item.active { color: var(--crimson); background: var(--crimson-light); border-left-color: var(--crimson); }
+    .acc-nav-ico { font-size: .9rem; width: 20px; text-align: center; }
+
+    .acc-logout { padding: .75rem 1.2rem; margin-top: .5rem; border-top: 1px solid var(--border); }
+    .logout-btn { width: 100%; background: transparent; border: 1px solid var(--border); border-radius: 7px; padding: .5rem; font-size: .78rem; font-weight: 600; color: var(--mid); cursor: pointer; transition: all .18s; }
+    .logout-btn:hover { border-color: var(--red); color: var(--red); background: #fff5f5; }
+
+    /* MAIN */
+    .acc-main { display: flex; flex-direction: column; gap: 1.25rem; }
+    .acc-page { display: none; }
+    .acc-page.active { display: block; }
+
+    .acc-card  { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; }
+    .acc-card-title { font-family: Georgia, serif; font-size: 1.15rem; font-weight: 700; color: var(--ink); margin-bottom: 1.1rem; padding-bottom: .85rem; border-bottom: 1px solid var(--border); }
+
+    /* STAT CARDS */
+    .acc-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    .acc-stat  { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1rem; text-align: center; }
+    .acc-stat-val { font-family: Georgia, serif; font-size: 1.8rem; font-weight: 700; color: var(--crimson); line-height: 1; }
+    .acc-stat-lbl { font-size: .72rem; color: var(--mid); margin-top: .25rem; font-weight: 500; }
+
+    /* ORDERS */
+    .order-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1.1rem; margin-bottom: .85rem; }
+    .order-card:last-child { margin-bottom: 0; }
+    .order-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: .75rem; flex-wrap: wrap; gap: .5rem; }
+    .order-id   { font-family: monospace; font-size: .72rem; color: var(--muted); }
+    .order-date { font-size: .72rem; color: var(--mid); }
+    .order-status-paid    { background: var(--green-lt); color: var(--green); border-radius: 4px; padding: .15rem .5rem; font-size: .62rem; font-weight: 700; text-transform: uppercase; }
+    .order-status-pending { background: var(--amber-lt); color: var(--gold); border-radius: 4px; padding: .15rem .5rem; font-size: .62rem; font-weight: 700; text-transform: uppercase; }
+    .order-items { font-size: .82rem; color: var(--ink2); margin-bottom: .6rem; }
+    .order-item-name { display: flex; align-items: center; gap: .4rem; padding: .22rem 0; }
+    .order-item-name::before { content: '📄'; font-size: .75rem; }
+    .order-total { font-family: Georgia, serif; font-size: 1.1rem; font-weight: 700; color: var(--ink); }
+    .order-delivered { font-size: .72rem; color: var(--green); font-weight: 600; }
+    .order-pending   { font-size: .72rem; color: var(--gold); font-weight: 600; }
+    .no-orders { text-align: center; padding: 2.5rem 1rem; color: var(--mid); font-size: .88rem; }
+    .no-orders a { color: var(--crimson); font-weight: 600; text-decoration: none; }
+
+    /* PROFILE FORM */
+    .fg { display: flex; flex-direction: column; gap: .38rem; margin-bottom: .9rem; }
+    .fg label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--mid); }
+    .fg input, .fg textarea {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      padding: .68rem .95rem; font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .9rem; color: var(--ink); width: 100%; outline: none;
+      transition: border-color .18s, box-shadow .18s;
+    }
+    .fg input:focus, .fg textarea:focus { border-color: var(--crimson); box-shadow: 0 0 0 3px rgba(139,26,26,.1); }
+    .fg input::placeholder { color: var(--muted); }
+    .fg textarea { resize: vertical; min-height: 72px; }
+
+    .save-btn { background: var(--crimson); color: #fff; border: none; border-radius: 8px; padding: .65rem 1.5rem; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .84rem; font-weight: 700; cursor: pointer; transition: background .18s; }
+    .save-btn:hover { background: var(--crimson-dark); }
+    .save-feedback  { display: inline-block; font-size: .75rem; color: var(--green); font-weight: 700; margin-left: .75rem; opacity: 0; transition: opacity .3s; }
+    .save-feedback.show { opacity: 1; }
+
+    .alert { border-radius: 8px; padding: .75rem 1rem; font-size: .82rem; margin-bottom: .85rem; display: none; }
+    .alert.show    { display: block; }
+    .alert.error   { background: #fff0f0; border: 1px solid #f5c6cb; color: var(--red); }
+    .alert.success { background: var(--green-lt); border: 1px solid rgba(26,107,60,.2); color: var(--green); }
+
+    @media (max-width: 700px) {
+      .account-layout { grid-template-columns: 1fr; }
+      .acc-sidebar { position: static; }
+      .acc-stats { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="shop.html">
+    <img src="/assets/logo/pressfilesv2.gif" alt="Pressfiles" style="height:42px;width:auto;display:block;"/>
+  </a>
+  <div class="header-right">
+    <a class="hlink" href="shop.html">← Shop</a>
+  </div>
+</header>
+
+<div class="account-layout">
+
+  <!-- SIDEBAR -->
+  <div class="acc-sidebar">
+    <div class="acc-profile">
+      <div class="acc-avatar" id="acc-avatar">?</div>
+      <div class="acc-name"  id="acc-name">Loading…</div>
+      <div class="acc-email" id="acc-email"></div>
+      <span class="acc-role-badge" id="acc-role">buyer</span>
+    </div>
+    <nav class="acc-nav">
+      <div class="acc-nav-item active" onclick="showTab('overview',this)">
+        <span class="acc-nav-ico">📊</span> Overview
+      </div>
+      <div class="acc-nav-item" onclick="showTab('orders',this)">
+        <span class="acc-nav-ico">🧾</span> My Orders
+      </div>
+      <div class="acc-nav-item" onclick="showTab('profile',this)">
+        <span class="acc-nav-ico">👤</span> Profile
+      </div>
+      <div class="acc-nav-item" onclick="showTab('security',this)">
+        <span class="acc-nav-ico">🔒</span> Security
+      </div>
+    </nav>
+    <div class="acc-logout">
+      <button class="logout-btn" onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="acc-main">
+
+    <!-- OVERVIEW -->
+    <div class="acc-page active" id="tab-overview">
+      <div class="acc-card">
+        <div class="acc-card-title">Welcome back, <span id="welcome-name">there</span>!</div>
+        <div class="acc-stats" id="acc-stats">
+          <div class="acc-stat"><div class="acc-stat-val" id="stat-orders">0</div><div class="acc-stat-lbl">Total Orders</div></div>
+          <div class="acc-stat"><div class="acc-stat-val" id="stat-spent">₱0</div><div class="acc-stat-lbl">Total Spent</div></div>
+          <div class="acc-stat"><div class="acc-stat-val" id="stat-files">0</div><div class="acc-stat-lbl">Files Owned</div></div>
+        </div>
+      </div>
+      <div class="acc-card">
+        <div class="acc-card-title">Recent Orders</div>
+        <div id="recent-orders-list"></div>
+      </div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="acc-page" id="tab-orders">
+      <div class="acc-card">
+        <div class="acc-card-title">My Orders</div>
+        <div id="all-orders-list"></div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="acc-page" id="tab-profile">
+      <div class="acc-card">
+        <div class="acc-card-title">Edit Profile</div>
+        <div class="alert" id="profile-alert"></div>
+        <div class="fg">
+          <label>Full Name *</label>
+          <input type="text" id="p-name" placeholder="Your full name"/>
+        </div>
+        <div class="fg">
+          <label>Email Address</label>
+          <input type="email" id="p-email" readonly style="opacity:.6" placeholder="Email cannot be changed"/>
+        </div>
+        <div class="fg">
+          <label>Phone Number</label>
+          <input type="tel" id="p-phone" placeholder="09XX-XXX-XXXX"/>
+        </div>
+        <div class="fg">
+          <label>Complete Address</label>
+          <textarea id="p-address" placeholder="House/Unit No., Street, Barangay, City, Province"></textarea>
+        </div>
+        <button class="save-btn" onclick="saveProfile()">Save Changes</button>
+        <span class="save-feedback" id="profile-feedback">✓ Saved!</span>
+      </div>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="acc-page" id="tab-security">
+      <div class="acc-card">
+        <div class="acc-card-title">Change Password</div>
+        <div class="alert" id="pw-alert"></div>
+        <div class="fg">
+          <label>Current Password *</label>
+          <input type="password" id="pw-current" placeholder="Enter current password"/>
+        </div>
+        <div class="fg">
+          <label>New Password *</label>
+          <input type="password" id="pw-new" placeholder="Min. 8 characters"/>
+        </div>
+        <div class="fg">
+          <label>Confirm New Password *</label>
+          <input type="password" id="pw-confirm" placeholder="Re-enter new password"/>
+        </div>
+        <button class="save-btn" onclick="changePassword()">Update Password</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">pressfiles.</div>
+  <p>© 2026 Pressfiles by Teacher Ira</p>
+</footer>
+
+<script>
+const peso = n => '₱' + Number(n).toLocaleString('en-PH', {minimumFractionDigits:2});
+
+/* ── AUTH CHECK ── */
+let currentUser = null;
+
+async function checkAuth() {
+  const stored = localStorage.getItem('pf_user');
+  const token  = localStorage.getItem('pf_token');
+  if (!stored || !token) {
+    window.location.href = 'login.html';
+    return;
+  }
+  try {
+    const res = await fetch('/api/auth/me', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (!res.ok) {
+      localStorage.removeItem('pf_token');
+      localStorage.removeItem('pf_user');
+      window.location.href = 'login.html';
+      return;
+    }
+    const data = await res.json();
+    currentUser = data.user;
+    localStorage.setItem('pf_user', JSON.stringify(currentUser));
+    renderProfile();
+    loadOrders();
+  } catch {
+    currentUser = JSON.parse(stored);
+    renderProfile();
+    loadOrders();
+  }
+}
+
+function renderProfile() {
+  const u = currentUser;
+  const initials = u.fullName.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+  document.getElementById('acc-avatar').textContent  = initials;
+  document.getElementById('acc-name').textContent    = u.fullName;
+  document.getElementById('acc-email').textContent   = u.email;
+  document.getElementById('acc-role').textContent    = u.role;
+  document.getElementById('welcome-name').textContent= u.fullName.split(' ')[0];
+  document.getElementById('p-name').value    = u.fullName  || '';
+  document.getElementById('p-email').value   = u.email     || '';
+  document.getElementById('p-phone').value   = u.phone     || '';
+  document.getElementById('p-address').value = u.address   || '';
+  document.getElementById('stat-spent').textContent = peso(u.totalSpent||0);
+}
+
+/* ── ORDERS ── */
+async function loadOrders() {
+  const token = localStorage.getItem('pf_token');
+  try {
+    const res    = await fetch('/api/orders/mine', { headers: {'Authorization':'Bearer '+token} });
+    const orders = res.ok ? await res.json() : [];
+    document.getElementById('stat-orders').textContent = orders.length;
+    const files = orders.reduce((s,o)=>(o.items||[]).length+s, 0);
+    document.getElementById('stat-files').textContent  = files;
+    renderOrdersList('recent-orders-list', orders.slice(-3).reverse());
+    renderOrdersList('all-orders-list',    orders.slice().reverse());
+  } catch {
+    renderOrdersList('recent-orders-list', []);
+    renderOrdersList('all-orders-list',    []);
+  }
+}
+
+function renderOrdersList(containerId, orders) {
+  const el = document.getElementById(containerId);
+  if (!orders.length) {
+    el.innerHTML = `<div class="no-orders">No orders yet. <a href="shop.html">Browse files →</a></div>`;
+    return;
+  }
+  el.innerHTML = orders.map(o => `
+    <div class="order-card">
+      <div class="order-head">
+        <div>
+          <div class="order-id">${o.id}</div>
+          <div class="order-date">${new Date(o.date).toLocaleDateString('en-PH',{year:'numeric',month:'long',day:'numeric'})}</div>
+        </div>
+        <div>
+          ${o.status==='paid'
+            ? '<span class="order-status-paid">✓ Paid</span>'
+            : '<span class="order-status-pending">Pending</span>'}
+        </div>
+      </div>
+      <div class="order-items">
+        ${(o.items||[]).map(i=>`<div class="order-item-name">${i.title}</div>`).join('')}
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="order-total">${peso(o.total)}</div>
+        <div>${o.delivered
+          ? '<span class="order-delivered">✓ Files Sent</span>'
+          : '<span class="order-pending">⏳ Awaiting Verification</span>'}</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ── TABS ── */
+function showTab(name, el) {
+  document.querySelectorAll('.acc-page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.acc-nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if (el) el.classList.add('active');
+}
+
+/* ── SAVE PROFILE ── */
+async function saveProfile() {
+  const token = localStorage.getItem('pf_token');
+  const al    = document.getElementById('profile-alert');
+  al.className = 'alert';
+  try {
+    const res  = await fetch('/api/auth/profile', {
+      method:  'PUT',
+      headers: {'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body: JSON.stringify({
+        fullName: document.getElementById('p-name').value.trim(),
+        phone:    document.getElementById('p-phone').value.trim(),
+        address:  document.getElementById('p-address').value.trim(),
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      al.textContent = data.error;
+      al.className   = 'alert error show';
+      return;
+    }
+    currentUser = data.user;
+    localStorage.setItem('pf_user', JSON.stringify(currentUser));
+    renderProfile();
+    const fb = document.getElementById('profile-feedback');
+    fb.classList.add('show');
+    setTimeout(()=>fb.classList.remove('show'), 2500);
+  } catch {
+    al.textContent = 'Could not save profile.';
+    al.className   = 'alert error show';
+  }
+}
+
+/* ── CHANGE PASSWORD ── */
+async function changePassword() {
+  const token = localStorage.getItem('pf_token');
+  const al    = document.getElementById('pw-alert');
+  al.className = 'alert';
+  const current = document.getElementById('pw-current').value;
+  const newPw   = document.getElementById('pw-new').value;
+  const confirm = document.getElementById('pw-confirm').value;
+  if (!current||!newPw||!confirm) { al.textContent='All fields are required.'; al.className='alert error show'; return; }
+  if (newPw !== confirm)           { al.textContent='Passwords do not match.'; al.className='alert error show'; return; }
+  if (newPw.length < 8)            { al.textContent='New password must be at least 8 characters.'; al.className='alert error show'; return; }
+  try {
+    const res = await fetch('/api/auth/change-password', {
+      method:  'PUT',
+      headers: {'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body: JSON.stringify({ currentPassword:current, newPassword:newPw }),
+    });
+    const data = await res.json();
+    if (!res.ok) { al.textContent=data.error; al.className='alert error show'; return; }
+    al.textContent = '✓ Password changed successfully!';
+    al.className   = 'alert success show';
+    document.getElementById('pw-current').value = '';
+    document.getElementById('pw-new').value     = '';
+    document.getElementById('pw-confirm').value = '';
+  } catch {
+    al.textContent = 'Could not change password.';
+    al.className   = 'alert error show';
+  }
+}
+
+/* ── LOGOUT ── */
+async function logout() {
+  try {
+    await fetch('/api/auth/logout', { method:'POST' });
+  } catch {}
+  localStorage.removeItem('pf_token');
+  localStorage.removeItem('pf_user');
+  window.location.href = 'login.html';
+}
+
+/* ── INIT ── */
+checkAuth();
+</script>
+</body>
+</html>
