@@ -1,28 +1,35 @@
 require('dotenv').config();
-const express = require('express');
-const path    = require('path');
-const fs      = require('fs');
-const pool    = require('./db/db');
+const express      = require('express');
+const path         = require('path');
+const fs           = require('fs');
+const cookieParser = require('cookie-parser');
+const pool         = require('./db/db');
+const authRoutes   = require('./routes/auth_routes');
+const { requireAdmin, requireStaff, verifyToken } = require('./middleware/auth_middleware');
 
 const app  = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// ── MIDDLEWARE ──
+/* ── MIDDLEWARE ── */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// ── STATIC FILES ──
+/* ── STATIC FILES ── */
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
-// ── ROUTES ──
+/* ── AUTH ROUTES ── */
+app.use('/api/auth', authRoutes);
 
-// Home
+/* ── HOME ── */
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'shop.html'));
 });
 
-// GET all active products
+/* ── PRODUCTS API ── */
+
+// GET all active products (public)
 app.get('/api/products', async (req, res) => {
   try {
     const result = await pool.query(
@@ -53,14 +60,14 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
-// POST — add new product
-app.post('/api/products', async (req, res) => {
+// POST — add new product (admin only)
+app.post('/api/products', requireAdmin, async (req, res) => {
   try {
-    const { title, description, type, price, fileName, fileSize, pages, driveLink, isActive } = req.body;
+    const { title, description, type, price, fileName, fileSize, pages, driveLink, isActive, isFeatured } = req.body;
     const result = await pool.query(
-      `INSERT INTO products (title, description, type, price, file_name, file_size, pages, drive_link, is_active)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
-      [title, description, type, price, fileName, fileSize, pages, driveLink, isActive ?? true]
+      `INSERT INTO products (title, description, type, price, file_name, file_size, pages, drive_link, is_active, is_featured)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
+      [title, description, type, price, fileName, fileSize, pages, driveLink, isActive??true, isFeatured??false]
     );
     console.log(`✅ Product added: ${result.rows[0].title}`);
     res.json({ success: true, product: result.rows[0] });
@@ -70,21 +77,19 @@ app.post('/api/products', async (req, res) => {
   }
 });
 
-// PUT — update product
-app.put('/api/products/:id', async (req, res) => {
+// PUT — update product (admin only)
+app.put('/api/products/:id', requireAdmin, async (req, res) => {
   try {
-    const { title, description, type, price, fileName, fileSize, pages, driveLink, isActive } = req.body;
+    const { title, description, type, price, fileName, fileSize, pages, driveLink, isActive, isFeatured } = req.body;
     const result = await pool.query(
       `UPDATE products
        SET title=$1, description=$2, type=$3, price=$4,
-           file_name=$5, file_size=$6, pages=$7, drive_link=$8, is_active=$9
-       WHERE id=$10
-       RETURNING *`,
-      [title, description, type, price, fileName, fileSize, pages, driveLink, isActive ?? true, req.params.id]
+           file_name=$5, file_size=$6, pages=$7, drive_link=$8,
+           is_active=$9, is_featured=$10
+       WHERE id=$11 RETURNING *`,
+      [title, description, type, price, fileName, fileSize, pages, driveLink, isActive??true, isFeatured??false, req.params.id]
     );
-    if (!result.rows.length) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
+    if (!result.rows.length) return res.status(404).json({ error: 'Product not found' });
     console.log(`✅ Product updated: ${result.rows[0].title}`);
     res.json({ success: true, product: result.rows[0] });
   } catch (err) {
@@ -93,16 +98,14 @@ app.put('/api/products/:id', async (req, res) => {
   }
 });
 
-// DELETE — remove product
-app.delete('/api/products/:id', async (req, res) => {
+// DELETE — remove product (admin only)
+app.delete('/api/products/:id', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(
       'DELETE FROM products WHERE id = $1 RETURNING title',
       [req.params.id]
     );
-    if (!result.rows.length) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
+    if (!result.rows.length) return res.status(404).json({ error: 'Product not found' });
     console.log(`🗑️  Product deleted: ${result.rows[0].title}`);
     res.json({ success: true });
   } catch (err) {
@@ -111,20 +114,61 @@ app.delete('/api/products/:id', async (req, res) => {
   }
 });
 
-// GET all orders
-app.get('/api/orders', (req, res) => {
+/* ── ORDERS API ── */
+
+// GET all orders (admin/staff only)
+app.get('/api/orders', requireStaff, async (req, res) => {
   try {
-    const orders = JSON.parse(fs.readFileSync(
-      path.join(__dirname, 'db', 'orders.json'), 'utf8'
-    ));
+    const ordersPath = path.join(__dirname, 'db', 'orders.json');
+    if (!fs.existsSync(ordersPath)) return res.json([]);
+    const orders = JSON.parse(fs.readFileSync(ordersPath, 'utf8'));
     res.json(orders);
   } catch {
     res.json([]);
   }
 });
 
-// POST — deliver order (send files)
-app.post('/api/orders/:id/deliver', async (req, res) => {
+// POST — save new order (requires login)
+app.post('/api/orders', verifyToken, async (req, res) => {
+  try {
+    const ordersPath = path.join(__dirname, 'db', 'orders.json');
+    const orders     = fs.existsSync(ordersPath)
+      ? JSON.parse(fs.readFileSync(ordersPath, 'utf8'))
+      : [];
+    const newOrder = {
+      ...req.body,
+      userId:    req.user.id,
+      userEmail: req.user.email,
+      id:        'ORD-' + Date.now(),
+      date:      new Date().toISOString(),
+      status:    'pending',
+      delivered: false,
+    };
+    orders.push(newOrder);
+    fs.mkdirSync(path.dirname(ordersPath), { recursive: true });
+    fs.writeFileSync(ordersPath, JSON.stringify(orders, null, 2));
+    console.log(`📦 New order: ${newOrder.id} from ${newOrder.userEmail}`);
+    res.json({ success: true, orderId: newOrder.id });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET buyer's own orders
+app.get('/api/orders/mine', verifyToken, async (req, res) => {
+  try {
+    const ordersPath = path.join(__dirname, 'db', 'orders.json');
+    if (!fs.existsSync(ordersPath)) return res.json([]);
+    const orders = JSON.parse(fs.readFileSync(ordersPath, 'utf8'));
+    const mine   = orders.filter(o => o.userId === req.user.id || o.email === req.user.email);
+    res.json(mine);
+  } catch {
+    res.json([]);
+  }
+});
+
+// POST — deliver order (admin/staff only)
+app.post('/api/orders/:id/deliver', requireStaff, async (req, res) => {
   try {
     const ordersPath = path.join(__dirname, 'db', 'orders.json');
     const orders     = JSON.parse(fs.readFileSync(ordersPath, 'utf8'));
@@ -141,18 +185,20 @@ app.post('/api/orders/:id/deliver', async (req, res) => {
   }
 });
 
-// POST — resend order files
-app.post('/api/orders/:id/resend', async (req, res) => {
+// POST — resend order (admin/staff only)
+app.post('/api/orders/:id/resend', requireStaff, async (req, res) => {
   try {
-    console.log(`🔄 Resending order: ${req.params.id}`);
+    console.log(`🔄 Resending: ${req.params.id}`);
     res.json({ success: true, message: 'Files resent' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
+/* ── START ── */
 app.listen(PORT, () => {
-  console.log(`\n🚀 Server running at http://localhost:${PORT}`);
-  console.log(`📧 Email: ${process.env.EMAIL_USER}`);
-  console.log(`🐘 DB: ${process.env.DATABASE_URL?.split('@')[1]}\n`);
+  console.log(`\n🚀 Pressfiles running at http://localhost:${PORT}`);
+  console.log(`📧 Email:  ${process.env.EMAIL_USER}`);
+  console.log(`🐘 DB:     ${process.env.DATABASE_URL?.split('@')[1]}`);
+  console.log(`🔐 Auth:   JWT + bcrypt\n`);
 });

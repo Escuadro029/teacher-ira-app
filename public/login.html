@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — Pressfiles</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;0,900;1,300;1,500;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { background: var(--surface); min-height: 100vh; display: flex; flex-direction: column; }
+
+    .auth-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .auth-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 2.5rem 2rem;
+      width: min(420px, 100%);
+      box-shadow: var(--shadow-lg);
+    }
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+    .auth-logo img { height: 52px; width: auto; }
+    .auth-title {
+      font-family: Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-align: center;
+      margin-bottom: .35rem;
+    }
+    .auth-sub {
+      font-size: .82rem;
+      color: var(--mid);
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+
+    .fg { display: flex; flex-direction: column; gap: .38rem; margin-bottom: 1rem; }
+    .fg label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--mid); }
+    .fg input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .72rem .95rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .9rem;
+      color: var(--ink);
+      width: 100%;
+      outline: none;
+      transition: border-color .18s, box-shadow .18s;
+    }
+    .fg input:focus { border-color: var(--crimson); box-shadow: 0 0 0 3px rgba(139,26,26,.1); }
+    .fg input::placeholder { color: var(--muted); }
+    .fg input.error { border-color: var(--red); background: #fff8f8; }
+    .field-err { font-size: .72rem; color: var(--red); margin-top: .2rem; display: none; }
+    .field-err.show { display: block; }
+
+    .auth-btn {
+      width: 100%;
+      background: var(--crimson);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: .88rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .18s, transform .18s;
+      margin-top: .5rem;
+      letter-spacing: .01em;
+    }
+    .auth-btn:hover:not(:disabled) { background: var(--crimson-dark); transform: translateY(-1px); }
+    .auth-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin: 1.25rem 0;
+      font-size: .75rem;
+      color: var(--muted);
+    }
+    .auth-divider::before,
+    .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .auth-link-row {
+      text-align: center;
+      font-size: .82rem;
+      color: var(--mid);
+      margin-top: 1.1rem;
+    }
+    .auth-link-row a {
+      color: var(--crimson);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .auth-link-row a:hover { text-decoration: underline; }
+
+    .alert {
+      border-radius: 8px;
+      padding: .82rem 1rem;
+      font-size: .82rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    .alert.show    { display: block; }
+    .alert.error   { background: #fff0f0; border: 1px solid #f5c6cb; color: var(--red); }
+    .alert.success { background: var(--green-lt); border: 1px solid rgba(26,107,60,.2); color: var(--green); }
+
+    .role-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: .5rem;
+      margin-bottom: 1.5rem;
+    }
+    .role-tab {
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: .65rem .5rem;
+      cursor: pointer;
+      transition: all .18s;
+      background: var(--surface);
+      text-align: center;
+    }
+    .role-tab:hover { border-color: var(--crimson); background: var(--crimson-light); }
+    .role-tab.active { border-color: var(--crimson); background: var(--crimson-light); }
+    .role-tab-icon  { font-size: 1.2rem; display: block; margin-bottom: .2rem; }
+    .role-tab-label { font-size: .7rem; font-weight: 700; color: var(--ink); display: block; }
+    .role-tab.active .role-tab-label { color: var(--crimson); }
+
+    .forgot-link {
+      font-size: .75rem;
+      color: var(--mid);
+      text-decoration: none;
+      float: right;
+      margin-top: .2rem;
+    }
+    .forgot-link:hover { color: var(--crimson); }
+
+    .show-pass {
+      position: relative;
+    }
+    .show-pass input { padding-right: 2.8rem; }
+    .show-pass-btn {
+      position: absolute;
+      right: .75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: .82rem;
+      padding: 0;
+    }
+    .show-pass-btn:hover { color: var(--ink); }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="shop.html">
+    <img src="/assets/logo/pressfilesv2.gif" alt="Pressfiles" style="height:42px;width:auto;display:block;"/>
+  </a>
+  <div class="header-right">
+    <a class="hlink" href="shop.html">← Back to Shop</a>
+  </div>
+</header>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <img src="/assets/logo/pressfilesv2.gif" alt="Pressfiles"/>
+    </div>
+    <div class="auth-title">Welcome back</div>
+    <div class="auth-sub">Sign in to your Pressfiles account</div>
+
+    <!-- ROLE TABS -->
+    <div class="role-tabs">
+      <div class="role-tab active" id="tab-buyer" onclick="selectRole('buyer')">
+        <span class="role-tab-icon">🛒</span>
+        <span class="role-tab-label">Buyer</span>
+      </div>
+      <div class="role-tab" id="tab-staff" onclick="selectRole('staff')">
+        <span class="role-tab-icon">👩‍💼</span>
+        <span class="role-tab-label">Staff</span>
+      </div>
+      <div class="role-tab" id="tab-admin" onclick="selectRole('admin')">
+        <span class="role-tab-icon">🔑</span>
+        <span class="role-tab-label">Admin</span>
+      </div>
+    </div>
+
+    <!-- ALERT -->
+    <div class="alert" id="alert"></div>
+
+    <!-- FORM -->
+    <div class="fg">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="you@example.com" oninput="clearErr('email')"/>
+      <span class="field-err" id="email-err"></span>
+    </div>
+
+    <div class="fg">
+      <label>Password <a class="forgot-link" href="#">Forgot password?</a></label>
+      <div class="show-pass">
+        <input type="password" id="password" placeholder="Enter your password" oninput="clearErr('password')"/>
+        <button class="show-pass-btn" type="button" onclick="togglePass()">👁</button>
+      </div>
+      <span class="field-err" id="password-err"></span>
+    </div>
+
+    <button class="auth-btn" id="login-btn" onclick="login()">
+      Sign In →
+    </button>
+
+    <div class="auth-divider">or</div>
+
+    <div class="auth-link-row">
+      Don't have an account? <a href="register.html">Create one →</a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">pressfiles.</div>
+  <p>© 2026 Pressfiles by Teacher Ira · All rights reserved</p>
+</footer>
+
+<script>
+let selectedRole = 'buyer';
+
+function selectRole(role) {
+  selectedRole = role;
+  document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + role).classList.add('active');
+}
+
+function clearErr(field) {
+  const el = document.getElementById(field);
+  const er = document.getElementById(field + '-err');
+  if (el) el.classList.remove('error');
+  if (er) { er.textContent = ''; er.classList.remove('show'); }
+}
+
+function showErr(field, msg) {
+  const el = document.getElementById(field);
+  const er = document.getElementById(field + '-err');
+  if (el) el.classList.add('error');
+  if (er) { er.textContent = msg; er.classList.add('show'); }
+}
+
+function showAlert(msg, type='error') {
+  const a = document.getElementById('alert');
+  a.textContent = msg;
+  a.className = `alert ${type} show`;
+}
+
+function hideAlert() {
+  document.getElementById('alert').className = 'alert';
+}
+
+function togglePass() {
+  const inp = document.getElementById('password');
+  inp.type  = inp.type === 'password' ? 'text' : 'password';
+}
+
+function validate() {
+  let ok = true;
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  if (!email || !email.includes('@')) { showErr('email','Please enter a valid email.'); ok=false; }
+  if (!password)                       { showErr('password','Please enter your password.'); ok=false; }
+  return ok;
+}
+
+async function login() {
+  if (!validate()) return;
+  hideAlert();
+  const btn = document.getElementById('login-btn');
+  btn.disabled    = true;
+  btn.textContent = 'Signing in…';
+
+  try {
+    const res  = await fetch('/api/auth/login', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        email:    document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value,
+      }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      showAlert(data.error || 'Login failed. Please try again.');
+      btn.disabled    = false;
+      btn.textContent = 'Sign In →';
+      return;
+    }
+
+    // Save token to localStorage as backup
+    localStorage.setItem('pf_token', data.token);
+    localStorage.setItem('pf_user',  JSON.stringify(data.user));
+
+    showAlert('✓ Login successful! Redirecting…', 'success');
+
+    // Redirect based on role
+    setTimeout(() => {
+      if (data.user.role === 'admin' || data.user.role === 'staff') {
+        window.location.href = 'admin.html';
+      } else {
+        window.location.href = 'account.html';
+      }
+    }, 800);
+
+  } catch (err) {
+    showAlert('Server error. Please try again.');
+    btn.disabled    = false;
+    btn.textContent = 'Sign In →';
+  }
+}
+
+// Allow Enter key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') login();
+});
+
+// If already logged in, redirect
+const existingUser = localStorage.getItem('pf_user');
+if (existingUser) {
+  try {
+    const u = JSON.parse(existingUser);
+    if (u.role === 'admin' || u.role === 'staff') window.location.href = 'admin.html';
+    else window.location.href = 'account.html';
+  } catch {}
+}
+</script>
+</body>
+</html>
