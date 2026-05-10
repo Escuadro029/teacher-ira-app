@@ -4,962 +4,1210 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin — Pressfiles</title>
+  <title>Checkout — Pressfiles</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;0,900;1,300;1,500;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
   <style>
-    .layout { display: grid; grid-template-columns: 210px 1fr; min-height: calc(100vh - 57px); }
-
-    .sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 1.25rem 0; position: sticky; top: 57px; height: calc(100vh - 57px); overflow-y: auto; }
-
-    .nav-section { font-size: .6rem; font-weight: 700; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); padding: .6rem 1.2rem .2rem; margin-top: .5rem; }
-
-    .nav-item { padding: .65rem 1.2rem; font-size: .78rem; font-weight: 600; color: var(--mid); cursor: pointer; border-left: 2.5px solid transparent; transition: all .18s; display: flex; align-items: center; gap: .6rem; }
-    .nav-item:hover { color: var(--ink); background: rgba(0,0,0,.03); }
-    .nav-item.active { color: var(--crimson); border-left-color: var(--crimson); background: var(--crimson-light); }
-
-    .nav-ico { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: .8rem; background: var(--surface2); flex-shrink: 0; }
-    .nav-item.active .nav-ico { background: var(--crimson-mid); }
-
-    .nav-badge { background: var(--crimson); color: #fff; border-radius: 4px; padding: .1rem .42rem; font-size: .6rem; font-weight: 700; margin-left: auto; }
-
-    .admin-main { padding: 2rem clamp(1.25rem, 3vw, 2.5rem); background: var(--bg); }
-
-    .page { display: none; animation: fadeUp .22s ease both; }
-    .page.active { display: block; }
-
-    .pg-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.75rem; flex-wrap: wrap; gap: .85rem; }
-    .pg-title { font-family: Georgia, serif; font-size: 1.65rem; font-weight: 700; color: var(--ink); }
-    .pg-sub { font-size: .78rem; color: var(--mid); margin-top: .12rem; }
-
-    .stats-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 1rem; margin-bottom: 1.75rem; }
-
-    .scard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.2rem; position: relative; overflow: hidden; transition: box-shadow .2s, transform .2s; }
-    .scard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2.5px; background: var(--sc-color, var(--crimson)); }
-    .scard:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-
-    .sc-lbl { font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--mid); margin-bottom: .42rem; }
-    .sc-val { font-family: Georgia, serif; font-size: 2.1rem; font-weight: 700; color: var(--ink); line-height: 1; }
-    .sc-val.cr { color: var(--crimson); }
-    .sc-val.am { color: var(--gold); }
-    .sc-val.gr { color: var(--green); }
-    .sc-sub { font-size: .7rem; color: var(--mid); margin-top: .28rem; }
-
-    .mini-chart { display: flex; align-items: flex-end; gap: 3px; height: 26px; margin-top: .7rem; }
-    .mc-bar { flex: 1; border-radius: 2px 2px 0 0; }
-
-    .overview-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
-    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.2rem; }
-    .panel-title { font-family: Georgia, serif; font-size: .95rem; font-weight: 700; color: var(--ink); margin-bottom: .85rem; padding-bottom: .65rem; border-bottom: 1px solid var(--border); }
-
-    .tp-row { display: flex; align-items: center; gap: .6rem; padding: .45rem 0; border-bottom: 1px solid var(--border); }
-    .tp-row:last-child { border-bottom: none; }
-    .tp-rank { font-size: .62rem; font-weight: 700; color: var(--muted); width: 14px; flex-shrink: 0; }
-    .tp-cover { width: 26px; height: 36px; border-radius: 2px 4px 4px 2px; overflow: hidden; position: relative; flex-shrink: 0; box-shadow: -1px 2px 0 rgba(0,0,0,.1), -2px 4px 6px rgba(0,0,0,.12); }
-    .tp-cover::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: rgba(0,0,0,.18); z-index: 2; }
-    .tp-name { font-size: .76rem; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink2); }
-    .tp-price { font-family: Georgia, serif; font-size: .88rem; flex-shrink: 0; color: var(--ink); }
-
-    .section-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin-bottom: 1.5rem; }
-    .sc-top { padding: .9rem 1.2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: .75rem; flex-wrap: wrap; }
-    .sc-top-title { font-family: Georgia, serif; font-size: .95rem; font-weight: 700; color: var(--ink); }
-
-    /* ── ORDERS TOOLBAR ── */
-    .orders-toolbar {
-      display: flex;
-      align-items: center;
-      gap: .65rem;
-      flex: 1;
-      flex-wrap: wrap;
+    .layout {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 2.5rem clamp(1.5rem, 5vw, 3rem);
+      display: grid;
+      grid-template-columns: 1fr 385px;
+      gap: 3rem;
+      align-items: start;
     }
 
-    .search-wrap {
-      position: relative;
-      flex: 1;
-      min-width: 180px;
-      max-width: 320px;
+    h2 {
+      font-family: Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: .2rem;
+      color: var(--ink);
     }
 
-    .search-wrap input {
-      width: 100%;
+    .page-sub {
+      font-size: .84rem;
+      color: var(--mid);
+      margin-bottom: 2rem;
+    }
+
+    .fblock {
+      margin-bottom: 1.5rem;
       background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: .46rem .9rem .46rem 2rem;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: .78rem;
+      border-radius: var(--r-lg);
+      padding: 1.5rem;
+    }
+
+    .fblock-head {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      margin-bottom: 1.2rem;
+      padding-bottom: .9rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .fblock-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--crimson-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+
+    .fblock-lbl {
+      font-size: .8rem;
+      font-weight: 700;
       color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .fg {
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+      margin-bottom: .85rem;
+    }
+
+    .fg:last-child {
+      margin-bottom: 0;
+    }
+
+    .fg label {
+      font-size: .7rem;
+      font-weight: 700;
+      color: var(--mid);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .fg input,
+    .fg textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .68rem .95rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .9rem;
+      color: var(--ink);
+      width: 100%;
       outline: none;
       transition: border-color .18s, box-shadow .18s;
     }
 
-    .search-wrap input:focus {
+    .fg input:focus,
+    .fg textarea:focus {
       border-color: var(--crimson);
-      box-shadow: 0 0 0 3px rgba(139,26,26,.08);
+      box-shadow: 0 0 0 3px rgba(139, 26, 26, .1);
     }
 
-    .search-wrap input::placeholder { color: var(--muted); }
-
-    .search-ico {
-      position: absolute;
-      left: .65rem;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: .72rem;
+    .fg input::placeholder,
+    .fg textarea::placeholder {
       color: var(--muted);
-      pointer-events: none;
     }
 
-    .orders-meta {
-      font-size: .72rem;
+    .fg input.error,
+    .fg textarea.error {
+      border-color: var(--red);
+      background: #fff8f8;
+    }
+
+    .fg textarea {
+      resize: vertical;
+      min-height: 72px;
+    }
+
+    .field-hint {
+      font-size: .73rem;
       color: var(--mid);
-      white-space: nowrap;
+      margin-top: .2rem;
     }
 
-    /* ── PAGINATION ── */
-    .orders-pagination {
+    .field-hint.err {
+      color: var(--red);
+    }
+
+    .delivery-note {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: .32rem;
-      padding: 1rem 1.2rem;
-      border-top: 1px solid var(--border);
+      gap: .6rem;
+      align-items: flex-start;
+      background: var(--crimson-light);
+      border: 1px solid var(--crimson-mid);
+      border-radius: 8px;
+      padding: .82rem 1rem;
+      margin-bottom: 1.1rem;
     }
 
-    .pg-btn {
-      min-width: 32px;
-      height: 32px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--bg);
+    .dn-ico {
+      font-size: 1rem;
+      flex-shrink: 0;
+      margin-top: .05rem;
+    }
+
+    .dn-text strong {
+      font-size: .7rem;
+      font-weight: 700;
+      color: var(--crimson);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      display: block;
+      margin-bottom: .18rem;
+    }
+
+    .dn-text p {
+      font-size: .82rem;
       color: var(--ink2);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: .76rem;
-      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    /* GCASH TABS */
+    .payment-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .6rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .pay-tab {
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      padding: .85rem 1rem;
       cursor: pointer;
+      transition: all .18s;
+      background: var(--surface);
+      text-align: left;
+    }
+
+    .pay-tab:hover {
+      border-color: var(--crimson);
+      background: var(--crimson-light);
+    }
+
+    .pay-tab.active {
+      border-color: var(--crimson);
+      background: var(--crimson-light);
+    }
+
+    .pay-tab-icon {
+      font-size: 1.2rem;
+      margin-bottom: .3rem;
+      display: block;
+    }
+
+    .pay-tab-title {
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--ink);
+      display: block;
+      margin-bottom: .1rem;
+    }
+
+    .pay-tab-sub {
+      font-size: .7rem;
+      color: var(--mid);
+      line-height: 1.4;
+    }
+
+    .pay-tab.active .pay-tab-sub {
+      color: var(--crimson);
+    }
+
+    .gcash-panel {
+      display: none;
+    }
+
+    .gcash-panel.active {
+      display: block;
+    }
+
+    .gcash-info-box {
+      background: #f0f9f4;
+      border: 1px solid #b3dfc8;
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .gib-title {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: #1a6b3c;
+      margin-bottom: .5rem;
+    }
+
+    .gib-step {
+      display: flex;
+      align-items: flex-start;
+      gap: .5rem;
+      margin-bottom: .38rem;
+      font-size: .82rem;
+      color: var(--ink2);
+      line-height: 1.45;
+    }
+
+    .gib-num {
+      background: var(--crimson);
+      color: #fff;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0 .55rem;
-      transition: all .18s;
+      font-size: .6rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: .1rem;
     }
 
-    .pg-btn:hover:not(:disabled) { border-color: var(--crimson); color: var(--crimson); background: var(--crimson-light); }
-    .pg-btn.active { background: var(--crimson); border-color: var(--crimson); color: #fff; font-weight: 700; }
-    .pg-btn:disabled { opacity: .35; cursor: not-allowed; }
-    .pg-ellipsis { font-size: .76rem; color: var(--muted); padding: 0 .18rem; user-select: none; }
+    .gib-email {
+      font-weight: 700;
+      color: var(--crimson);
+    }
 
-    table { width: 100%; border-collapse: collapse; }
-    th { font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--mid); text-align: left; padding: .75rem 1rem; border-bottom: 1px solid var(--border); background: var(--surface2); white-space: nowrap; }
-    td { padding: .82rem 1rem; border-bottom: 1px solid rgba(0,0,0,.04); font-size: .84rem; vertical-align: middle; background: var(--surface); }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: var(--surface2); }
-    .empty-table { text-align: center; padding: 3rem; font-size: .84rem; color: var(--mid); }
+    .gcash-amount-box {
+      background: var(--surface);
+      border: 1.5px dashed var(--crimson-mid);
+      border-radius: 8px;
+      padding: .85rem 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-    .t-book { width: 32px; height: 44px; border-radius: 2px 5px 5px 2px; overflow: hidden; position: relative; box-shadow: -1px 2px 0 rgba(0,0,0,.1), -2px 4px 8px rgba(0,0,0,.12); }
-    .t-book::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: rgba(0,0,0,.18); z-index: 2; }
-    .tb-inner { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; padding: .2rem .15rem .15rem .42rem; position: relative; z-index: 1; gap: .1rem; }
-    .tb-t { font-family: Georgia, serif; font-size: .28rem; line-height: 1.2; color: rgba(255,255,255,.9); font-weight: 700; }
-    .tb-b { font-size: .24rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.3); }
+    .gab-lbl {
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--mid);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
 
-    .act-btn { background: transparent; border: 1px solid var(--border); color: var(--mid); padding: .22rem .58rem; border-radius: 5px; font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; cursor: pointer; margin-right: .2rem; transition: all .18s; }
-    .act-btn:hover { border-color: var(--crimson); color: var(--crimson); background: var(--crimson-light); }
-    .act-btn.del:hover { border-color: var(--red); color: var(--red); background: #fff5f5; }
+    .gab-val {
+      font-family: Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--crimson);
+    }
 
-    .deliver-btn { background: var(--crimson); color: #fff; border: none; border-radius: 5px; padding: .3rem .7rem; font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; cursor: pointer; transition: all .18s; margin-right: .2rem; }
-    .deliver-btn:hover { background: var(--crimson-dark); }
-    .deliver-btn:disabled { background: var(--mid); opacity: .5; cursor: not-allowed; }
-    .deliver-btn.done { background: var(--green); cursor: default; }
+    .trust-badges {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-top: .85rem;
+    }
 
-    .resend-btn { background: var(--green-lt); border: 1px solid rgba(26,107,60,.2); color: var(--green); padding: .22rem .58rem; border-radius: 5px; font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; cursor: pointer; transition: all .18s; }
-    .resend-btn:hover { background: #d4edda; }
+    .trust-b {
+      display: flex;
+      align-items: center;
+      gap: .25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .26rem .6rem;
+      font-size: .65rem;
+      font-weight: 600;
+      color: var(--mid);
+    }
 
-    .status-pending { background: var(--amber-lt); color: var(--gold); border-radius: 4px; padding: .16rem .5rem; font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
-    .status-paid { background: var(--green-lt); color: var(--green); border-radius: 4px; padding: .16rem .5rem; font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
-    .status-sent { background: var(--green-lt); color: var(--green); border-radius: 4px; padding: .16rem .5rem; font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+    /* TERMS */
+    .terms-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
 
-    .pay-info { font-size: .68rem; color: var(--mid); margin-top: .18rem; }
-    .pay-ref { font-family: monospace; font-size: .7rem; color: var(--ink2); background: var(--surface2); padding: .1rem .35rem; border-radius: 3px; }
+    .terms-title {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--ink);
+      margin-bottom: .85rem;
+    }
 
-    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
-    .rev-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 1.05rem; transition: box-shadow .2s, transform .2s; }
-    .rev-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-    .rev-prod { font-size: .7rem; font-weight: 700; color: var(--crimson); margin-bottom: .32rem; }
-    .rev-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: .35rem; }
-    .rev-name { font-size: .76rem; font-weight: 700; color: var(--ink); }
-    .rev-date { font-size: .7rem; color: var(--mid); }
-    .rev-text { font-size: .8rem; color: var(--ink2); line-height: 1.55; margin-top: .28rem; }
-    .rev-tag { display: inline-block; margin-top: .35rem; background: var(--crimson-light); color: var(--crimson); border-radius: 4px; padding: .1rem .45rem; font-size: .68rem; font-weight: 500; }
+    .terms-body {
+      font-size: .8rem;
+      color: var(--ink2);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      max-height: 165px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: .85rem 1rem;
+      background: var(--bg);
+    }
 
-    .loading-row { text-align: center; padding: 2rem; font-size: .84rem; color: var(--mid); }
-    .loading-spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--crimson); border-radius: 50%; animation: spin .7s linear infinite; margin-right: .5rem; vertical-align: middle; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .terms-body p {
+      margin-bottom: .6rem;
+    }
 
-    .modal-bg.open { display: flex; }
-    .modal { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.65rem; width: min(500px, 95vw); max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); animation: slideUpMd .28s ease; }
-    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
-    .modal-head h3 { font-family: Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--ink); }
-    .modal-actions { display: flex; gap: .75rem; justify-content: flex-end; margin-top: 1.25rem; }
-    .btn-cancel { background: transparent; border: 1px solid var(--border); color: var(--mid); padding: .5rem 1.1rem; border-radius: 7px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: .76rem; font-weight: 600; cursor: pointer; transition: all .18s; }
-    .btn-cancel:hover { border-color: var(--ink2); color: var(--ink); }
+    .terms-body p:last-child {
+      margin-bottom: 0;
+    }
 
-    .settings-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.4rem; margin-bottom: 1.1rem; max-width: 540px; }
-    .settings-block h4 { font-family: Georgia, serif; font-size: .95rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: .7rem; border-bottom: 1px solid var(--border); color: var(--ink); }
-    .info-note { background: var(--crimson-light); border: 1px solid var(--crimson-mid); border-radius: var(--r); padding: 1rem; max-width: 540px; margin-bottom: 1rem; }
-    .info-note h4 { font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--crimson); margin-bottom: .38rem; }
-    .info-note p { font-size: .8rem; color: var(--ink2); line-height: 1.6; }
-    .info-note code { color: var(--crimson); font-family: monospace; font-size: .8rem; background: rgba(139,26,26,.1); padding: .1rem .3rem; border-radius: 3px; }
-    .save-feedback { display: inline-block; font-size: .74rem; color: var(--green); font-weight: 700; margin-left: .75rem; opacity: 0; transition: opacity .3s; }
-    .save-feedback.show { opacity: 1; }
+    .terms-body strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
 
-    .order-detail-modal { background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.65rem; width: min(560px, 95vw); max-height: 88vh; overflow-y: auto; box-shadow: var(--shadow-lg); animation: slideUpMd .28s ease; }
-    .od-section { margin-bottom: 1.1rem; padding-bottom: 1.1rem; border-bottom: 1px solid var(--border); }
-    .od-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-    .od-label { font-size: .64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--mid); margin-bottom: .55rem; }
-    .od-row { display: flex; justify-content: space-between; align-items: flex-start; padding: .32rem 0; font-size: .82rem; }
-    .od-key { color: var(--mid); }
-    .od-val { color: var(--ink); font-weight: 600; text-align: right; max-width: 65%; }
-    .od-item-row { display: flex; justify-content: space-between; padding: .45rem 0; border-bottom: 1px solid var(--border); font-size: .82rem; }
-    .od-item-row:last-child { border-bottom: none; }
-    .od-item-name { color: var(--ink2); flex: 1; }
-    .od-item-price { font-family: Georgia, serif; font-weight: 700; color: var(--ink); }
-    .od-total { display: flex; justify-content: space-between; padding-top: .65rem; margin-top: .2rem; border-top: 1.5px solid var(--ink); }
-    .od-total-lbl { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--mid); }
-    .od-total-val { font-family: Georgia, serif; font-size: 1.5rem; font-weight: 700; color: var(--ink); }
+    .terms-check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: .65rem;
+      cursor: pointer;
+    }
 
-    .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--ink); color: #fff; border-radius: 8px; padding: .75rem 1.2rem; font-size: .82rem; font-weight: 600; box-shadow: var(--shadow-lg); z-index: 999; transform: translateY(80px); opacity: 0; transition: all .3s cubic-bezier(.34,1.56,.64,1); }
-    .toast.show { transform: translateY(0); opacity: 1; }
-    .toast.success { background: var(--green); }
-    .toast.error { background: var(--red); }
+    .terms-check-row input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--crimson);
+      cursor: pointer;
+      flex-shrink: 0;
+      margin-top: .15rem;
+    }
 
-    .db-status { display: inline-flex; align-items: center; gap: .35rem; font-size: .72rem; font-weight: 600; }
-    .db-status.connected { color: var(--green); }
-    .db-status.error { color: var(--red); }
+    .terms-check-label {
+      font-size: .8rem;
+      color: var(--ink2);
+      line-height: 1.55;
+      cursor: pointer;
+    }
 
-    @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { display: flex; flex-wrap: wrap; position: static; height: auto; padding: .4rem; border-right: none; border-bottom: 1px solid var(--border); }
-      .nav-item { border-left: none !important; border-bottom: 2px solid transparent !important; padding: .5rem .85rem; }
-      .nav-item.active { border-bottom-color: var(--crimson) !important; background: transparent; }
-      .nav-section { display: none; }
-      .overview-row { grid-template-columns: 1fr; }
+    .terms-check-label strong {
+      color: var(--crimson);
+    }
+
+    /* PAY BUTTON */
+    .pay-btn {
+      width: 100%;
+      background: var(--crimson);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .18s, transform .18s;
+      letter-spacing: .01em;
+    }
+
+    .pay-btn:hover:not(:disabled) {
+      background: var(--crimson-dark);
+      transform: translateY(-1px);
+    }
+
+    .pay-btn:disabled {
+      background: var(--mid);
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    .pay-btn.loading .btn-text {
+      display: none;
+    }
+
+    .pay-btn .loading-text {
+      display: none;
+    }
+
+    .pay-btn.loading .loading-text {
+      display: inline;
+    }
+
+    .secure-note {
+      font-size: .75rem;
+      color: var(--mid);
+      text-align: center;
+      margin-top: .65rem;
+      line-height: 1.6;
+    }
+
+    .secure-note a {
+      color: var(--crimson);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* ORDER SUMMARY */
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.5rem;
+      position: sticky;
+      top: 80px;
+    }
+
+    .sum-title {
+      font-family: Georgia, serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      padding-bottom: .9rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink);
+    }
+
+    .order-item {
+      display: flex;
+      gap: .85rem;
+      padding: .82rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+
+    .oi-cover {
+      width: 48px;
+      height: 64px;
+      border-radius: 2px 7px 7px 2px;
+      flex-shrink: 0;
+      overflow: hidden;
+      position: relative;
+      box-shadow: -2px 3px 0 rgba(0, 0, 0, .1), -4px 6px 12px rgba(0, 0, 0, .15);
+    }
+
+    .oi-cover::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 7px;
+      background: rgba(0, 0, 0, .18);
+      z-index: 2;
+    }
+
+    .oi-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .oi-name {
+      font-size: .84rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.3;
+      margin-bottom: .18rem;
+    }
+
+    .oi-meta {
+      font-size: .7rem;
+      color: var(--mid);
+      margin-bottom: .2rem;
+    }
+
+    .oi-rm {
+      font-size: .7rem;
+      color: var(--crimson);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      padding: 0;
+    }
+
+    .oi-rm:hover {
+      text-decoration: underline;
+    }
+
+    .oi-price {
+      font-family: Georgia, serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+
+    .sum-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .5rem 0;
+      font-size: .82rem;
+      color: var(--mid);
+    }
+
+    .sum-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: .9rem;
+      margin-top: .4rem;
+      border-top: 1.5px solid var(--ink);
+    }
+
+    .sum-total-lbl {
+      font-size: .76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--mid);
+    }
+
+    .sum-total-amt {
+      font-family: Georgia, serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .delivery-box {
+      margin-top: 1.1rem;
+      background: var(--crimson-light);
+      border: 1px solid var(--crimson-mid);
+      border-radius: 8px;
+      padding: .9rem 1rem;
+    }
+
+    .db-head {
+      font-size: .68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--crimson);
+      margin-bottom: .3rem;
+    }
+
+    .db-body {
+      font-size: .78rem;
+      color: var(--ink2);
+      line-height: 1.55;
+    }
+
+    .empty-cart-note {
+      text-align: center;
+      padding: 1.5rem 0;
+      font-size: .84rem;
+      color: var(--mid);
+    }
+
+    .empty-cart-note a {
+      color: var(--crimson);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* SUCCESS MODAL */
+    .success-modal {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 2.5rem 2rem;
+      max-width: 460px;
+      width: 90%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      animation: slideUpMd .35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sm-icon {
+      font-size: 3.5rem;
+      display: block;
+      margin-bottom: .85rem;
+    }
+
+    .sm-title {
+      font-family: Georgia, serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+
+    .sm-sub {
+      font-size: .88rem;
+      color: var(--mid);
+      margin-bottom: .35rem;
+      line-height: 1.5;
+    }
+
+    .sm-email {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--crimson);
+      margin: .4rem 0 1rem;
+      display: block;
+    }
+
+    .sm-files {
+      display: flex;
+      justify-content: center;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin: .7rem 0 1rem;
+    }
+
+    .sm-file-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .35rem .75rem;
+      font-size: .78rem;
+      color: var(--mid);
+      font-weight: 500;
+    }
+
+    .sm-notice {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .85rem 1rem;
+      margin: .85rem 0;
+      font-size: .78rem;
+      color: var(--ink2);
+      line-height: 1.65;
+      text-align: left;
+    }
+
+    .sm-notice strong {
+      color: var(--crimson);
+    }
+
+    .sm-btn {
+      display: inline-block;
+      background: var(--crimson);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      padding: .72rem 1.8rem;
+      font-size: .85rem;
+      font-weight: 700;
+      transition: background .18s;
+    }
+
+    .sm-btn:hover {
+      background: var(--crimson-dark);
+    }
+
+    .confetti-wrap {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .bc-inner-sm {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      padding: .55rem .45rem .45rem .65rem;
+      justify-content: space-between;
+    }
+
+    .bc-label-sm {
+      font-size: .42rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      color: rgba(255, 255, 255, .65);
+      background: rgba(255, 255, 255, .1);
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 3px;
+      padding: .12rem .38rem;
+      display: inline-block;
+      align-self: flex-start;
+    }
+
+    .bc-title-sm {
+      font-family: Georgia, serif;
+      font-size: .52rem;
+      line-height: 1.2;
+      font-weight: 600;
+      color: #fff;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: .2rem 0;
+    }
+
+    .bc-bottom-sm {
+      display: flex;
+      flex-direction: column;
+      gap: .12rem;
+    }
+
+    .bc-author-sm {
+      font-size: .38rem;
+      color: rgba(255, 255, 255, .5);
+      font-weight: 500;
+    }
+
+    .bc-rule-sm {
+      height: 1px;
+      background: rgba(255, 255, 255, .15);
+      margin: .08rem 0;
+    }
+
+    .bc-brand-sm {
+      font-size: .35rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .28);
+    }
+
+    @media (max-width: 768px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-card {
+        position: static;
+        order: -1;
+      }
+
+      .payment-tabs {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 
 <body>
-
+  <!-- HEADER -->
   <header>
-    <div style="display:flex;align-items:center;gap:.75rem">
-      <a href="shop.html">
-        <img src="/assets/logo/pressfilesv2.gif" alt="Pressfiles" style="height:38px;width:auto;display:block;" />
-      </a>
-      <div class="admin-chip">Admin</div>
+    <a href="shop.html">
+      <img src="/assets/logo/pressfilesv2.gif" alt="Pressfiles by Teacher Ira"
+        style="height:60px;width:auto;display:block;" />
+    </a>
+    <div class="header-steps">
+      <div class="step done">
+        <div class="step-dot filled">✓</div>Browse
+      </div>
+      <div class="step-div"></div>
+      <div class="step active">
+        <div class="step-dot filled">2</div>Checkout
+      </div>
+      <div class="step-div"></div>
+      <div class="step">
+        <div class="step-dot">3</div>Delivery
+      </div>
     </div>
-    <div class="header-right">
-      <div class="online-ind"><div class="dot"></div>Store Live</div>
-      <span class="db-status" id="db-status">⬤ Checking DB…</span>
-      <a class="hlink" href="shop.html" target="_blank">View Shop →</a>
-    </div>
+    <a class="back-link" href="shop.html">← Back to Shop</a>
   </header>
 
   <div class="layout">
-    <nav class="sidebar">
-      <div class="nav-section">Overview</div>
-      <div class="nav-item active" onclick="showPage('dashboard',this)">Dashboard</div>
-      <div class="nav-section">Store</div>
-      <div class="nav-item" onclick="showPage('products',this)">Products</div>
-      <div class="nav-item" onclick="showPage('orders',this)">
-        Orders <span class="nav-badge" id="orders-badge">0</span>
-      </div>
-      <div class="nav-section">Community</div>
-      <div class="nav-item" onclick="showPage('reviews',this)">Reviews</div>
-      <div class="nav-section">Config</div>
-      <div class="nav-item" onclick="showPage('settings',this)">Settings</div>
-    </nav>
 
-    <main class="admin-main">
+    <!-- LEFT: FORM -->
+    <div>
+      <h2>Checkout</h2>
+      <p class="page-sub">Complete your details below — your digital files will be sent to your email after payment is
+        confirmed.</p>
 
-      <!-- DASHBOARD -->
-      <div class="page active" id="page-dashboard">
-        <div class="pg-head">
-          <div><div class="pg-title">Dashboard</div><div class="pg-sub">Your store at a glance</div></div>
+      <!-- BUYER DETAILS -->
+      <div class="fblock">
+        <div class="fblock-head">
+          <div class="fblock-icon">👤</div>
+          <span class="fblock-lbl">Your Details</span>
         </div>
-        <div class="stats-row" id="stats-row"></div>
-        <div class="overview-row">
-          <div class="panel">
-            <div class="panel-title">Top Products</div>
-            <div id="top-prods-list"></div>
-          </div>
-          <div class="panel">
-            <div class="panel-title">Recent Reviews</div>
-            <div id="recent-revs-list"></div>
+        <div class="delivery-note">
+          <div class="dn-ico">⚡</div>
+          <div class="dn-text">
+            <strong>Email Delivery</strong>
+            <p>Your ZIP files will be sent to your email within 24 hours after your GCash payment is verified.</p>
           </div>
         </div>
-        <div class="section-card">
-          <div class="sc-top">
-            <div class="sc-top-title">Recent Orders</div>
-            <button class="btn-outline" onclick="showPage('orders', document.querySelectorAll('.nav-item')[2])">View All</button>
-          </div>
-          <table>
-            <thead><tr><th>Order ID</th><th>Buyer</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Date</th></tr></thead>
-            <tbody id="dash-orders"></tbody>
-          </table>
+        <div class="fg">
+          <label>Full Name *</label>
+          <input type="text" id="fullname" placeholder="e.g. Maria Santos" oninput="clearErr('fullname')" />
+          <span class="field-hint" id="fullname-hint">Your name as it appears on your GCash account</span>
         </div>
-      </div>
-
-      <!-- PRODUCTS -->
-      <div class="page" id="page-products">
-        <div class="pg-head">
-          <div><div class="pg-title">Products</div><div class="pg-sub">Manage your digital files — connected to PostgreSQL</div></div>
-          <button class="btn-primary" onclick="openProdModal()">+ Add Product</button>
+        <div class="fg">
+          <label>Email Address *</label>
+          <input type="email" id="email" placeholder="you@example.com" oninput="clearErr('email')" />
+          <span class="field-hint" id="email-hint">Your files and receipt will be sent to this email</span>
         </div>
-        <div class="section-card">
-          <table>
-            <thead><tr><th>Cover</th><th>Title</th><th>Type</th><th>Price</th><th>OneDrive Link</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody id="prods-body"></tbody>
-          </table>
+        <div class="fg">
+          <label>Confirm Email *</label>
+          <input type="email" id="email2" placeholder="Re-enter your email" oninput="clearErr('email2')" />
+          <span class="field-hint" id="email2-hint"></span>
+        </div>
+        <div class="fg">
+          <label>Complete Address *</label>
+          <textarea id="address" placeholder="House/Unit No., Street, Barangay, City, Province, ZIP Code"
+            oninput="clearErr('address')"></textarea>
+          <span class="field-hint" id="address-hint">Required for official receipt purposes</span>
         </div>
       </div>
 
-      <!-- ORDERS -->
-      <div class="page" id="page-orders">
-        <div class="pg-head">
-          <div><div class="pg-title">Orders</div><div class="pg-sub">Verify GCash payments and send files</div></div>
-          <button class="btn-outline" onclick="renderOrders()">↺ Refresh</button>
+      <!-- GCASH PAYMENT -->
+      <div class="fblock">
+        <div class="fblock-head">
+          <div class="fblock-icon">💚</div>
+          <span class="fblock-lbl">GCash Payment</span>
         </div>
-        <div class="section-card">
-          <!-- TOOLBAR: search + meta -->
-          <div class="sc-top">
-            <div class="orders-toolbar">
-              <div class="search-wrap">
-                <span class="search-ico">🔍</span>
-                <input type="text" id="orders-search" placeholder="Search by name or email…"
-                  oninput="onOrderSearch()" />
-              </div>
-              <span class="orders-meta" id="orders-meta"></span>
+
+        <div class="payment-tabs">
+          <div class="pay-tab active" id="tab-ref" onclick="switchTab('ref')">
+            <span class="pay-tab-icon">🔢</span>
+            <span class="pay-tab-title">GCash Reference No.</span>
+            <span class="pay-tab-sub">Enter your reference number after paying</span>
+          </div>
+          <div class="pay-tab" id="tab-screenshot" onclick="switchTab('screenshot')">
+            <span class="pay-tab-icon">📸</span>
+            <span class="pay-tab-title">Send Screenshot</span>
+            <span class="pay-tab-sub">Email your payment screenshot to us</span>
+          </div>
+        </div>
+
+        <!-- PANEL 1: Reference Number -->
+        <div class="gcash-panel active" id="panel-ref">
+          <div class="gcash-info-box">
+            <div class="gib-title">📱 How to Pay via GCash</div>
+            <div class="gib-step">
+              <div class="gib-num">1</div><span>Open GCash and tap <strong>Send Money</strong></span>
+            </div>
+            <div class="gib-step">
+              <div class="gib-num">2</div><span>Send the exact total to: <strong>09XX-XXX-XXXX</strong> (Teacher
+                Ira)</span>
+            </div>
+            <div class="gib-step">
+              <div class="gib-num">3</div><span>Copy the <strong>13-digit Reference Number</strong> from your GCash
+                receipt</span>
+            </div>
+            <div class="gib-step">
+              <div class="gib-num">4</div><span>Paste it below and click <strong>Submit Order</strong></span>
             </div>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Buyer</th>
-                <th>Items</th>
-                <th>Total</th>
-                <th>Payment</th>
-                <th>Status</th>
-                <th>Files</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="orders-body"></tbody>
-          </table>
-          <div class="orders-pagination" id="orders-pagination"></div>
+          <div class="gcash-amount-box">
+            <span class="gab-lbl">Amount to Send</span>
+            <span class="gab-val" id="gcash-total-ref">₱0.00</span>
+          </div>
+          <div class="fg">
+            <label>GCash Reference Number *</label>
+            <input type="text" id="gcash-ref" placeholder="e.g. 1234567890123" maxlength="13"
+              oninput="clearErr('gcash-ref')" />
+            <span class="field-hint" id="gcash-ref-hint">13-digit number from your GCash transaction receipt</span>
+          </div>
+          <div class="fg">
+            <label>Amount Sent (₱) *</label>
+            <input type="number" id="gcash-amount" placeholder="e.g. 650" min="0" oninput="clearErr('gcash-amount')" />
+            <span class="field-hint" id="gcash-amount-hint">Must match your order total exactly</span>
+          </div>
+        </div>
+
+        <!-- PANEL 2: Screenshot -->
+        <div class="gcash-panel" id="panel-screenshot">
+          <div class="gcash-info-box">
+            <div class="gib-title">📸 How to Pay via Screenshot</div>
+            <div class="gib-step">
+              <div class="gib-num">1</div><span>Open GCash and tap <strong>Send Money</strong></span>
+            </div>
+            <div class="gib-step">
+              <div class="gib-num">2</div><span>Send the exact total to: <strong>09XX-XXX-XXXX</strong> (Teacher
+                Ira)</span>
+            </div>
+            <div class="gib-step">
+              <div class="gib-num">3</div><span>Screenshot your GCash payment confirmation</span>
+            </div>
+            <div class="gib-step">
+              <div class="gib-num">4</div>
+              <span>Email it to <span class="gib-email">teacherira.business@gmail.com</span> — subject: <strong>[Your
+                  Full Name] – Pressfiles Order</strong></span>
+            </div>
+            <div class="gib-step">
+              <div class="gib-num">5</div><span>Click <strong>Submit Order</strong> below — files sent within 24 hours
+                after verification</span>
+            </div>
+          </div>
+          <div class="gcash-amount-box">
+            <span class="gab-lbl">Amount to Send</span>
+            <span class="gab-val" id="gcash-total-ss">₱0.00</span>
+          </div>
+          <div class="fg">
+            <label>Email You'll Send the Screenshot From *</label>
+            <input type="email" id="screenshot-email" placeholder="e.g. yourname@gmail.com"
+              oninput="clearErr('screenshot-email')" />
+            <span class="field-hint" id="screenshot-email-hint">So we can match your screenshot to your order</span>
+          </div>
+        </div>
+
+        <div class="trust-badges">
+          <div class="trust-b">✅ GCash Accepted</div>
+          <div class="trust-b">🔒 Secure Transaction</div>
+          <div class="trust-b">📦 Digital Files Only</div>
+          <div class="trust-b">📧 Email Delivery</div>
         </div>
       </div>
 
-      <!-- REVIEWS -->
-      <div class="page" id="page-reviews">
-        <div class="pg-head">
-          <div><div class="pg-title">Reviews</div><div class="pg-sub">What your readers are saying</div></div>
+      <!-- TERMS & CONDITIONS -->
+      <div class="terms-block">
+        <div class="terms-title">📋 Terms &amp; Conditions — Please Read Before Purchasing</div>
+        <div class="terms-body">
+          <p><strong>1. Digital Product — No Physical Delivery.</strong> All items sold on Pressfiles are digital files
+            (ZIP format) delivered via email. No physical product will be shipped to any address. By completing this
+            purchase, you acknowledge that you are buying a downloadable digital file.</p>
+
+          <p><strong>2. Non-Refundable Policy.</strong> All sales are final. Due to the nature of digital products, we
+            strictly do not offer refunds, exchanges, or cancellations once payment has been made and confirmed. Please
+            review your order carefully before submitting. We encourage you to read the product description and preview
+            pages before purchasing.</p>
+
+          <p><strong>3. Payment Verification.</strong> For GCash payments, orders will only be processed after
+            successful verification of your payment. Submitting an incorrect GCash reference number or a fraudulent
+            screenshot may result in your order being cancelled without notice. Pressfiles reserves the right to refuse
+            any order suspected of fraud.</p>
+
+          <p><strong>4. Delivery Timeline.</strong> Digital files will be sent to your provided email address within 24
+            hours of payment confirmation. Please check your spam or junk folder if you do not receive the files.
+            Pressfiles is not responsible for delays caused by incorrect email addresses entered at checkout.</p>
+
+          <p><strong>5. Intellectual Property &amp; Usage Rights.</strong> All files purchased from Pressfiles are for
+            personal and educational use only. Redistribution, resale, reproduction, uploading, or sharing of purchased
+            files in any form — digitally or in print — without prior written consent from Pressfiles is strictly
+            prohibited and may be subject to applicable legal action under the Intellectual Property Code of the
+            Philippines.</p>
+
+          <p><strong>6. Single-User License.</strong> Your purchase grants you a single-user, non-transferable license
+            to use the file for your own personal or classroom use only. You may not resell, sublicense, or distribute
+            the content to third parties under any circumstances.</p>
+
+          <p><strong>7. Concerns &amp; Disputes.</strong> For any concerns, issues with file delivery, or questions
+            regarding your order, please contact us at <strong>teacherira.business@gmail.com</strong> within 7 days of
+            purchase. We will do our best to respond and assist you promptly. Any disputes not resolved through direct
+            communication may be escalated in accordance with applicable Philippine consumer protection laws.</p>
+
+          <p><strong>8. Privacy.</strong> Your personal information (name, email, and address) collected during checkout
+            is used solely for order processing and delivery purposes. We do not sell or share your data with third
+            parties.</p>
+
+          <p><strong>9. Acceptance of Terms.</strong> By checking the box below and clicking "Submit Order," you confirm
+            that you have fully read, understood, and voluntarily agreed to all the terms and conditions stated herein.
+            This constitutes a binding agreement between you (the buyer) and Pressfiles (the seller) upon submission of
+            your order.</p>
         </div>
-        <div class="stats-row" id="rev-stats"></div>
-        <div class="reviews-grid" id="reviews-grid"></div>
+
+        <label class="terms-check-row" for="terms-agree">
+          <input type="checkbox" id="terms-agree" onchange="togglePayBtn()" />
+          <span class="terms-check-label">
+            I have read and fully agree to the Terms &amp; Conditions above. I understand that this is a
+            <strong>non-refundable digital purchase</strong>. My files will be delivered to my email within 24 hours
+            after payment verification. For any concerns, I may reach Pressfiles at
+            <strong>teacherira.business@gmail.com</strong>.
+          </span>
+        </label>
       </div>
 
-      <!-- SETTINGS -->
-      <div class="page" id="page-settings">
-        <div class="pg-head">
-          <div><div class="pg-title">Settings</div><div class="pg-sub">Store configuration &amp; integrations</div></div>
-        </div>
-        <div class="settings-block">
-          <h4>Store Details</h4>
-          <div class="mfg"><label>Store Name</label><input type="text" value="Pressfiles by Teacher Ira" /></div>
-          <div class="mfg"><label>Currency</label><input type="text" value="PHP (Philippine Peso ₱)" readonly style="opacity:.6" /></div>
-          <div class="mfg"><label>GCash Number</label><input type="text" placeholder="09XX-XXX-XXXX" /></div>
-          <div class="mfg"><label>Contact Email</label><input type="email" value="teacherira.business@gmail.com" /></div>
-        </div>
-        <div class="settings-block">
-          <h4>Email Delivery</h4>
-          <div class="mfg"><label>Gmail Address</label><input type="email" placeholder="teacherira.business@gmail.com" /></div>
-          <div class="mfg"><label>Gmail App Password</label><input type="password" placeholder="xxxx xxxx xxxx xxxx" /></div>
-          <div class="mfg"><label>Backend API URL</label><input type="text" placeholder="http://localhost:3000" /></div>
-        </div>
-        <div class="info-note">
-          <h4>📬 How File Delivery Works</h4>
-          <p>When a buyer submits an order, it is saved as <code>pending</code>. After you verify their GCash payment, click <strong>Send Files</strong> in the Orders page.</p>
-        </div>
-        <div class="info-note">
-          <h4>🗂️ OneDrive Setup</h4>
-          <p>Upload your ZIP files to OneDrive. Right-click → Share → Anyone with link → Copy. Add <code>?download=1</code> to the end and paste into the product's <strong>OneDrive Link</strong> field.</p>
-        </div>
-        <div class="info-note">
-          <h4>🐘 PostgreSQL Database</h4>
-          <p>Products and orders are stored in your Render PostgreSQL database.</p>
-        </div>
-        <div style="display:flex;align-items:center">
-          <button class="btn-primary" onclick="saveSetting()">Save Settings</button>
-          <span class="save-feedback" id="save-feedback">✓ Saved!</span>
-        </div>
-      </div>
+      <button class="pay-btn" id="pay-btn" onclick="pay()" disabled>
+        <span class="btn-text">Submit Order →</span>
+        <span class="loading-text">Submitting your order…</span>
+      </button>
+      <p class="secure-note">
+        🔒 GCash payment · Digital files only · Non-refundable<br>
+        Questions? Email <a href="mailto:teacherira.business@gmail.com">teacherira.business@gmail.com</a>
+      </p>
+    </div>
 
-    </main>
-  </div>
-
-  <!-- PRODUCT MODAL -->
-  <div class="modal-bg" id="prod-modal" onclick="closeProdModalClick(event)">
-    <div class="modal">
-      <div class="modal-head">
-        <h3 id="modal-title">Add Product</h3>
-        <button class="modal-close-btn" onclick="document.getElementById('prod-modal').classList.remove('open')">✕</button>
-      </div>
-      <input type="hidden" id="eid" />
-      <div class="mfg"><label>Title *</label><input type="text" id="pt" placeholder="e.g. Column Writing Factsheets" /></div>
-      <div class="mfg"><label>Description *</label><textarea id="pd" rows="3" placeholder="What's inside this file?"></textarea></div>
-      <div class="mfrow">
-        <div class="mfg"><label>Type *</label>
-          <select id="ptype">
-            <option value="journalism">Journalism</option>
-            <option value="essay-article-writing">Essay &amp; Article Writing</option>
-            <option value="school-paper-layout">School Paper Layout</option>
-            <option value="lesson-plans">Lesson Plans</option>
-            <option value="ppt-lessons">PPT Lessons</option>
-            <option value="canva-templates">Canva Templates</option>
-          </select>
+    <!-- RIGHT: ORDER SUMMARY -->
+    <div>
+      <div class="summary-card">
+        <div class="sum-title">Order Summary</div>
+        <div id="order-items"></div>
+        <div class="sum-row"><span>Subtotal</span><span id="subtotal-amt">₱0.00</span></div>
+        <div class="sum-row"><span>Delivery</span><span style="color:var(--green);font-weight:700">FREE</span></div>
+        <div class="sum-total-row">
+          <span class="sum-total-lbl">Total</span>
+          <span class="sum-total-amt" id="total-amt">₱0.00</span>
         </div>
-        <div class="mfg"><label>Price (₱) *</label><input type="number" id="pp" step="1" min="0" placeholder="400" /></div>
-      </div>
-      <div class="mfrow">
-        <div class="mfg"><label>ZIP Filename</label><input type="text" id="pf" placeholder="column_writing.zip" /></div>
-        <div class="mfg"><label>File Size</label><input type="text" id="ps" placeholder="2.4 MB" /></div>
-      </div>
-      <div class="mfrow">
-        <div class="mfg"><label>Pages / Slides</label><input type="text" id="pg" placeholder="18 pages" /></div>
-        <div class="mfg"><label>Active</label>
-          <select id="pactive">
-            <option value="true">✅ Active (visible)</option>
-            <option value="false">🚫 Hidden</option>
-          </select>
+        <div class="delivery-box">
+          <div class="db-head">✓ What Happens Next</div>
+          <div class="db-body">After your GCash payment is verified, your ZIP files will be sent to your email within 24
+            hours. Check your spam folder too.</div>
         </div>
-      </div>
-      <div class="mfg"><label>OneDrive Link</label><input type="text" id="pdrive" placeholder="https://1drv.ms/u/s!...?download=1" /></div>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="document.getElementById('prod-modal').classList.remove('open')">Cancel</button>
-        <button class="btn-primary" id="save-prod-btn" onclick="saveProd()">Save Product</button>
       </div>
     </div>
   </div>
 
-  <!-- ORDER DETAIL MODAL -->
-  <div class="modal-bg" id="order-modal" onclick="closeOrderModal(event)">
-    <div class="order-detail-modal" id="order-modal-content"></div>
+  <!-- SUCCESS MODAL -->
+  <div class="modal-bg" id="modal-bg">
+    <div class="success-modal">
+      <div class="confetti-wrap" id="confetti-wrap"></div>
+      <span class="sm-icon">🎉</span>
+      <div class="sm-title">Order Submitted!</div>
+      <p class="sm-sub">Thank you! Your order has been received. Confirmation will be sent to</p>
+      <span class="sm-email" id="sm-email">—</span>
+      <div class="sm-files" id="sm-files"></div>
+      <div class="sm-notice">
+        <strong>What happens next?</strong><br>
+        We will verify your GCash payment and send your digital files to your email within <strong>24 hours</strong>.
+        Please check your spam or junk folder.<br><br>
+        For follow-ups, email <strong>teacherira.business@gmail.com</strong> with your full name and order
+        details.<br><br>
+        <strong>Reminder:</strong> All sales are final. This purchase is non-refundable as it involves digital file
+        delivery.
+      </div>
+      <a class="sm-btn" href="shop.html">← Back to Shop</a>
+    </div>
   </div>
-
-  <!-- TOAST -->
-  <div class="toast" id="toast"></div>
 
   <script>
     const peso = n => '₱' + Number(n).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-    /* ── TOAST ── */
-    function showToast(msg, type = 'success') {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = `toast ${type} show`;
-      setTimeout(() => t.className = 'toast', 3200);
-    }
-
-    /* ── COVER DESIGNS ── */
     const CD = {
-      1: { bg: 'linear-gradient(145deg,#1a0505,#0a0101)' },
-      2: { bg: 'linear-gradient(145deg,#2d0808,#1a0505)' },
-      3: { bg: 'linear-gradient(145deg,#4a0a0a,#2d0808)' },
-      4: { bg: 'linear-gradient(145deg,#5a0e0e,#3d0909)' },
-      5: { bg: 'linear-gradient(145deg,#6b1111,#4a0a0a)' },
-      6: { bg: 'linear-gradient(145deg,#7a1515,#5a0e0e)' },
-      7: { bg: 'linear-gradient(145deg,#3d0909,#1a0505)' },
-      8: { bg: 'linear-gradient(145deg,#5c0f0f,#2d0808)' },
-      9: { bg: 'linear-gradient(145deg,#6e1212,#3d0909)' }
+      1: { bg: 'linear-gradient(145deg,#1a0505,#0a0101)', label: 'Journalism' },
+      2: { bg: 'linear-gradient(145deg,#2d0808,#1a0505)', label: 'Feature' },
+      3: { bg: 'linear-gradient(145deg,#4a0a0a,#2d0808)', label: 'Long-Form' },
+      4: { bg: 'linear-gradient(145deg,#5a0e0e,#3d0909)', label: 'Slides' },
+      5: { bg: 'linear-gradient(145deg,#6b1111,#4a0a0a)', label: 'Template' },
+      6: { bg: 'linear-gradient(145deg,#7a1515,#5a0e0e)', label: 'Guide' }
     };
-    function getCoverBg(p) { return (CD[((p.id - 1) % 9) + 1] || CD[1]).bg; }
-    function tinyBook(p) {
-      const bg = getCoverBg(p);
-      return `<div class="t-book"><div style="width:100%;height:100%;background:${bg}">
-        <div class="tb-inner"><div class="tb-t">${p.title.substring(0,20)}</div><div class="tb-b">pressfiles</div></div>
-      </div></div>`;
-    }
-    function tpCover(p) {
-      const bg = getCoverBg(p);
-      return `<div class="tp-cover" style="background:${bg}">
-        <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:rgba(0,0,0,.18);z-index:2"></div>
-      </div>`;
-    }
 
-    /* ── REVIEWS (localStorage) ── */
-    function getRevs(id) { const s = localStorage.getItem(`reviews_${id}`); return s ? JSON.parse(s) : []; }
-    function allRevs() { return PRODUCTS_CACHE.flatMap(p => getRevs(p.id).map(r => ({ ...r, productId: p.id, productTitle: p.title }))); }
-    function avgR(r) { return r.length ? r.reduce((s, x) => s + x.stars, 0) / r.length : 0; }
-    function starStr(n) { return '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n)); }
-
-    /* ── PRODUCTS ── */
-    let PRODUCTS_CACHE = [];
-
-    async function getProds() {
-      try {
-        const res = await fetch('/api/products');
-        if (res.ok) { PRODUCTS_CACHE = await res.json(); updateDbStatus(true); }
-        else throw new Error('API error');
-      } catch (err) { console.error('Failed to load products:', err.message); updateDbStatus(false); }
-      return PRODUCTS_CACHE;
+    function buildMiniCover(p) {
+      const d = CD[p.id] || CD[1];
+      const short = p.title.length > 22 ? p.title.substring(0, 22) + '…' : p.title;
+      return `<div style="width:100%;height:100%;background:${d.bg};position:relative;overflow:hidden">
+    <div class="bc-inner-sm">
+      <span class="bc-label-sm">${d.label}</span>
+      <div class="bc-title-sm">${short}</div>
+      <div class="bc-bottom-sm">
+        <div class="bc-author-sm">pressfiles</div>
+        <div class="bc-rule-sm"></div>
+        <div class="bc-brand-sm">by Teacher Ira</div>
+      </div>
+    </div>
+  </div>`;
     }
 
-    function updateDbStatus(ok) {
-      const el = document.getElementById('db-status');
-      el.textContent = ok ? '⬤ DB Connected' : '⬤ DB Error';
-      el.className   = ok ? 'db-status connected' : 'db-status error';
-    }
+    let cart = JSON.parse(localStorage.getItem('pressroom_cart') || '[]');
+    let activeTab = 'ref';
+    function saveCart() { localStorage.setItem('pressroom_cart', JSON.stringify(cart)); }
 
-    /* ── ORDERS STATE ── */
-    let ORDERS          = [];
-    let ordersPage      = 1;
-    let ordersSearch    = '';
-    const ORDERS_PER_PAGE = 10;
-
-    async function loadOrders() {
-      try {
-        const res = await fetch('/api/orders');
-        if (res.ok) ORDERS = await res.json();
-        else ORDERS = [];
-      } catch { ORDERS = []; }
-      // Always latest first
-      ORDERS.sort((a, b) => new Date(b.date) - new Date(a.date));
-      document.getElementById('orders-badge').textContent = ORDERS.length;
-      return ORDERS;
-    }
-
-    /* ── PAGE NAV ── */
-    function showPage(name, el) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.getElementById('page-' + name).classList.add('active');
-      if (el) el.classList.add('active');
-      ({ dashboard: renderDash, products: renderProds, orders: renderOrders, reviews: renderRevs })[name]?.();
-    }
-
-    /* ── DASHBOARD ── */
-    async function renderDash() {
-      await loadOrders();
-      const prods  = await getProds();
-      const orders = ORDERS;
-      const rev     = orders.filter(o => o.status === 'paid').reduce((s, o) => s + Number(o.total), 0);
-      const allR    = allRevs();
-      const avg     = avgR(allR);
-      const pending = orders.filter(o => !o.delivered).length;
-
-      document.getElementById('orders-badge').textContent = orders.length;
-
-      const bars = [12, 8, 18, 14, 22, 16, 24];
-      document.getElementById('stats-row').innerHTML = `
-        <div class="scard" style="--sc-color:var(--crimson)">
-          <div class="sc-lbl">Total Revenue</div>
-          <div class="sc-val cr">${peso(rev)}</div>
-          <div class="sc-sub">Verified payments</div>
-          <div class="mini-chart">${bars.map(h => `<div class="mc-bar" style="height:${(h/24)*100}%;background:rgba(139,26,26,.35)"></div>`).join('')}</div>
-        </div>
-        <div class="scard" style="--sc-color:var(--gold)">
-          <div class="sc-lbl">Total Orders</div>
-          <div class="sc-val am">${orders.length}</div>
-          <div class="sc-sub">${pending} pending delivery</div>
-        </div>
-        <div class="scard" style="--sc-color:#c2750a">
-          <div class="sc-lbl">Avg. Rating</div>
-          <div class="sc-val" style="color:var(--gold)">${avg.toFixed(1)}★</div>
-          <div class="sc-sub">${allR.length} reviews total</div>
-        </div>
-        <div class="scard" style="--sc-color:var(--green)">
-          <div class="sc-lbl">Products Live</div>
-          <div class="sc-val gr">${prods.length}</div>
-          <div class="sc-sub">In PostgreSQL DB</div>
-        </div>`;
-
-      const salesMap = {};
-      orders.forEach(o => (o.items || []).forEach(i => { salesMap[i.id] = (salesMap[i.id] || 0) + 1; }));
-      const sorted = [...prods].sort((a, b) => (salesMap[b.id] || 0) - (salesMap[a.id] || 0));
-      document.getElementById('top-prods-list').innerHTML = sorted.slice(0, 5).map((p, i) => `
-        <div class="tp-row">
-          <div class="tp-rank">${i + 1}</div>${tpCover(p)}
-          <div class="tp-name">${p.title.substring(0, 28)}…</div>
-          <div class="tp-price">${peso(p.price)}</div>
-        </div>`).join('') || '<div style="font-size:.8rem;color:var(--mid);padding:.5rem 0">No orders yet</div>';
-
-      const recR = allRevs().slice(0, 4);
-      document.getElementById('recent-revs-list').innerHTML = recR.length ? recR.map(r => `
-        <div class="tp-row" style="flex-direction:column;align-items:flex-start;gap:.12rem">
-          <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
-            <span style="font-size:.76rem;font-weight:700;color:var(--ink)">${r.name}</span>
-            <span style="color:var(--gold);font-size:.66rem">${'★'.repeat(r.stars)}</span>
-          </div>
-          <div style="font-size:.7rem;color:var(--mid)">${r.productTitle?.substring(0, 30)}…</div>
-        </div>`).join('') : '<div style="font-size:.8rem;color:var(--mid);padding:.5rem 0">No reviews yet</div>';
-
-      const tb = document.getElementById('dash-orders');
-      if (!orders.length) { tb.innerHTML = '<tr><td colspan="7"><div class="empty-table">No orders yet — share your store!</div></td></tr>'; return; }
-      tb.innerHTML = orders.slice(0, 6).map(o => `
-        <tr style="cursor:pointer" onclick="openOrderModal('${o.id}')">
-          <td style="font-family:monospace;font-size:.68rem;color:var(--muted)">${o.id}</td>
-          <td>
-            <div style="font-weight:600;font-size:.82rem">${o.fullname || o.email}</div>
-            <div style="font-size:.7rem;color:var(--mid)">${o.email}</div>
-          </td>
-          <td style="color:var(--mid)">${(o.items||[]).length} file${(o.items||[]).length!==1?'s':''}</td>
-          <td style="font-family:Georgia,serif">${peso(o.total)}</td>
-          <td>${renderPaymentBadge(o)}</td>
-          <td>${o.status==='paid'?'<span class="status-paid">✓ Paid</span>':'<span class="status-pending">Pending</span>'}</td>
-          <td style="color:var(--mid)">${new Date(o.date).toLocaleDateString('en-PH')}</td>
-        </tr>`).join('');
-    }
-
-    function renderPaymentBadge(o) {
-      if (!o.payment) return '<span style="color:var(--muted);font-size:.72rem">—</span>';
-      if (o.payment.method === 'gcash-ref') {
-        return `<div style="font-size:.72rem">
-          <span style="color:var(--green);font-weight:600">GCash Ref</span>
-          <div class="pay-ref">${o.payment.ref || '—'}</div>
-          <div class="pay-info">Sent: ${o.payment.amount ? peso(o.payment.amount) : '—'}</div>
-        </div>`;
+    function renderSummary() {
+      const cont = document.getElementById('order-items');
+      if (!cart.length) {
+        cont.innerHTML = '<div class="empty-cart-note">Cart is empty. <a href="shop.html">Go shopping →</a></div>';
+        ['subtotal-amt', 'total-amt', 'gcash-total-ref', 'gcash-total-ss'].forEach(id => document.getElementById(id).textContent = peso(0));
+        return;
       }
-      return `<div style="font-size:.72rem">
-        <span style="color:var(--gold);font-weight:600">📸 Screenshot</span>
-        <div class="pay-info">From: ${o.payment.ssEmail || '—'}</div>
-      </div>`;
+      const total = cart.reduce((s, i) => s + Number(i.price), 0);
+      cont.innerHTML = cart.map(item => `
+    <div class="order-item">
+      <div class="oi-cover">${buildMiniCover(item)}</div>
+      <div class="oi-info">
+        <div class="oi-name">${item.title}</div>
+        <div class="oi-meta">${item.type} · ${item.fileSize || ''}</div>
+        <button class="oi-rm" onclick="removeItem(${item.id})">Remove</button>
+      </div>
+      <div class="oi-price">${peso(Number(item.price))}</div>
+    </div>`).join('');
+      ['subtotal-amt', 'total-amt', 'gcash-total-ref', 'gcash-total-ss'].forEach(id => document.getElementById(id).textContent = peso(total));
+    }
+    function removeItem(id) { cart = cart.filter(c => c.id !== id); saveCart(); renderSummary(); }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      ['ref', 'screenshot'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.toggle('active', t === tab);
+        document.getElementById(`panel-${t}`).classList.toggle('active', t === tab);
+      });
     }
 
-    /* ── PRODUCTS ── */
-    async function renderProds() {
-      const tb = document.getElementById('prods-body');
-      tb.innerHTML = `<tr><td colspan="7"><div class="loading-row"><span class="loading-spinner"></span>Loading from database…</div></td></tr>`;
-      const prods = await getProds();
-      if (!prods.length) { tb.innerHTML = '<tr><td colspan="7"><div class="empty-table">No products in database. Add one!</div></td></tr>'; return; }
-      tb.innerHTML = prods.map(p => {
-        const hasLink = p.driveLink && p.driveLink.trim();
-        return `<tr>
-          <td>${tinyBook(p)}</td>
-          <td style="max-width:200px">
-            <span style="font-weight:600;color:var(--ink);font-size:.82rem">${p.title}</span>
-            <div style="font-size:.68rem;color:var(--mid);margin-top:.12rem">ID: ${p.id}</div>
-          </td>
-          <td><span class="badge ${p.type==='journalism'?'badge-j':'badge-p'}">${p.type}</span></td>
-          <td style="font-family:Georgia,serif;font-weight:700">${peso(p.price)}</td>
-          <td>${hasLink
-            ? `<a href="${p.driveLink}" target="_blank" style="color:var(--crimson);font-size:.72rem;font-weight:600;text-decoration:none">✓ Link Set →</a>`
-            : `<span style="color:var(--gold);font-size:.72rem;font-weight:600">⚠ No link</span>`}
-          </td>
-          <td>${p.isActive!==false?'<span class="status-paid">✓ Active</span>':'<span class="status-pending">Hidden</span>'}</td>
-          <td>
-            <button class="act-btn" onclick="editProd(${p.id})">Edit</button>
-            <button class="act-btn del" onclick="delProd(${p.id})">Delete</button>
-          </td>
-        </tr>`;
-      }).join('');
+    function togglePayBtn() {
+      document.getElementById('pay-btn').disabled = !document.getElementById('terms-agree').checked;
     }
 
-    /* ══════════════════════════════════════
-       ORDERS — paginated + searchable
-    ══════════════════════════════════════ */
-    async function renderOrders() {
-      await loadOrders();
-      ordersPage   = 1;
-      ordersSearch = (document.getElementById('orders-search')?.value || '').trim().toLowerCase();
-      drawOrdersTable();
+    function showErr(id, msg) {
+      const el = document.getElementById(id); const h = document.getElementById(id + '-hint');
+      if (el) el.classList.add('error');
+      if (h) { h.textContent = msg; h.classList.add('err'); }
+    }
+    function clearErr(id) {
+      const el = document.getElementById(id); const h = document.getElementById(id + '-hint');
+      if (el) el.classList.remove('error');
+      if (h) h.classList.remove('err');
     }
 
-    function onOrderSearch() {
-      ordersSearch = document.getElementById('orders-search').value.trim().toLowerCase();
-      ordersPage   = 1;
-      drawOrdersTable();
-    }
-
-    function getFilteredOrders() {
-      if (!ordersSearch) return ORDERS;
-      return ORDERS.filter(o =>
-        (o.fullname || '').toLowerCase().includes(ordersSearch) ||
-        (o.email    || '').toLowerCase().includes(ordersSearch)
-      );
-    }
-
-    function drawOrdersTable() {
-      const filtered   = getFilteredOrders();
-      const total      = filtered.length;
-      const totalPages = Math.max(1, Math.ceil(total / ORDERS_PER_PAGE));
-      ordersPage       = Math.min(ordersPage, totalPages);
-      const start      = (ordersPage - 1) * ORDERS_PER_PAGE;
-      const pageOrders = filtered.slice(start, start + ORDERS_PER_PAGE);
-
-      // Meta text
-      const from = total ? start + 1 : 0;
-      const to   = Math.min(start + ORDERS_PER_PAGE, total);
-      document.getElementById('orders-meta').textContent =
-        total ? `Showing ${from}–${to} of ${total} order${total !== 1 ? 's' : ''}` : 'No orders found';
-
-      const tb = document.getElementById('orders-body');
-      if (!pageOrders.length) {
-        tb.innerHTML = `<tr><td colspan="9"><div class="empty-table">${ordersSearch ? 'No orders match your search.' : 'No orders yet'}</div></td></tr>`;
+    function validate() {
+      let ok = true;
+      const name = document.getElementById('fullname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const email2 = document.getElementById('email2').value.trim();
+      const address = document.getElementById('address').value.trim();
+      if (!name) { showErr('fullname', 'Please enter your full name.'); ok = false; }
+      if (!email || !email.includes('@') || !email.includes('.')) { showErr('email', 'Please enter a valid email address.'); ok = false; }
+      if (!email2) { showErr('email2', 'Please confirm your email address.'); ok = false; }
+      else if (email !== email2) { showErr('email2', 'Email addresses do not match.'); ok = false; }
+      if (!address) { showErr('address', 'Please enter your complete address.'); ok = false; }
+      if (activeTab === 'ref') {
+        const ref = document.getElementById('gcash-ref').value.trim();
+        const amount = document.getElementById('gcash-amount').value.trim();
+        if (!ref || ref.length < 13) { showErr('gcash-ref', 'Please enter a valid 13-digit reference number.'); ok = false; }
+        if (!amount || Number(amount) <= 0) { showErr('gcash-amount', 'Please enter the exact amount you sent.'); ok = false; }
       } else {
-        tb.innerHTML = pageOrders.map(o => `
-          <tr>
-            <td style="font-family:monospace;font-size:.68rem;color:var(--muted);cursor:pointer"
-                onclick="openOrderModal('${o.id}')">${o.id}</td>
-            <td>
-              <div style="font-weight:600;font-size:.82rem">${o.fullname || '—'}</div>
-              <div style="font-size:.7rem;color:var(--mid)">${o.email}</div>
-            </td>
-            <td style="font-size:.78rem;color:var(--mid);max-width:130px">
-              ${(o.items||[]).map(i=>`<div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${(i.title||'').substring(0,20)}…</div>`).join('')}
-            </td>
-            <td style="font-family:Georgia,serif;font-weight:700">${peso(o.total)}</td>
-            <td>${renderPaymentBadge(o)}</td>
-            <td>${o.status==='paid'?'<span class="status-paid">✓ Paid</span>':'<span class="status-pending">Pending</span>'}</td>
-            <td>${o.delivered?'<span class="status-sent">✓ Sent</span>':'<span class="status-pending">Not Sent</span>'}</td>
-            <td style="color:var(--mid);font-size:.78rem">${new Date(o.date).toLocaleDateString('en-PH')}</td>
-            <td>
-              ${!o.delivered
-                ? `<button class="deliver-btn" onclick="deliverOrder('${o.id}',this)">✉ Send Files</button>`
-                : `<button class="deliver-btn done" disabled>✓ Sent</button>`}
-              ${o.delivered
-                ? `<button class="resend-btn" onclick="resendOrder('${o.id}')">Resend</button>`
-                : ''}
-            </td>
-          </tr>`).join('');
+        const ssEmail = document.getElementById('screenshot-email').value.trim();
+        if (!ssEmail || !ssEmail.includes('@')) { showErr('screenshot-email', 'Please enter a valid email address.'); ok = false; }
       }
-
-      // Pagination bar
-      const bar = document.getElementById('orders-pagination');
-      if (totalPages <= 1) { bar.innerHTML = ''; return; }
-
-      let btns = `<button class="pg-btn" onclick="goOrdersPage(${ordersPage-1})" ${ordersPage===1?'disabled':''}>←</button>`;
-      const range = [];
-      for (let i = 1; i <= totalPages; i++) {
-        if (i === 1 || i === totalPages || (i >= ordersPage - 2 && i <= ordersPage + 2)) range.push(i);
-      }
-      let prev = null;
-      for (const n of range) {
-        if (prev !== null && n - prev > 1) btns += `<span class="pg-ellipsis">…</span>`;
-        btns += `<button class="pg-btn${n===ordersPage?' active':''}" onclick="goOrdersPage(${n})">${n}</button>`;
-        prev = n;
-      }
-      btns += `<button class="pg-btn" onclick="goOrdersPage(${ordersPage+1})" ${ordersPage===totalPages?'disabled':''}>→</button>`;
-      bar.innerHTML = btns;
+      if (!document.getElementById('terms-agree').checked) { alert('Please read and agree to the Terms & Conditions before proceeding.'); ok = false; }
+      if (!cart.length) { alert('Your cart is empty!'); ok = false; }
+      return ok;
     }
 
-    function goOrdersPage(page) {
-      ordersPage = page;
-      drawOrdersTable();
-      document.getElementById('page-orders').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    /* ── DELIVER / RESEND ── */
-    async function deliverOrder(orderId, btn) {
-      if (!confirm(`Mark as paid and send files?\n\nOrder: ${orderId}`)) return;
-      btn.disabled = true; btn.textContent = 'Sending…';
-      try {
-        const res  = await fetch(`/api/orders/${orderId}/deliver`, { method: 'POST' });
-        const data = await res.json();
-        if (data.success) {
-          showToast(data.emailWarning ? '⚠️ Delivered but email failed' : '✅ Files sent!', data.emailWarning ? 'error' : 'success');
-          await renderOrders();
-        } else {
-          showToast('❌ ' + (data.error || 'Failed to send'), 'error');
-          btn.disabled = false; btn.textContent = '✉ Send Files';
-        }
-      } catch {
-        showToast('❌ Server error — check console', 'error');
-        btn.disabled = false; btn.textContent = '✉ Send Files';
-      }
-    }
-
-    async function resendOrder(orderId) {
-      if (!confirm(`Resend files for order ${orderId}?`)) return;
-      try {
-        const res  = await fetch(`/api/orders/${orderId}/resend`, { method: 'POST' });
-        const data = await res.json();
-        if (data.success) showToast('✅ Files resent!', 'success');
-        else showToast('❌ ' + (data.error || 'Failed'), 'error');
-      } catch { showToast('❌ Server error', 'error'); }
-    }
-
-    /* ── ORDER DETAIL MODAL ── */
-    function openOrderModal(orderId) {
-      const o = ORDERS.find(x => x.id === orderId);
-      if (!o) return;
-      const total = (o.items||[]).reduce((s, i) => s + Number(i.price), 0);
-      document.getElementById('order-modal-content').innerHTML = `
-        <div class="modal-head">
-          <h3 style="font-family:Georgia,serif;font-size:1.15rem;font-weight:700;color:var(--ink)">Order Details</h3>
-          <button class="modal-close-btn" onclick="document.getElementById('order-modal').classList.remove('open')">✕</button>
-        </div>
-        <div class="od-section">
-          <div class="od-label">Order Info</div>
-          <div class="od-row"><span class="od-key">Order ID</span><span class="od-val" style="font-family:monospace;font-size:.75rem">${o.id}</span></div>
-          <div class="od-row"><span class="od-key">Date</span><span class="od-val">${new Date(o.date).toLocaleString('en-PH')}</span></div>
-          <div class="od-row"><span class="od-key">Status</span><span class="od-val">${o.status==='paid'?'<span class="status-paid">✓ Paid</span>':'<span class="status-pending">Pending</span>'}</span></div>
-          <div class="od-row"><span class="od-key">Files Sent</span><span class="od-val">${o.delivered?'<span class="status-sent">✓ Delivered</span>':'<span class="status-pending">Not Yet</span>'}</span></div>
-        </div>
-        <div class="od-section">
-          <div class="od-label">Buyer Details</div>
-          <div class="od-row"><span class="od-key">Full Name</span><span class="od-val">${o.fullname||'—'}</span></div>
-          <div class="od-row"><span class="od-key">Email</span><span class="od-val">${o.email}</span></div>
-          <div class="od-row"><span class="od-key">Address</span><span class="od-val">${o.address||'—'}</span></div>
-        </div>
-        <div class="od-section">
-          <div class="od-label">Payment</div>
-          ${o.payment?.method==='gcash-ref'?`
-            <div class="od-row"><span class="od-key">Method</span><span class="od-val" style="color:var(--green)">GCash Reference</span></div>
-            <div class="od-row"><span class="od-key">Reference No.</span><span class="od-val" style="font-family:monospace">${o.payment.ref||'—'}</span></div>
-            <div class="od-row"><span class="od-key">Amount Sent</span><span class="od-val">${o.payment.amount?peso(o.payment.amount):'—'}</span></div>
-          `:`
-            <div class="od-row"><span class="od-key">Method</span><span class="od-val" style="color:var(--gold)">Screenshot</span></div>
-            <div class="od-row"><span class="od-key">Screenshot From</span><span class="od-val">${o.payment?.ssEmail||'—'}</span></div>
-          `}
-        </div>
-        <div class="od-section">
-          <div class="od-label">Items Ordered</div>
-          ${(o.items||[]).map(i=>`
-            <div class="od-item-row">
-              <span class="od-item-name">${i.title}</span>
-              <span class="od-item-price">${peso(Number(i.price))}</span>
-            </div>`).join('')}
-          <div class="od-total">
-            <span class="od-total-lbl">Total</span>
-            <span class="od-total-val">${peso(total)}</span>
-          </div>
-        </div>
-        ${!o.delivered?`
-        <div style="padding-top:.5rem">
-          <button class="deliver-btn" style="width:100%;padding:.75rem;font-size:.8rem;border-radius:8px"
-            onclick="deliverOrder('${o.id}',this);document.getElementById('order-modal').classList.remove('open')">
-            ✉ Mark as Paid &amp; Send Files
-          </button>
-        </div>`:''}`;
-      document.getElementById('order-modal').classList.add('open');
-    }
-    function closeOrderModal(e) { if (e.target===document.getElementById('order-modal')) document.getElementById('order-modal').classList.remove('open'); }
-
-    /* ── REVIEWS ── */
-    function renderRevs() {
-      const all  = allRevs();
-      const avg  = avgR(all);
-      const five = all.filter(r => r.stars === 5).length;
-      document.getElementById('rev-stats').innerHTML = `
-        <div class="scard" style="--sc-color:#c2750a"><div class="sc-lbl">Avg. Rating</div><div class="sc-val" style="color:var(--gold)">${avg.toFixed(1)}★</div><div class="sc-sub">All products</div></div>
-        <div class="scard" style="--sc-color:var(--gold)"><div class="sc-lbl">Total Reviews</div><div class="sc-val am">${all.length}</div><div class="sc-sub">From buyers</div></div>
-        <div class="scard" style="--sc-color:var(--green)"><div class="sc-lbl">5-Star Reviews</div><div class="sc-val gr">${five}</div><div class="sc-sub">${all.length?Math.round(five/all.length*100):0}% of total</div></div>`;
-      document.getElementById('reviews-grid').innerHTML = all.length ? all.map(r => `
-        <div class="rev-card">
-          <div class="rev-prod">✦ ${r.productTitle?.substring(0,36)}${r.productTitle?.length>36?'…':''}</div>
-          <div class="rev-head">
-            <div><div class="rev-name">${r.name}</div><div class="rev-date">${r.date}</div></div>
-            <div style="color:var(--gold);font-size:.7rem">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
-          </div>
-          <div class="rev-text">${r.text}</div>
-          ${r.tag?`<span class="rev-tag">${r.tag}</span>`:''}
-        </div>`).join('') : '<div class="empty-table" style="grid-column:1/-1">No reviews yet</div>';
-    }
-
-    /* ── PRODUCT MODAL ── */
-    function openProdModal() {
-      document.getElementById('modal-title').textContent = 'Add Product';
-      document.getElementById('eid').value = '';
-      ['pt','pd','pf','ps','pg','pdrive'].forEach(id => document.getElementById(id).value = '');
-      document.getElementById('pp').value = '';
-      document.getElementById('ptype').value = 'journalism';
-      document.getElementById('pactive').value = 'true';
-      document.getElementById('save-prod-btn').textContent = 'Save Product';
-      document.getElementById('prod-modal').classList.add('open');
-    }
-
-    async function editProd(id) {
-      const prods = await getProds();
-      const p = prods.find(x => x.id === id);
-      if (!p) return;
-      document.getElementById('modal-title').textContent = 'Edit Product';
-      document.getElementById('eid').value = id;
-      document.getElementById('pt').value = p.title;
-      document.getElementById('pd').value = p.description;
-      document.getElementById('ptype').value = p.type;
-      document.getElementById('pp').value = p.price;
-      document.getElementById('pf').value = p.fileName || '';
-      document.getElementById('ps').value = p.fileSize || '';
-      document.getElementById('pg').value = p.pages || '';
-      document.getElementById('pdrive').value = p.driveLink || '';
-      document.getElementById('pactive').value = p.isActive !== false ? 'true' : 'false';
-      document.getElementById('save-prod-btn').textContent = 'Update Product';
-      document.getElementById('prod-modal').classList.add('open');
-    }
-
-    async function saveProd() {
-      const title = document.getElementById('pt').value.trim();
-      const desc  = document.getElementById('pd').value.trim();
-      const price = parseFloat(document.getElementById('pp').value);
-      if (!title || !desc || isNaN(price)) { showToast('❌ Please fill in title, description and price.', 'error'); return; }
-      const eid  = parseInt(document.getElementById('eid').value);
-      const body = {
-        title, description: desc,
-        type:      document.getElementById('ptype').value,
-        price,
-        fileName:  document.getElementById('pf').value.trim() || title.toLowerCase().replace(/\s+/g,'_')+'.zip',
-        fileSize:  document.getElementById('ps').value.trim() || 'N/A',
-        pages:     document.getElementById('pg').value.trim() || '',
-        driveLink: document.getElementById('pdrive').value.trim() || '',
-        isActive:  document.getElementById('pactive').value === 'true',
-      };
-      const btn = document.getElementById('save-prod-btn');
-      btn.disabled = true; btn.textContent = 'Saving…';
-      try {
-        const res  = await fetch(eid ? `/api/products/${eid}` : '/api/products', {
-          method:  eid ? 'PUT' : 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(body),
+    function pay() {
+      if (!validate()) return;
+      const btn = document.getElementById('pay-btn');
+      btn.disabled = true; btn.classList.add('loading');
+      setTimeout(() => {
+        const email = document.getElementById('email').value.trim();
+        const fullname = document.getElementById('fullname').value.trim();
+        const orders = JSON.parse(localStorage.getItem('pressroom_orders') || '[]');
+        const paymentInfo = activeTab === 'ref'
+          ? { method: 'gcash-ref', ref: document.getElementById('gcash-ref').value.trim(), amount: document.getElementById('gcash-amount').value.trim() }
+          : { method: 'gcash-screenshot', ssEmail: document.getElementById('screenshot-email').value.trim() };
+        orders.push({
+          id: 'ORD-' + Date.now(), email, fullname,
+          address: document.getElementById('address').value.trim(),
+          items: cart, total: cart.reduce((s, i) => s + Number(i.price), 0),
+          date: new Date().toISOString(), status: 'pending', delivered: false, payment: paymentInfo
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to save');
-        document.getElementById('prod-modal').classList.remove('open');
-        await renderProds();
-        showToast(eid ? '✓ Product updated!' : '✓ Product added!', 'success');
-      } catch (err) {
-        showToast('❌ ' + err.message, 'error');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = eid ? 'Update Product' : 'Save Product';
+        localStorage.setItem('pressroom_orders', JSON.stringify(orders));
+        localStorage.removeItem('pressroom_cart');
+        const savedCart = [...cart]; cart = [];
+        document.getElementById('sm-email').textContent = email;
+        document.getElementById('sm-files').innerHTML = savedCart.map(i => `<div class="sm-file-chip">📦 ${i.fileName || i.title.substring(0, 18) + '…'}</div>`).join('');
+        document.getElementById('modal-bg').classList.add('open');
+        launchConfetti();
+        btn.disabled = false; btn.classList.remove('loading');
+      }, 1800);
+    }
+
+    function launchConfetti() {
+      const wrap = document.getElementById('confetti-wrap'); wrap.innerHTML = '';
+      const colors = ['#8B1A1A', '#d4a0a0', '#1a6b3c', '#e8e3e2', '#1a1a1a'];
+      for (let i = 0; i < 30; i++) {
+        const c = document.createElement('div'); const sz = Math.random() * 7 + 3;
+        c.style.cssText = `position:absolute;width:${sz}px;height:${sz}px;background:${colors[Math.floor(Math.random() * colors.length)]};border-radius:${Math.random() > .5 ? '50%' : '2px'};left:${Math.random() * 100}%;top:-10px;animation:cfFall ${1.5 + Math.random() * 2}s ease-in ${Math.random() * .8}s forwards;opacity:${.4 + Math.random() * .5}`;
+        wrap.appendChild(c);
       }
+      const s = document.createElement('style');
+      s.textContent = `@keyframes cfFall{to{transform:translateY(500px) rotate(360deg);opacity:0}}`;
+      document.head.appendChild(s);
     }
 
-    async function delProd(id) {
-      if (!confirm('Delete this product from the database? This cannot be undone.')) return;
-      try {
-        const res  = await fetch(`/api/products/${id}`, { method: 'DELETE' });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed');
-        await renderProds();
-        showToast('Product deleted from database.', 'error');
-      } catch (err) { showToast('❌ ' + err.message, 'error'); }
-    }
-
-    function closeProdModalClick(e) { if (e.target===document.getElementById('prod-modal')) document.getElementById('prod-modal').classList.remove('open'); }
-
-    /* ── SETTINGS ── */
-    function saveSetting() {
-      const fb = document.getElementById('save-feedback');
-      fb.classList.add('show');
-      setTimeout(() => fb.classList.remove('show'), 2500);
-    }
-
-    /* ── INIT ── */
-    renderDash();
+    renderSummary();
   </script>
 </body>
+
 </html>
