@@ -1,11 +1,15 @@
 require('dotenv').config();
 const express      = require('express');
 const path         = require('path');
-const fs           = require('fs');
 const cookieParser = require('cookie-parser');
 const pool         = require('./db/db');
 const authRoutes   = require('./routes/auth_routes');
 const { requireAdmin, requireStaff, verifyToken } = require('./middleware/auth_middleware');
+const {
+  sendOwnerNotification,
+  sendBuyerConfirmation,
+  sendFileDelivery,
+} = require('./emailService');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -27,9 +31,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'shop.html'));
 });
 
-/* ── PRODUCTS API ── */
+/* ═══════════════════════════════════════
+   PRODUCTS API
+═══════════════════════════════════════ */
 
-// GET all active products (public)
 app.get('/api/products', async (req, res) => {
   try {
     const result = await pool.query(
@@ -60,14 +65,13 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
-// POST — add new product (admin only)
 app.post('/api/products', requireAdmin, async (req, res) => {
   try {
     const { title, description, type, price, fileName, fileSize, pages, driveLink, isActive, isFeatured } = req.body;
     const result = await pool.query(
       `INSERT INTO products (title, description, type, price, file_name, file_size, pages, drive_link, is_active, is_featured)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
-      [title, description, type, price, fileName, fileSize, pages, driveLink, isActive??true, isFeatured??false]
+      [title, description, type, price, fileName, fileSize, pages, driveLink, isActive ?? true, isFeatured ?? false]
     );
     console.log(`✅ Product added: ${result.rows[0].title}`);
     res.json({ success: true, product: result.rows[0] });
@@ -77,7 +81,6 @@ app.post('/api/products', requireAdmin, async (req, res) => {
   }
 });
 
-// PUT — update product (admin only)
 app.put('/api/products/:id', requireAdmin, async (req, res) => {
   try {
     const { title, description, type, price, fileName, fileSize, pages, driveLink, isActive, isFeatured } = req.body;
@@ -87,7 +90,7 @@ app.put('/api/products/:id', requireAdmin, async (req, res) => {
            file_name=$5, file_size=$6, pages=$7, drive_link=$8,
            is_active=$9, is_featured=$10
        WHERE id=$11 RETURNING *`,
-      [title, description, type, price, fileName, fileSize, pages, driveLink, isActive??true, isFeatured??false, req.params.id]
+      [title, description, type, price, fileName, fileSize, pages, driveLink, isActive ?? true, isFeatured ?? false, req.params.id]
     );
     if (!result.rows.length) return res.status(404).json({ error: 'Product not found' });
     console.log(`✅ Product updated: ${result.rows[0].title}`);
@@ -98,7 +101,6 @@ app.put('/api/products/:id', requireAdmin, async (req, res) => {
   }
 });
 
-// DELETE — remove product (admin only)
 app.delete('/api/products/:id', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(
@@ -114,83 +116,249 @@ app.delete('/api/products/:id', requireAdmin, async (req, res) => {
   }
 });
 
-/* ── ORDERS API ── */
+/* ═══════════════════════════════════════
+   ORDERS API
+   Schema: orders + order_items tables
+═══════════════════════════════════════ */
+
+/* ── Helper: attach items to order rows ── */
+async function attachItems(orders) {
+  if (!orders.length) return orders;
+  const ids = orders.map(o => o.id);
+  const items = await pool.query(
+    `SELECT * FROM order_items WHERE order_id = ANY($1::text[])`,
+    [ids]
+  );
+  const itemMap = {};
+  items.rows.forEach(i => {
+    if (!itemMap[i.order_id]) itemMap[i.order_id] = [];
+    itemMap[i.order_id].push({
+      id:       i.product_id,
+      title:    i.title,
+      price:    Number(i.price),
+      fileName: i.file_name,
+      fileSize: i.file_size,
+      type:     i.type,
+    });
+  });
+  return orders.map(o => ({ ...o, items: itemMap[o.id] || [] }));
+}
+
+/* ── Helper: map DB row → front-end shape ── */
+function rowToOrder(r) {
+  return {
+    id:              r.id,
+    email:           r.email,
+    fullname:        r.fullname,
+    address:         r.address,
+    total:           Number(r.total),
+    status:          r.status,
+    delivered:       r.delivered,
+    deliveredAt:     r.delivered_at,
+    userId:          r.user_id,
+    date:            r.date,
+    // Reconstruct payment object for email/admin compatibility
+    payment: r.payment_method === 'gcash-ref'
+      ? { method: 'gcash-ref', ref: r.gcash_ref, amount: r.gcash_amount }
+      : { method: 'gcash-screenshot', ssEmail: r.screenshot_email },
+    items: r.items || [],
+  };
+}
 
 // GET all orders (admin/staff only)
 app.get('/api/orders', requireStaff, async (req, res) => {
   try {
-    const ordersPath = path.join(__dirname, 'db', 'orders.json');
-    if (!fs.existsSync(ordersPath)) return res.json([]);
-    const orders = JSON.parse(fs.readFileSync(ordersPath, 'utf8'));
+    const result = await pool.query(
+      'SELECT * FROM orders ORDER BY date DESC'
+    );
+    const orders = await attachItems(result.rows.map(rowToOrder));
     res.json(orders);
-  } catch {
-    res.json([]);
+  } catch (err) {
+    console.error('❌ Orders fetch error:', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
-// POST — save new order (requires login)
-app.post('/api/orders', verifyToken, async (req, res) => {
+// POST — save new order + order_items (transaction) + send emails
+app.post('/api/orders', async (req, res) => {
+  const client = await pool.connect();
   try {
-    const ordersPath = path.join(__dirname, 'db', 'orders.json');
-    const orders     = fs.existsSync(ordersPath)
-      ? JSON.parse(fs.readFileSync(ordersPath, 'utf8'))
-      : [];
+    await client.query('BEGIN');
+
+    const {
+      email, fullname, address,
+      items = [], total, payment = {},
+    } = req.body;
+
+    const orderId        = 'ORD-' + Date.now();
+    const paymentMethod  = payment.method === 'gcash-ref' ? 'gcash-ref' : 'gcash-screenshot';
+    const gcashRef       = payment.ref           || null;
+    const gcashAmount    = payment.amount        ? Number(payment.amount) : null;
+    const screenshotEmail = payment.ssEmail      || null;
+
+    // Attach user if logged in (optional JWT)
+    let userId = null;
+    const authHeader = req.headers.authorization;
+    if (authHeader?.startsWith('Bearer ')) {
+      try {
+        const jwt     = require('jsonwebtoken');
+        const decoded = jwt.verify(authHeader.split(' ')[1], process.env.JWT_SECRET);
+        userId = decoded.id;
+      } catch { /* guest checkout */ }
+    }
+
+    // 1. Insert order row
+    await client.query(
+      `INSERT INTO orders
+         (id, email, fullname, address, total,
+          status, delivered, payment_method,
+          gcash_ref, gcash_amount, screenshot_email,
+          date, user_id)
+       VALUES ($1,$2,$3,$4,$5,'pending',FALSE,$6,$7,$8,$9,NOW(),$10)`,
+      [orderId, email, fullname, address, total,
+       paymentMethod, gcashRef, gcashAmount, screenshotEmail, userId]
+    );
+
+    // 2. Insert each order_item row
+    for (const item of items) {
+      await client.query(
+        `INSERT INTO order_items
+           (order_id, product_id, title, price, file_name, file_size, type)
+         VALUES ($1,$2,$3,$4,$5,$6,$7)`,
+        [orderId, item.id, item.title, Number(item.price),
+         item.fileName || null, item.fileSize || null, item.type || null]
+      );
+    }
+
+    await client.query('COMMIT');
+    console.log(`📦 New order: ${orderId} from ${email}`);
+
+    // Build order object for emails
     const newOrder = {
-      ...req.body,
-      userId:    req.user.id,
-      userEmail: req.user.email,
-      id:        'ORD-' + Date.now(),
-      date:      new Date().toISOString(),
-      status:    'pending',
-      delivered: false,
+      id: orderId, email, fullname, address, total,
+      status: 'pending', delivered: false,
+      date: new Date().toISOString(),
+      payment: payment,
+      items,
     };
-    orders.push(newOrder);
-    fs.mkdirSync(path.dirname(ordersPath), { recursive: true });
-    fs.writeFileSync(ordersPath, JSON.stringify(orders, null, 2));
-    console.log(`📦 New order: ${newOrder.id} from ${newOrder.userEmail}`);
-    res.json({ success: true, orderId: newOrder.id });
+
+    // Send emails — non-blocking
+    Promise.allSettled([
+      sendOwnerNotification(newOrder),
+      sendBuyerConfirmation(newOrder),
+    ]).then(results => {
+      results.forEach((r, i) => {
+        if (r.status === 'rejected')
+          console.error(`⚠️  Email ${i === 0 ? 'owner' : 'buyer'} failed:`, r.reason?.message);
+      });
+    });
+
+    res.json({ success: true, orderId });
   } catch (err) {
+    await client.query('ROLLBACK');
+    console.error('❌ Order save error:', err.message);
     res.status(500).json({ error: err.message });
+  } finally {
+    client.release();
   }
 });
 
 // GET buyer's own orders
 app.get('/api/orders/mine', verifyToken, async (req, res) => {
   try {
-    const ordersPath = path.join(__dirname, 'db', 'orders.json');
-    if (!fs.existsSync(ordersPath)) return res.json([]);
-    const orders = JSON.parse(fs.readFileSync(ordersPath, 'utf8'));
-    const mine   = orders.filter(o => o.userId === req.user.id || o.email === req.user.email);
-    res.json(mine);
-  } catch {
+    const result = await pool.query(
+      `SELECT * FROM orders
+       WHERE user_id = $1 OR email = $2
+       ORDER BY date DESC`,
+      [req.user.id, req.user.email]
+    );
+    const orders = await attachItems(result.rows.map(rowToOrder));
+    res.json(orders);
+  } catch (err) {
+    console.error('❌ Orders/mine error:', err.message);
     res.json([]);
   }
 });
 
-// POST — deliver order (admin/staff only)
+// POST — deliver order: mark paid + email files
 app.post('/api/orders/:id/deliver', requireStaff, async (req, res) => {
   try {
-    const ordersPath = path.join(__dirname, 'db', 'orders.json');
-    const orders     = JSON.parse(fs.readFileSync(ordersPath, 'utf8'));
-    const index      = orders.findIndex(o => o.id === req.params.id);
-    if (index === -1) return res.status(404).json({ error: 'Order not found' });
-    orders[index].status      = 'paid';
-    orders[index].delivered   = true;
-    orders[index].deliveredAt = new Date().toISOString();
-    fs.writeFileSync(ordersPath, JSON.stringify(orders, null, 2));
-    console.log(`✅ Order delivered: ${req.params.id}`);
+    const result = await pool.query(
+      `UPDATE orders
+       SET status = 'paid', delivered = TRUE, delivered_at = NOW()
+       WHERE id = $1 RETURNING *`,
+      [req.params.id]
+    );
+    if (!result.rows.length) return res.status(404).json({ error: 'Order not found' });
+
+    const [order] = await attachItems([rowToOrder(result.rows[0])]);
+    console.log(`✅ Order delivered: ${order.id}`);
+
+    // Fetch products for drive links
+    let products = [];
+    try {
+      const prods = await pool.query(
+        'SELECT id, title, drive_link, file_size, pages FROM products'
+      );
+      products = prods.rows.map(p => ({
+        id:        p.id,
+        title:     p.title,
+        driveLink: p.drive_link,
+        fileSize:  p.file_size,
+        pages:     p.pages,
+      }));
+    } catch (dbErr) {
+      console.error('⚠️  Could not load products for delivery:', dbErr.message);
+    }
+
+    try {
+      await sendFileDelivery(order, products);
+    } catch (emailErr) {
+      console.error('⚠️  Delivery email failed:', emailErr.message);
+      return res.json({
+        success: true,
+        emailWarning: 'Order marked delivered but email failed: ' + emailErr.message,
+      });
+    }
+
     res.json({ success: true });
   } catch (err) {
+    console.error('❌ Deliver error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
 
-// POST — resend order (admin/staff only)
+// POST — resend file delivery email
 app.post('/api/orders/:id/resend', requireStaff, async (req, res) => {
   try {
-    console.log(`🔄 Resending: ${req.params.id}`);
-    res.json({ success: true, message: 'Files resent' });
+    const result = await pool.query(
+      'SELECT * FROM orders WHERE id = $1', [req.params.id]
+    );
+    if (!result.rows.length) return res.status(404).json({ error: 'Order not found' });
+
+    const [order] = await attachItems([rowToOrder(result.rows[0])]);
+
+    let products = [];
+    try {
+      const prods = await pool.query(
+        'SELECT id, title, drive_link, file_size, pages FROM products'
+      );
+      products = prods.rows.map(p => ({
+        id:        p.id,
+        title:     p.title,
+        driveLink: p.drive_link,
+        fileSize:  p.file_size,
+        pages:     p.pages,
+      }));
+    } catch (dbErr) {
+      console.error('⚠️  Could not load products for resend:', dbErr.message);
+    }
+
+    await sendFileDelivery(order, products);
+    console.log(`🔄 Files resent: ${order.id}`);
+    res.json({ success: true, message: 'Files resent to ' + order.email });
   } catch (err) {
+    console.error('❌ Resend error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
@@ -199,6 +367,6 @@ app.post('/api/orders/:id/resend', requireStaff, async (req, res) => {
 app.listen(PORT, () => {
   console.log(`\n🚀 Pressfiles running at http://localhost:${PORT}`);
   console.log(`📧 Email:  ${process.env.EMAIL_USER}`);
-  console.log(`🐘 DB:     ${process.env.DATABASE_URL?.split('@')[1]}`);
+  console.log(`🐘 DB:     ${process.env.DATABASE_URL?.split('@')[1] || 'not set'}`);
   console.log(`🔐 Auth:   JWT + bcrypt\n`);
 });
