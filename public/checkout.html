@@ -354,18 +354,9 @@
       background: var(--bg);
     }
 
-    .terms-body p {
-      margin-bottom: .6rem;
-    }
-
-    .terms-body p:last-child {
-      margin-bottom: 0;
-    }
-
-    .terms-body strong {
-      color: var(--ink);
-      font-weight: 700;
-    }
+    .terms-body p { margin-bottom: .6rem; }
+    .terms-body p:last-child { margin-bottom: 0; }
+    .terms-body strong { color: var(--ink); font-weight: 700; }
 
     .terms-check-row {
       display: flex;
@@ -390,9 +381,7 @@
       cursor: pointer;
     }
 
-    .terms-check-label strong {
-      color: var(--crimson);
-    }
+    .terms-check-label strong { color: var(--crimson); }
 
     /* PAY BUTTON */
     .pay-btn {
@@ -415,23 +404,11 @@
       transform: translateY(-1px);
     }
 
-    .pay-btn:disabled {
-      background: var(--mid);
-      opacity: .6;
-      cursor: not-allowed;
-    }
+    .pay-btn:disabled { background: var(--mid); opacity: .6; cursor: not-allowed; }
 
-    .pay-btn.loading .btn-text {
-      display: none;
-    }
-
-    .pay-btn .loading-text {
-      display: none;
-    }
-
-    .pay-btn.loading .loading-text {
-      display: inline;
-    }
+    .pay-btn.loading .btn-text  { display: none; }
+    .pay-btn .loading-text      { display: none; }
+    .pay-btn.loading .loading-text { display: inline; }
 
     .secure-note {
       font-size: .75rem;
@@ -441,11 +418,7 @@
       line-height: 1.6;
     }
 
-    .secure-note a {
-      color: var(--crimson);
-      text-decoration: none;
-      font-weight: 600;
-    }
+    .secure-note a { color: var(--crimson); text-decoration: none; font-weight: 600; }
 
     /* ORDER SUMMARY */
     .summary-card {
@@ -482,70 +455,26 @@
       flex-shrink: 0;
       overflow: hidden;
       position: relative;
-      box-shadow: -2px 3px 0 rgba(0, 0, 0, .1), -4px 6px 12px rgba(0, 0, 0, .15);
+      box-shadow: -2px 3px 0 rgba(0,0,0,.1), -4px 6px 12px rgba(0,0,0,.15);
     }
 
     .oi-cover::before {
       content: '';
       position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
+      left: 0; top: 0; bottom: 0;
       width: 7px;
-      background: rgba(0, 0, 0, .18);
+      background: rgba(0,0,0,.18);
       z-index: 2;
     }
 
-    .oi-info {
-      flex: 1;
-      min-width: 0;
-    }
+    .oi-info { flex: 1; min-width: 0; }
+    .oi-name { font-size: .84rem; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: .18rem; }
+    .oi-meta { font-size: .7rem; color: var(--mid); margin-bottom: .2rem; }
+    .oi-rm   { font-size: .7rem; color: var(--crimson); background: none; border: none; cursor: pointer; font-weight: 600; padding: 0; }
+    .oi-rm:hover { text-decoration: underline; }
+    .oi-price { font-family: Georgia, serif; font-size: 1rem; font-weight: 700; color: var(--ink); flex-shrink: 0; margin-top: .1rem; }
 
-    .oi-name {
-      font-size: .84rem;
-      font-weight: 600;
-      color: var(--ink);
-      line-height: 1.3;
-      margin-bottom: .18rem;
-    }
-
-    .oi-meta {
-      font-size: .7rem;
-      color: var(--mid);
-      margin-bottom: .2rem;
-    }
-
-    .oi-rm {
-      font-size: .7rem;
-      color: var(--crimson);
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      padding: 0;
-    }
-
-    .oi-rm:hover {
-      text-decoration: underline;
-    }
-
-    .oi-price {
-      font-family: Georgia, serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--ink);
-      flex-shrink: 0;
-      margin-top: .1rem;
-    }
-
-    .sum-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: .5rem 0;
-      font-size: .82rem;
-      color: var(--mid);
-    }
+    .sum-row { display: flex; justify-content: space-between; align-items: center; padding: .5rem 0; font-size: .82rem; color: var(--mid); }
 
     .sum-total-row {
       display: flex;
@@ -556,20 +485,8 @@
       border-top: 1.5px solid var(--ink);
     }
 
-    .sum-total-lbl {
-      font-size: .76rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      color: var(--mid);
-    }
-
-    .sum-total-amt {
-      font-family: Georgia, serif;
-      font-size: 1.9rem;
-      font-weight: 700;
-      color: var(--ink);
-    }
+    .sum-total-lbl { font-size: .76rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--mid); }
+    .sum-total-amt { font-family: Georgia, serif; font-size: 1.9rem; font-weight: 700; color: var(--ink); }
 
     .delivery-box {
       margin-top: 1.1rem;
@@ -579,33 +496,11 @@
       padding: .9rem 1rem;
     }
 
-    .db-head {
-      font-size: .68rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      color: var(--crimson);
-      margin-bottom: .3rem;
-    }
+    .db-head { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--crimson); margin-bottom: .3rem; }
+    .db-body { font-size: .78rem; color: var(--ink2); line-height: 1.55; }
 
-    .db-body {
-      font-size: .78rem;
-      color: var(--ink2);
-      line-height: 1.55;
-    }
-
-    .empty-cart-note {
-      text-align: center;
-      padding: 1.5rem 0;
-      font-size: .84rem;
-      color: var(--mid);
-    }
-
-    .empty-cart-note a {
-      color: var(--crimson);
-      text-decoration: none;
-      font-weight: 600;
-    }
+    .empty-cart-note { text-align: center; padding: 1.5rem 0; font-size: .84rem; color: var(--mid); }
+    .empty-cart-note a { color: var(--crimson); text-decoration: none; font-weight: 600; }
 
     /* SUCCESS MODAL */
     .success-modal {
@@ -622,51 +517,13 @@
       overflow: hidden;
     }
 
-    .sm-icon {
-      font-size: 3.5rem;
-      display: block;
-      margin-bottom: .85rem;
-    }
+    .sm-icon  { font-size: 3.5rem; display: block; margin-bottom: .85rem; }
+    .sm-title { font-family: Georgia, serif; font-size: 1.9rem; font-weight: 700; margin-bottom: .5rem; }
+    .sm-sub   { font-size: .88rem; color: var(--mid); margin-bottom: .35rem; line-height: 1.5; }
+    .sm-email { font-size: .85rem; font-weight: 700; color: var(--crimson); margin: .4rem 0 1rem; display: block; }
 
-    .sm-title {
-      font-family: Georgia, serif;
-      font-size: 1.9rem;
-      font-weight: 700;
-      margin-bottom: .5rem;
-    }
-
-    .sm-sub {
-      font-size: .88rem;
-      color: var(--mid);
-      margin-bottom: .35rem;
-      line-height: 1.5;
-    }
-
-    .sm-email {
-      font-size: .85rem;
-      font-weight: 700;
-      color: var(--crimson);
-      margin: .4rem 0 1rem;
-      display: block;
-    }
-
-    .sm-files {
-      display: flex;
-      justify-content: center;
-      gap: .5rem;
-      flex-wrap: wrap;
-      margin: .7rem 0 1rem;
-    }
-
-    .sm-file-chip {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: .35rem .75rem;
-      font-size: .78rem;
-      color: var(--mid);
-      font-weight: 500;
-    }
+    .sm-files { display: flex; justify-content: center; gap: .5rem; flex-wrap: wrap; margin: .7rem 0 1rem; }
+    .sm-file-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .35rem .75rem; font-size: .78rem; color: var(--mid); font-weight: 500; }
 
     .sm-notice {
       background: var(--surface);
@@ -680,9 +537,7 @@
       text-align: left;
     }
 
-    .sm-notice strong {
-      color: var(--crimson);
-    }
+    .sm-notice strong { color: var(--crimson); }
 
     .sm-btn {
       display: inline-block;
@@ -696,92 +551,29 @@
       transition: background .18s;
     }
 
-    .sm-btn:hover {
-      background: var(--crimson-dark);
-    }
+    .sm-btn:hover { background: var(--crimson-dark); }
 
-    .confetti-wrap {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
+    .confetti-wrap { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 
+    /* MINI BOOK COVER */
     .bc-inner-sm {
-      position: absolute;
-      inset: 0;
-      z-index: 5;
-      display: flex;
-      flex-direction: column;
+      position: absolute; inset: 0; z-index: 5;
+      display: flex; flex-direction: column;
       padding: .55rem .45rem .45rem .65rem;
       justify-content: space-between;
     }
 
-    .bc-label-sm {
-      font-size: .42rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .16em;
-      color: rgba(255, 255, 255, .65);
-      background: rgba(255, 255, 255, .1);
-      border: 1px solid rgba(255, 255, 255, .18);
-      border-radius: 3px;
-      padding: .12rem .38rem;
-      display: inline-block;
-      align-self: flex-start;
-    }
-
-    .bc-title-sm {
-      font-family: Georgia, serif;
-      font-size: .52rem;
-      line-height: 1.2;
-      font-weight: 600;
-      color: #fff;
-      flex: 1;
-      display: flex;
-      align-items: center;
-      padding: .2rem 0;
-    }
-
-    .bc-bottom-sm {
-      display: flex;
-      flex-direction: column;
-      gap: .12rem;
-    }
-
-    .bc-author-sm {
-      font-size: .38rem;
-      color: rgba(255, 255, 255, .5);
-      font-weight: 500;
-    }
-
-    .bc-rule-sm {
-      height: 1px;
-      background: rgba(255, 255, 255, .15);
-      margin: .08rem 0;
-    }
-
-    .bc-brand-sm {
-      font-size: .35rem;
-      font-weight: 700;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, .28);
-    }
+    .bc-label-sm  { font-size: .42rem; font-weight: 700; text-transform: uppercase; letter-spacing: .16em; color: rgba(255,255,255,.65); background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); border-radius: 3px; padding: .12rem .38rem; display: inline-block; align-self: flex-start; }
+    .bc-title-sm  { font-family: Georgia, serif; font-size: .52rem; line-height: 1.2; font-weight: 600; color: #fff; flex: 1; display: flex; align-items: center; padding: .2rem 0; }
+    .bc-bottom-sm { display: flex; flex-direction: column; gap: .12rem; }
+    .bc-author-sm { font-size: .38rem; color: rgba(255,255,255,.5); font-weight: 500; }
+    .bc-rule-sm   { height: 1px; background: rgba(255,255,255,.15); margin: .08rem 0; }
+    .bc-brand-sm  { font-size: .35rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.28); }
 
     @media (max-width: 768px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .summary-card {
-        position: static;
-        order: -1;
-      }
-
-      .payment-tabs {
-        grid-template-columns: 1fr;
-      }
+      .layout { grid-template-columns: 1fr; }
+      .summary-card { position: static; order: -1; }
+      .payment-tabs { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -814,8 +606,7 @@
     <!-- LEFT: FORM -->
     <div>
       <h2>Checkout</h2>
-      <p class="page-sub">Complete your details below — your digital files will be sent to your email after payment is
-        confirmed.</p>
+      <p class="page-sub">Complete your details below — your digital files will be sent to your email after payment is confirmed.</p>
 
       <!-- BUYER DETAILS -->
       <div class="fblock">
@@ -877,20 +668,10 @@
         <div class="gcash-panel active" id="panel-ref">
           <div class="gcash-info-box">
             <div class="gib-title">📱 How to Pay via GCash</div>
-            <div class="gib-step">
-              <div class="gib-num">1</div><span>Open GCash and tap <strong>Send Money</strong></span>
-            </div>
-            <div class="gib-step">
-              <div class="gib-num">2</div><span>Send the exact total to: <strong>09XX-XXX-XXXX</strong> (Teacher
-                Ira)</span>
-            </div>
-            <div class="gib-step">
-              <div class="gib-num">3</div><span>Copy the <strong>13-digit Reference Number</strong> from your GCash
-                receipt</span>
-            </div>
-            <div class="gib-step">
-              <div class="gib-num">4</div><span>Paste it below and click <strong>Submit Order</strong></span>
-            </div>
+            <div class="gib-step"><div class="gib-num">1</div><span>Open GCash and tap <strong>Send Money</strong></span></div>
+            <div class="gib-step"><div class="gib-num">2</div><span>Send the exact total to: <strong>09XX-XXX-XXXX</strong> (Teacher Ira)</span></div>
+            <div class="gib-step"><div class="gib-num">3</div><span>Copy the <strong>13-digit Reference Number</strong> from your GCash receipt</span></div>
+            <div class="gib-step"><div class="gib-num">4</div><span>Paste it below and click <strong>Submit Order</strong></span></div>
           </div>
           <div class="gcash-amount-box">
             <span class="gab-lbl">Amount to Send</span>
@@ -898,8 +679,7 @@
           </div>
           <div class="fg">
             <label>GCash Reference Number *</label>
-            <input type="text" id="gcash-ref" placeholder="e.g. 1234567890123" maxlength="13"
-              oninput="clearErr('gcash-ref')" />
+            <input type="text" id="gcash-ref" placeholder="e.g. 1234567890123" maxlength="13" oninput="clearErr('gcash-ref')" />
             <span class="field-hint" id="gcash-ref-hint">13-digit number from your GCash transaction receipt</span>
           </div>
           <div class="fg">
@@ -913,25 +693,14 @@
         <div class="gcash-panel" id="panel-screenshot">
           <div class="gcash-info-box">
             <div class="gib-title">📸 How to Pay via Screenshot</div>
-            <div class="gib-step">
-              <div class="gib-num">1</div><span>Open GCash and tap <strong>Send Money</strong></span>
-            </div>
-            <div class="gib-step">
-              <div class="gib-num">2</div><span>Send the exact total to: <strong>09XX-XXX-XXXX</strong> (Teacher
-                Ira)</span>
-            </div>
-            <div class="gib-step">
-              <div class="gib-num">3</div><span>Screenshot your GCash payment confirmation</span>
-            </div>
+            <div class="gib-step"><div class="gib-num">1</div><span>Open GCash and tap <strong>Send Money</strong></span></div>
+            <div class="gib-step"><div class="gib-num">2</div><span>Send the exact total to: <strong>09XX-XXX-XXXX</strong> (Teacher Ira)</span></div>
+            <div class="gib-step"><div class="gib-num">3</div><span>Screenshot your GCash payment confirmation</span></div>
             <div class="gib-step">
               <div class="gib-num">4</div>
-              <span>Email it to <span class="gib-email">teacherira.business@gmail.com</span> — subject: <strong>[Your
-                  Full Name] – Pressfiles Order</strong></span>
+              <span>Email it to <span class="gib-email">teacherira.business@gmail.com</span> — subject: <strong>[Your Full Name] – Pressfiles Order</strong></span>
             </div>
-            <div class="gib-step">
-              <div class="gib-num">5</div><span>Click <strong>Submit Order</strong> below — files sent within 24 hours
-                after verification</span>
-            </div>
+            <div class="gib-step"><div class="gib-num">5</div><span>Click <strong>Submit Order</strong> below — files sent within 24 hours after verification</span></div>
           </div>
           <div class="gcash-amount-box">
             <span class="gab-lbl">Amount to Send</span>
@@ -939,8 +708,7 @@
           </div>
           <div class="fg">
             <label>Email You'll Send the Screenshot From *</label>
-            <input type="email" id="screenshot-email" placeholder="e.g. yourname@gmail.com"
-              oninput="clearErr('screenshot-email')" />
+            <input type="email" id="screenshot-email" placeholder="e.g. yourname@gmail.com" oninput="clearErr('screenshot-email')" />
             <span class="field-hint" id="screenshot-email-hint">So we can match your screenshot to your order</span>
           </div>
         </div>
@@ -957,49 +725,16 @@
       <div class="terms-block">
         <div class="terms-title">📋 Terms &amp; Conditions — Please Read Before Purchasing</div>
         <div class="terms-body">
-          <p><strong>1. Digital Product — No Physical Delivery.</strong> All items sold on Pressfiles are digital files
-            (ZIP format) delivered via email. No physical product will be shipped to any address. By completing this
-            purchase, you acknowledge that you are buying a downloadable digital file.</p>
-
-          <p><strong>2. Non-Refundable Policy.</strong> All sales are final. Due to the nature of digital products, we
-            strictly do not offer refunds, exchanges, or cancellations once payment has been made and confirmed. Please
-            review your order carefully before submitting. We encourage you to read the product description and preview
-            pages before purchasing.</p>
-
-          <p><strong>3. Payment Verification.</strong> For GCash payments, orders will only be processed after
-            successful verification of your payment. Submitting an incorrect GCash reference number or a fraudulent
-            screenshot may result in your order being cancelled without notice. Pressfiles reserves the right to refuse
-            any order suspected of fraud.</p>
-
-          <p><strong>4. Delivery Timeline.</strong> Digital files will be sent to your provided email address within 24
-            hours of payment confirmation. Please check your spam or junk folder if you do not receive the files.
-            Pressfiles is not responsible for delays caused by incorrect email addresses entered at checkout.</p>
-
-          <p><strong>5. Intellectual Property &amp; Usage Rights.</strong> All files purchased from Pressfiles are for
-            personal and educational use only. Redistribution, resale, reproduction, uploading, or sharing of purchased
-            files in any form — digitally or in print — without prior written consent from Pressfiles is strictly
-            prohibited and may be subject to applicable legal action under the Intellectual Property Code of the
-            Philippines.</p>
-
-          <p><strong>6. Single-User License.</strong> Your purchase grants you a single-user, non-transferable license
-            to use the file for your own personal or classroom use only. You may not resell, sublicense, or distribute
-            the content to third parties under any circumstances.</p>
-
-          <p><strong>7. Concerns &amp; Disputes.</strong> For any concerns, issues with file delivery, or questions
-            regarding your order, please contact us at <strong>teacherira.business@gmail.com</strong> within 7 days of
-            purchase. We will do our best to respond and assist you promptly. Any disputes not resolved through direct
-            communication may be escalated in accordance with applicable Philippine consumer protection laws.</p>
-
-          <p><strong>8. Privacy.</strong> Your personal information (name, email, and address) collected during checkout
-            is used solely for order processing and delivery purposes. We do not sell or share your data with third
-            parties.</p>
-
-          <p><strong>9. Acceptance of Terms.</strong> By checking the box below and clicking "Submit Order," you confirm
-            that you have fully read, understood, and voluntarily agreed to all the terms and conditions stated herein.
-            This constitutes a binding agreement between you (the buyer) and Pressfiles (the seller) upon submission of
-            your order.</p>
+          <p><strong>1. Digital Product — No Physical Delivery.</strong> All items sold on Pressfiles are digital files (ZIP format) delivered via email. No physical product will be shipped to any address.</p>
+          <p><strong>2. Non-Refundable Policy.</strong> All sales are final. Due to the nature of digital products, we strictly do not offer refunds, exchanges, or cancellations once payment has been made and confirmed.</p>
+          <p><strong>3. Payment Verification.</strong> For GCash payments, orders will only be processed after successful verification of your payment. Submitting an incorrect reference number or fraudulent screenshot may result in your order being cancelled.</p>
+          <p><strong>4. Delivery Timeline.</strong> Digital files will be sent to your provided email address within 24 hours of payment confirmation. Please check your spam or junk folder if you do not receive the files.</p>
+          <p><strong>5. Intellectual Property &amp; Usage Rights.</strong> All files purchased from Pressfiles are for personal and educational use only. Redistribution, resale, or sharing of purchased files is strictly prohibited.</p>
+          <p><strong>6. Single-User License.</strong> Your purchase grants you a single-user, non-transferable license for personal or classroom use only.</p>
+          <p><strong>7. Concerns &amp; Disputes.</strong> For any concerns, contact us at <strong>teacherira.business@gmail.com</strong> within 7 days of purchase.</p>
+          <p><strong>8. Privacy.</strong> Your personal information is used solely for order processing and delivery. We do not sell or share your data.</p>
+          <p><strong>9. Acceptance of Terms.</strong> By checking the box below and clicking "Submit Order," you confirm that you have fully read, understood, and agreed to all terms stated herein.</p>
         </div>
-
         <label class="terms-check-row" for="terms-agree">
           <input type="checkbox" id="terms-agree" onchange="togglePayBtn()" />
           <span class="terms-check-label">
@@ -1034,8 +769,7 @@
         </div>
         <div class="delivery-box">
           <div class="db-head">✓ What Happens Next</div>
-          <div class="db-body">After your GCash payment is verified, your ZIP files will be sent to your email within 24
-            hours. Check your spam folder too.</div>
+          <div class="db-body">After your GCash payment is verified, your ZIP files will be sent to your email within 24 hours. Check your spam folder too.</div>
         </div>
       </div>
     </div>
@@ -1047,17 +781,15 @@
       <div class="confetti-wrap" id="confetti-wrap"></div>
       <span class="sm-icon">🎉</span>
       <div class="sm-title">Order Submitted!</div>
-      <p class="sm-sub">Thank you! Your order has been received. Confirmation will be sent to</p>
+      <p class="sm-sub">Thank you! Your order has been received. A confirmation email has been sent to</p>
       <span class="sm-email" id="sm-email">—</span>
       <div class="sm-files" id="sm-files"></div>
       <div class="sm-notice">
         <strong>What happens next?</strong><br>
         We will verify your GCash payment and send your digital files to your email within <strong>24 hours</strong>.
         Please check your spam or junk folder.<br><br>
-        For follow-ups, email <strong>teacherira.business@gmail.com</strong> with your full name and order
-        details.<br><br>
-        <strong>Reminder:</strong> All sales are final. This purchase is non-refundable as it involves digital file
-        delivery.
+        For follow-ups, email <strong>teacherira.business@gmail.com</strong> with your full name and order details.<br><br>
+        <strong>Reminder:</strong> All sales are final. This purchase is non-refundable as it involves digital file delivery.
       </div>
       <a class="sm-btn" href="shop.html">← Back to Shop</a>
     </div>
@@ -1066,6 +798,7 @@
   <script>
     const peso = n => '₱' + Number(n).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+    /* ── COVER DESIGNS ── */
     const CD = {
       1: { bg: 'linear-gradient(145deg,#1a0505,#0a0101)', label: 'Journalism' },
       2: { bg: 'linear-gradient(145deg,#2d0808,#1a0505)', label: 'Feature' },
@@ -1076,47 +809,56 @@
     };
 
     function buildMiniCover(p) {
-      const d = CD[p.id] || CD[1];
+      const d = CD[((p.id - 1) % 6) + 1] || CD[1];
       const short = p.title.length > 22 ? p.title.substring(0, 22) + '…' : p.title;
       return `<div style="width:100%;height:100%;background:${d.bg};position:relative;overflow:hidden">
-    <div class="bc-inner-sm">
-      <span class="bc-label-sm">${d.label}</span>
-      <div class="bc-title-sm">${short}</div>
-      <div class="bc-bottom-sm">
-        <div class="bc-author-sm">pressfiles</div>
-        <div class="bc-rule-sm"></div>
-        <div class="bc-brand-sm">by Teacher Ira</div>
-      </div>
-    </div>
-  </div>`;
+        <div class="bc-inner-sm">
+          <span class="bc-label-sm">${d.label}</span>
+          <div class="bc-title-sm">${short}</div>
+          <div class="bc-bottom-sm">
+            <div class="bc-author-sm">pressfiles</div>
+            <div class="bc-rule-sm"></div>
+            <div class="bc-brand-sm">by Teacher Ira</div>
+          </div>
+        </div>
+      </div>`;
     }
 
-    let cart = JSON.parse(localStorage.getItem('pressroom_cart') || '[]');
+    /* ── STATE ── */
+    let cart      = JSON.parse(localStorage.getItem('pressroom_cart') || '[]');
     let activeTab = 'ref';
-    function saveCart() { localStorage.setItem('pressroom_cart', JSON.stringify(cart)); }
 
+    /* ── SUMMARY ── */
     function renderSummary() {
       const cont = document.getElementById('order-items');
       if (!cart.length) {
         cont.innerHTML = '<div class="empty-cart-note">Cart is empty. <a href="shop.html">Go shopping →</a></div>';
-        ['subtotal-amt', 'total-amt', 'gcash-total-ref', 'gcash-total-ss'].forEach(id => document.getElementById(id).textContent = peso(0));
+        ['subtotal-amt', 'total-amt', 'gcash-total-ref', 'gcash-total-ss'].forEach(id =>
+          document.getElementById(id).textContent = peso(0));
         return;
       }
       const total = cart.reduce((s, i) => s + Number(i.price), 0);
       cont.innerHTML = cart.map(item => `
-    <div class="order-item">
-      <div class="oi-cover">${buildMiniCover(item)}</div>
-      <div class="oi-info">
-        <div class="oi-name">${item.title}</div>
-        <div class="oi-meta">${item.type} · ${item.fileSize || ''}</div>
-        <button class="oi-rm" onclick="removeItem(${item.id})">Remove</button>
-      </div>
-      <div class="oi-price">${peso(Number(item.price))}</div>
-    </div>`).join('');
-      ['subtotal-amt', 'total-amt', 'gcash-total-ref', 'gcash-total-ss'].forEach(id => document.getElementById(id).textContent = peso(total));
+        <div class="order-item">
+          <div class="oi-cover">${buildMiniCover(item)}</div>
+          <div class="oi-info">
+            <div class="oi-name">${item.title}</div>
+            <div class="oi-meta">${item.type} · ${item.fileSize || ''}</div>
+            <button class="oi-rm" onclick="removeItem(${item.id})">Remove</button>
+          </div>
+          <div class="oi-price">${peso(Number(item.price))}</div>
+        </div>`).join('');
+      ['subtotal-amt', 'total-amt', 'gcash-total-ref', 'gcash-total-ss'].forEach(id =>
+        document.getElementById(id).textContent = peso(total));
     }
-    function removeItem(id) { cart = cart.filter(c => c.id !== id); saveCart(); renderSummary(); }
 
+    function removeItem(id) {
+      cart = cart.filter(c => c.id !== id);
+      localStorage.setItem('pressroom_cart', JSON.stringify(cart));
+      renderSummary();
+    }
+
+    /* ── TAB SWITCH ── */
     function switchTab(tab) {
       activeTab = tab;
       ['ref', 'screenshot'].forEach(t => {
@@ -1125,80 +867,72 @@
       });
     }
 
+    /* ── PAY BUTTON TOGGLE ── */
     function togglePayBtn() {
       document.getElementById('pay-btn').disabled = !document.getElementById('terms-agree').checked;
     }
 
+    /* ── ERROR HELPERS ── */
     function showErr(id, msg) {
-      const el = document.getElementById(id); const h = document.getElementById(id + '-hint');
+      const el = document.getElementById(id);
+      const h  = document.getElementById(id + '-hint');
       if (el) el.classList.add('error');
-      if (h) { h.textContent = msg; h.classList.add('err'); }
-    }
-    function clearErr(id) {
-      const el = document.getElementById(id); const h = document.getElementById(id + '-hint');
-      if (el) el.classList.remove('error');
-      if (h) h.classList.remove('err');
+      if (h)  { h.textContent = msg; h.classList.add('err'); }
     }
 
+    function clearErr(id) {
+      const el = document.getElementById(id);
+      const h  = document.getElementById(id + '-hint');
+      if (el) el.classList.remove('error');
+      if (h)  h.classList.remove('err');
+    }
+
+    /* ── VALIDATE ── */
     function validate() {
       let ok = true;
-      const name = document.getElementById('fullname').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const email2 = document.getElementById('email2').value.trim();
+      const name    = document.getElementById('fullname').value.trim();
+      const email   = document.getElementById('email').value.trim();
+      const email2  = document.getElementById('email2').value.trim();
       const address = document.getElementById('address').value.trim();
-      if (!name) { showErr('fullname', 'Please enter your full name.'); ok = false; }
+
+      if (!name)                                    { showErr('fullname', 'Please enter your full name.'); ok = false; }
       if (!email || !email.includes('@') || !email.includes('.')) { showErr('email', 'Please enter a valid email address.'); ok = false; }
-      if (!email2) { showErr('email2', 'Please confirm your email address.'); ok = false; }
-      else if (email !== email2) { showErr('email2', 'Email addresses do not match.'); ok = false; }
-      if (!address) { showErr('address', 'Please enter your complete address.'); ok = false; }
+      if (!email2)                                  { showErr('email2', 'Please confirm your email address.'); ok = false; }
+      else if (email !== email2)                    { showErr('email2', 'Email addresses do not match.'); ok = false; }
+      if (!address)                                 { showErr('address', 'Please enter your complete address.'); ok = false; }
+
       if (activeTab === 'ref') {
-        const ref = document.getElementById('gcash-ref').value.trim();
+        const ref    = document.getElementById('gcash-ref').value.trim();
         const amount = document.getElementById('gcash-amount').value.trim();
-        if (!ref || ref.length < 13) { showErr('gcash-ref', 'Please enter a valid 13-digit reference number.'); ok = false; }
-        if (!amount || Number(amount) <= 0) { showErr('gcash-amount', 'Please enter the exact amount you sent.'); ok = false; }
+        if (!ref || ref.length < 13)            { showErr('gcash-ref', 'Please enter a valid 13-digit reference number.'); ok = false; }
+        if (!amount || Number(amount) <= 0)     { showErr('gcash-amount', 'Please enter the exact amount you sent.'); ok = false; }
       } else {
         const ssEmail = document.getElementById('screenshot-email').value.trim();
         if (!ssEmail || !ssEmail.includes('@')) { showErr('screenshot-email', 'Please enter a valid email address.'); ok = false; }
       }
-      if (!document.getElementById('terms-agree').checked) { alert('Please read and agree to the Terms & Conditions before proceeding.'); ok = false; }
+
+      if (!document.getElementById('terms-agree').checked) {
+        alert('Please read and agree to the Terms & Conditions before proceeding.');
+        ok = false;
+      }
       if (!cart.length) { alert('Your cart is empty!'); ok = false; }
       return ok;
     }
 
-    function pay() {
-      if (!validate()) return;
-      const btn = document.getElementById('pay-btn');
-      btn.disabled = true; btn.classList.add('loading');
-      setTimeout(() => {
-        const email = document.getElementById('email').value.trim();
-        const fullname = document.getElementById('fullname').value.trim();
-        const orders = JSON.parse(localStorage.getItem('pressroom_orders') || '[]');
-        const paymentInfo = activeTab === 'ref'
-          ? { method: 'gcash-ref', ref: document.getElementById('gcash-ref').value.trim(), amount: document.getElementById('gcash-amount').value.trim() }
-          : { method: 'gcash-screenshot', ssEmail: document.getElementById('screenshot-email').value.trim() };
-        orders.push({
-          id: 'ORD-' + Date.now(), email, fullname,
-          address: document.getElementById('address').value.trim(),
-          items: cart, total: cart.reduce((s, i) => s + Number(i.price), 0),
-          date: new Date().toISOString(), status: 'pending', delivered: false, payment: paymentInfo
-        });
-        localStorage.setItem('pressroom_orders', JSON.stringify(orders));
-        localStorage.removeItem('pressroom_cart');
-        const savedCart = [...cart]; cart = [];
-        document.getElementById('sm-email').textContent = email;
-        document.getElementById('sm-files').innerHTML = savedCart.map(i => `<div class="sm-file-chip">📦 ${i.fileName || i.title.substring(0, 18) + '…'}</div>`).join('');
-        document.getElementById('modal-bg').classList.add('open');
-        launchConfetti();
-        btn.disabled = false; btn.classList.remove('loading');
-      }, 1800);
-    }
-
+    /* ── CONFETTI ── */
     function launchConfetti() {
-      const wrap = document.getElementById('confetti-wrap'); wrap.innerHTML = '';
+      const wrap   = document.getElementById('confetti-wrap');
+      wrap.innerHTML = '';
       const colors = ['#8B1A1A', '#d4a0a0', '#1a6b3c', '#e8e3e2', '#1a1a1a'];
       for (let i = 0; i < 30; i++) {
-        const c = document.createElement('div'); const sz = Math.random() * 7 + 3;
-        c.style.cssText = `position:absolute;width:${sz}px;height:${sz}px;background:${colors[Math.floor(Math.random() * colors.length)]};border-radius:${Math.random() > .5 ? '50%' : '2px'};left:${Math.random() * 100}%;top:-10px;animation:cfFall ${1.5 + Math.random() * 2}s ease-in ${Math.random() * .8}s forwards;opacity:${.4 + Math.random() * .5}`;
+        const c  = document.createElement('div');
+        const sz = Math.random() * 7 + 3;
+        c.style.cssText = `position:absolute;width:${sz}px;height:${sz}px;
+          background:${colors[Math.floor(Math.random() * colors.length)]};
+          border-radius:${Math.random() > .5 ? '50%' : '2px'};
+          left:${Math.random() * 100}%;top:-10px;
+          animation:cfFall ${1.5 + Math.random() * 2}s ease-in ${Math.random() * .8}s forwards;
+          opacity:${.4 + Math.random() * .5}`;
         wrap.appendChild(c);
       }
       const s = document.createElement('style');
@@ -1206,6 +940,74 @@
       document.head.appendChild(s);
     }
 
+    /* ── PAY (single async function — no duplicate) ── */
+    async function pay() {
+      if (!validate()) return;
+
+      const btn = document.getElementById('pay-btn');
+      btn.disabled = true;
+      btn.classList.add('loading');
+
+      const email       = document.getElementById('email').value.trim();
+      const fullname    = document.getElementById('fullname').value.trim();
+      const address     = document.getElementById('address').value.trim();
+      const paymentInfo = activeTab === 'ref'
+        ? { method: 'gcash-ref',        ref:     document.getElementById('gcash-ref').value.trim(),
+                                         amount:  document.getElementById('gcash-amount').value.trim() }
+        : { method: 'gcash-screenshot', ssEmail: document.getElementById('screenshot-email').value.trim() };
+
+      const orderPayload = {
+        email, fullname, address,
+        items:   cart,
+        total:   cart.reduce((s, i) => s + Number(i.price), 0),
+        payment: paymentInfo,
+      };
+
+      try {
+        const token   = localStorage.getItem('pf_token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const res  = await fetch('/api/orders', {
+          method: 'POST',
+          headers,
+          body:   JSON.stringify(orderPayload),
+        });
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || 'Order submission failed');
+
+        // Save locally for review popup
+        const localOrders = JSON.parse(localStorage.getItem('pressroom_orders') || '[]');
+        localOrders.push({
+          ...orderPayload,
+          id:        data.orderId,
+          date:      new Date().toISOString(),
+          status:    'pending',
+          delivered: false,
+        });
+        localStorage.setItem('pressroom_orders', JSON.stringify(localOrders));
+        localStorage.removeItem('pressroom_cart');
+
+        const savedCart = [...cart];
+        cart = [];
+
+        document.getElementById('sm-email').textContent = email;
+        document.getElementById('sm-files').innerHTML = savedCart.map(i =>
+          `<div class="sm-file-chip">📦 ${i.fileName || i.title.substring(0, 18) + '…'}</div>`
+        ).join('');
+        document.getElementById('modal-bg').classList.add('open');
+        launchConfetti();
+
+      } catch (err) {
+        alert('❌ ' + err.message + '\n\nPlease try again or contact teacherira.business@gmail.com');
+      } finally {
+        btn.disabled = false;
+        btn.classList.remove('loading');
+      }
+    }
+
+    /* ── INIT ── */
     renderSummary();
   </script>
 </body>
