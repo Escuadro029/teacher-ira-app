@@ -26,6 +26,16 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 /* ── AUTH ROUTES ── */
 app.use('/api/auth', authRoutes);
 
+/* ── GLOBAL ERROR SAFETY NET ── */
+// Catches any unhandled errors and always sends a proper JSON response
+app.use((err, req, res, next) => {
+  console.error('🔥 Unhandled server error:', err.message);
+  console.error(err.stack);
+  if (!res.headersSent) {
+    res.status(500).json({ error: 'Internal server error: ' + err.message });
+  }
+});
+
 /* ── HOME ── */
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'shop.html'));
@@ -118,10 +128,8 @@ app.delete('/api/products/:id', requireAdmin, async (req, res) => {
 
 /* ═══════════════════════════════════════
    ORDERS API
-   Schema: orders + order_items tables
 ═══════════════════════════════════════ */
 
-/* ── Helper: attach items to order rows ── */
 async function attachItems(orders) {
   if (!orders.length) return orders;
   const ids = orders.map(o => o.id);
@@ -144,20 +152,18 @@ async function attachItems(orders) {
   return orders.map(o => ({ ...o, items: itemMap[o.id] || [] }));
 }
 
-/* ── Helper: map DB row → front-end shape ── */
 function rowToOrder(r) {
   return {
-    id:              r.id,
-    email:           r.email,
-    fullname:        r.fullname,
-    address:         r.address,
-    total:           Number(r.total),
-    status:          r.status,
-    delivered:       r.delivered,
-    deliveredAt:     r.delivered_at,
-    userId:          r.user_id,
-    date:            r.date,
-    // Reconstruct payment object for email/admin compatibility
+    id:          r.id,
+    email:       r.email,
+    fullname:    r.fullname,
+    address:     r.address,
+    total:       Number(r.total),
+    status:      r.status,
+    delivered:   r.delivered,
+    deliveredAt: r.delivered_at,
+    userId:      r.user_id,
+    date:        r.date,
     payment: r.payment_method === 'gcash-ref'
       ? { method: 'gcash-ref', ref: r.gcash_ref, amount: r.gcash_amount }
       : { method: 'gcash-screenshot', ssEmail: r.screenshot_email },
@@ -168,10 +174,10 @@ function rowToOrder(r) {
 // GET all orders (admin/staff only)
 app.get('/api/orders', requireStaff, async (req, res) => {
   try {
-    const result = await pool.query(
-      'SELECT * FROM orders ORDER BY date DESC'
-    );
+    console.log('📋 Fetching all orders...');
+    const result = await pool.query('SELECT * FROM orders ORDER BY date DESC');
     const orders = await attachItems(result.rows.map(rowToOrder));
+    console.log(`📋 Returned ${orders.length} orders`);
     res.json(orders);
   } catch (err) {
     console.error('❌ Orders fetch error:', err.message);
@@ -179,24 +185,26 @@ app.get('/api/orders', requireStaff, async (req, res) => {
   }
 });
 
-// POST — save new order + order_items (transaction) + send emails
+// POST — save new order
 app.post('/api/orders', async (req, res) => {
+  console.log('📦 New order request received from:', req.body?.email);
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
 
-    const {
-      email, fullname, address,
-      items = [], total, payment = {},
-    } = req.body;
+    const { email, fullname, address, items = [], total, payment = {} } = req.body;
 
-    const orderId        = 'ORD-' + Date.now();
-    const paymentMethod  = payment.method === 'gcash-ref' ? 'gcash-ref' : 'gcash-screenshot';
-    const gcashRef       = payment.ref           || null;
-    const gcashAmount    = payment.amount        ? Number(payment.amount) : null;
-    const screenshotEmail = payment.ssEmail      || null;
+    // Basic validation
+    if (!email || !fullname || !items.length) {
+      return res.status(400).json({ error: 'Missing required fields: email, fullname, or items.' });
+    }
 
-    // Attach user if logged in (optional JWT)
+    const orderId         = 'ORD-' + Date.now();
+    const paymentMethod   = payment.method === 'gcash-ref' ? 'gcash-ref' : 'gcash-screenshot';
+    const gcashRef        = payment.ref     || null;
+    const gcashAmount     = payment.amount  ? Number(payment.amount) : null;
+    const screenshotEmail = payment.ssEmail || null;
+
     let userId = null;
     const authHeader = req.headers.authorization;
     if (authHeader?.startsWith('Bearer ')) {
@@ -204,10 +212,9 @@ app.post('/api/orders', async (req, res) => {
         const jwt     = require('jsonwebtoken');
         const decoded = jwt.verify(authHeader.split(' ')[1], process.env.JWT_SECRET);
         userId = decoded.id;
-      } catch { /* guest checkout */ }
+      } catch { /* guest checkout — that's fine */ }
     }
 
-    // 1. Insert order row
     await client.query(
       `INSERT INTO orders
          (id, email, fullname, address, total,
@@ -219,7 +226,6 @@ app.post('/api/orders', async (req, res) => {
        paymentMethod, gcashRef, gcashAmount, screenshotEmail, userId]
     );
 
-    // 2. Insert each order_item row
     for (const item of items) {
       await client.query(
         `INSERT INTO order_items
@@ -231,18 +237,13 @@ app.post('/api/orders', async (req, res) => {
     }
 
     await client.query('COMMIT');
-    console.log(`📦 New order: ${orderId} from ${email}`);
+    console.log(`📦 Order saved: ${orderId} from ${email}`);
 
-    // Build order object for emails
-    const newOrder = {
-      id: orderId, email, fullname, address, total,
-      status: 'pending', delivered: false,
-      date: new Date().toISOString(),
-      payment: payment,
-      items,
-    };
+    // Respond immediately — don't make buyer wait for emails
+    res.json({ success: true, orderId });
 
-    // Send emails — non-blocking
+    // Send emails after response (non-blocking)
+    const newOrder = { id: orderId, email, fullname, address, total, status: 'pending', delivered: false, date: new Date().toISOString(), payment, items };
     Promise.allSettled([
       sendOwnerNotification(newOrder),
       sendBuyerConfirmation(newOrder),
@@ -250,10 +251,11 @@ app.post('/api/orders', async (req, res) => {
       results.forEach((r, i) => {
         if (r.status === 'rejected')
           console.error(`⚠️  Email ${i === 0 ? 'owner' : 'buyer'} failed:`, r.reason?.message);
+        else
+          console.log(`✅ Email ${i === 0 ? 'owner' : 'buyer'} sent for order: ${orderId}`);
       });
     });
 
-    res.json({ success: true, orderId });
   } catch (err) {
     await client.query('ROLLBACK');
     console.error('❌ Order save error:', err.message);
@@ -267,9 +269,7 @@ app.post('/api/orders', async (req, res) => {
 app.get('/api/orders/mine', verifyToken, async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT * FROM orders
-       WHERE user_id = $1 OR email = $2
-       ORDER BY date DESC`,
+      `SELECT * FROM orders WHERE user_id = $1 OR email = $2 ORDER BY date DESC`,
       [req.user.id, req.user.email]
     );
     const orders = await attachItems(result.rows.map(rowToOrder));
@@ -282,24 +282,33 @@ app.get('/api/orders/mine', verifyToken, async (req, res) => {
 
 // POST — deliver order: mark paid + email files
 app.post('/api/orders/:id/deliver', requireStaff, async (req, res) => {
+  const orderId = req.params.id;
+  console.log(`📨 Deliver request for order: ${orderId}`);
+  console.log(`🔐 Auth header present: ${!!req.headers.authorization}`);
+  console.log(`🍪 Cookie present: ${!!req.cookies?.token}`);
+
   try {
+    // Step 1: Update order status
+    console.log(`📝 Updating order status to paid: ${orderId}`);
     const result = await pool.query(
-      `UPDATE orders
-       SET status = 'paid', delivered = TRUE, delivered_at = NOW()
-       WHERE id = $1 RETURNING *`,
-      [req.params.id]
+      `UPDATE orders SET status = 'paid', delivered = TRUE, delivered_at = NOW() WHERE id = $1 RETURNING *`,
+      [orderId]
     );
-    if (!result.rows.length) return res.status(404).json({ error: 'Order not found' });
 
+    if (!result.rows.length) {
+      console.error(`❌ Order not found: ${orderId}`);
+      return res.status(404).json({ error: `Order not found: ${orderId}` });
+    }
+    console.log(`✅ Order status updated: ${orderId}`);
+
+    // Step 2: Attach items
     const [order] = await attachItems([rowToOrder(result.rows[0])]);
-    console.log(`✅ Order delivered: ${order.id}`);
+    console.log(`📦 Order has ${order.items.length} items`);
 
-    // Fetch products for drive links
+    // Step 3: Fetch products for drive links
     let products = [];
     try {
-      const prods = await pool.query(
-        'SELECT id, title, drive_link, file_size, pages FROM products'
-      );
+      const prods = await pool.query('SELECT id, title, drive_link, file_size, pages FROM products');
       products = prods.rows.map(p => ({
         id:        p.id,
         title:     p.title,
@@ -307,42 +316,52 @@ app.post('/api/orders/:id/deliver', requireStaff, async (req, res) => {
         fileSize:  p.file_size,
         pages:     p.pages,
       }));
+      console.log(`📚 Loaded ${products.length} products for drive links`);
     } catch (dbErr) {
       console.error('⚠️  Could not load products for delivery:', dbErr.message);
+      // Continue anyway — email will show "Link not set" for missing links
     }
 
+    // Step 4: Send delivery email
+    console.log(`📧 Sending file delivery email to: ${order.email}`);
     try {
       await sendFileDelivery(order, products);
+      console.log(`✅ Delivery email sent to: ${order.email}`);
     } catch (emailErr) {
+      // Order is already marked delivered — just warn, don't fail
       console.error('⚠️  Delivery email failed:', emailErr.message);
       return res.json({
         success: true,
-        emailWarning: 'Order marked delivered but email failed: ' + emailErr.message,
+        emailWarning: `Order marked as delivered but email failed: ${emailErr.message}. Check EMAIL_USER and EMAIL_PASS in Render env vars.`,
       });
     }
 
     res.json({ success: true });
+
   } catch (err) {
-    console.error('❌ Deliver error:', err.message);
-    res.status(500).json({ error: err.message });
+    console.error(`❌ Deliver route crashed for order ${orderId}:`, err.message);
+    console.error(err.stack);
+    // Always send a response so the browser doesn't get ERR_CONNECTION_RESET
+    if (!res.headersSent) {
+      res.status(500).json({ error: `Deliver failed: ${err.message}` });
+    }
   }
 });
 
 // POST — resend file delivery email
 app.post('/api/orders/:id/resend', requireStaff, async (req, res) => {
+  const orderId = req.params.id;
+  console.log(`🔄 Resend request for order: ${orderId}`);
+
   try {
-    const result = await pool.query(
-      'SELECT * FROM orders WHERE id = $1', [req.params.id]
-    );
+    const result = await pool.query('SELECT * FROM orders WHERE id = $1', [orderId]);
     if (!result.rows.length) return res.status(404).json({ error: 'Order not found' });
 
     const [order] = await attachItems([rowToOrder(result.rows[0])]);
 
     let products = [];
     try {
-      const prods = await pool.query(
-        'SELECT id, title, drive_link, file_size, pages FROM products'
-      );
+      const prods = await pool.query('SELECT id, title, drive_link, file_size, pages FROM products');
       products = prods.rows.map(p => ({
         id:        p.id,
         title:     p.title,
@@ -355,18 +374,38 @@ app.post('/api/orders/:id/resend', requireStaff, async (req, res) => {
     }
 
     await sendFileDelivery(order, products);
-    console.log(`🔄 Files resent: ${order.id}`);
+    console.log(`🔄 Files resent for order: ${orderId} to ${order.email}`);
     res.json({ success: true, message: 'Files resent to ' + order.email });
+
   } catch (err) {
-    console.error('❌ Resend error:', err.message);
-    res.status(500).json({ error: err.message });
+    console.error(`❌ Resend error for order ${orderId}:`, err.message);
+    if (!res.headersSent) {
+      res.status(500).json({ error: `Resend failed: ${err.message}` });
+    }
+  }
+});
+
+/* ── CATCH-ALL: unknown routes ── */
+app.use((req, res) => {
+  res.status(404).json({ error: `Route not found: ${req.method} ${req.path}` });
+});
+
+/* ── GLOBAL ERROR HANDLER (must be last) ── */
+app.use((err, req, res, next) => {
+  console.error('🔥 Unhandled error:', err.message);
+  console.error(err.stack);
+  if (!res.headersSent) {
+    res.status(500).json({ error: 'Internal server error: ' + err.message });
   }
 });
 
 /* ── START ── */
 app.listen(PORT, () => {
   console.log(`\n🚀 Pressfiles running at http://localhost:${PORT}`);
-  console.log(`📧 Email:  ${process.env.EMAIL_USER}`);
-  console.log(`🐘 DB:     ${process.env.DATABASE_URL?.split('@')[1] || 'not set'}`);
-  console.log(`🔐 Auth:   JWT + bcrypt\n`);
+  console.log(`📧 Email user:  ${process.env.EMAIL_USER  || '❌ NOT SET'}`);
+  console.log(`📧 Email pass:  ${process.env.EMAIL_PASS  ? '✅ set' : '❌ NOT SET'}`);
+  console.log(`📧 Owner email: ${process.env.OWNER_EMAIL || '❌ NOT SET (will use EMAIL_USER)'}`);
+  console.log(`🐘 DB:          ${process.env.DATABASE_URL?.split('@')[1] || '❌ NOT SET'}`);
+  console.log(`🔐 JWT secret:  ${process.env.JWT_SECRET  ? '✅ set' : '❌ NOT SET'}`);
+  console.log(`🌐 Site URL:    ${process.env.SITE_URL    || '❌ NOT SET'}\n`);
 });
