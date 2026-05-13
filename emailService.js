@@ -11,6 +11,20 @@ function createTransporter() {
   });
 }
 
+/* ── VERIFY TRANSPORTER ON STARTUP (shows error in Render logs) ── */
+(function verifyTransporter() {
+  const transporter = createTransporter();
+  transporter.verify((err, success) => {
+    if (err) {
+      console.error('❌ EMAIL CONFIG ERROR:', err.message);
+      console.error('   Make sure EMAIL_USER and EMAIL_PASS are set correctly in Render env vars.');
+      console.error('   EMAIL_PASS must be a Gmail App Password (16 chars), NOT your Gmail login password.');
+    } else {
+      console.log('✅ Email transporter is ready. Emails will be sent from:', process.env.EMAIL_USER);
+    }
+  });
+})();
+
 /* ── SHARED HEADER (dark crimson + Pressfiles text, no image dependency) ── */
 const LOGO_HEADER = `
   <div style="background:#8B1A1A;padding:28px 32px;border-radius:12px 12px 0 0;">
@@ -40,6 +54,8 @@ const EMAIL_FOOTER = `
    1. NOTIFY OWNER — new order received
 ───────────────────────────────────────── */
 async function sendOwnerNotification(order) {
+  console.log(`📤 Attempting to send owner notification for order: ${order.id}`);
+
   const transporter = createTransporter();
 
   const itemsRows = (order.items || []).map(i => `
@@ -157,23 +173,28 @@ async function sendOwnerNotification(order) {
   </div>
   </body></html>`;
 
-  await transporter.sendMail({
-    from: `"Pressfiles by Teacher Ira" <${process.env.EMAIL_USER}>`,
-    to:   process.env.OWNER_EMAIL || process.env.EMAIL_USER,
-    subject: `🛒 New Order ${order.id} — ₱${Number(order.total).toLocaleString('en-PH', { minimumFractionDigits: 2 })} from ${order.fullname || order.email}`,
-    html,
-  });
-
-  console.log(`📬 Owner notified: ${order.id}`);
+  try {
+    await transporter.sendMail({
+      from: `"Pressfiles by Teacher Ira" <${process.env.EMAIL_USER}>`,
+      to:   process.env.OWNER_EMAIL || process.env.EMAIL_USER,
+      subject: `🛒 New Order ${order.id} — ₱${Number(order.total).toLocaleString('en-PH', { minimumFractionDigits: 2 })} from ${order.fullname || order.email}`,
+      html,
+    });
+    console.log(`📬 Owner notified successfully for order: ${order.id}`);
+  } catch (err) {
+    console.error(`❌ sendOwnerNotification FAILED for order ${order.id}:`, err.message);
+    console.error('   Full error:', err);
+    throw new Error(`Owner notification email failed: ${err.message}`);
+  }
 }
 
 /* ─────────────────────────────────────────
    2. BUYER CONFIRMATION — please wait
-   (matches Image 2 exactly)
 ───────────────────────────────────────── */
 async function sendBuyerConfirmation(order) {
-  const transporter = createTransporter();
+  console.log(`📤 Attempting to send buyer confirmation to: ${order.email} for order: ${order.id}`);
 
+  const transporter = createTransporter();
   const firstName = (order.fullname || 'there').split(' ')[0].toUpperCase();
 
   const itemsRows = (order.items || []).map(i => `
@@ -260,23 +281,28 @@ async function sendBuyerConfirmation(order) {
   </div>
   </body></html>`;
 
-  await transporter.sendMail({
-    from:    `"Pressfiles by Teacher Ira" <${process.env.EMAIL_USER}>`,
-    to:      order.email,
-    subject: `✅ Order Received — ${order.id} | Pressfiles`,
-    html,
-  });
-
-  console.log(`📧 Buyer confirmation sent to: ${order.email}`);
+  try {
+    await transporter.sendMail({
+      from:    `"Pressfiles by Teacher Ira" <${process.env.EMAIL_USER}>`,
+      to:      order.email,
+      subject: `✅ Order Received — ${order.id} | Pressfiles`,
+      html,
+    });
+    console.log(`📧 Buyer confirmation sent successfully to: ${order.email}`);
+  } catch (err) {
+    console.error(`❌ sendBuyerConfirmation FAILED for order ${order.id} to ${order.email}:`, err.message);
+    console.error('   Full error:', err);
+    throw new Error(`Buyer confirmation email failed: ${err.message}`);
+  }
 }
 
 /* ─────────────────────────────────────────
    3. FILE DELIVERY — send download links
-   (matches Image 1 exactly)
 ───────────────────────────────────────── */
 async function sendFileDelivery(order, products) {
-  const transporter = createTransporter();
+  console.log(`📤 Attempting to send file delivery to: ${order.email} for order: ${order.id}`);
 
+  const transporter = createTransporter();
   const firstName = (order.fullname || 'there').split(' ')[0].toUpperCase();
 
   const deliverableItems = (order.items || []).map(item => {
@@ -388,14 +414,19 @@ async function sendFileDelivery(order, products) {
   </div>
   </body></html>`;
 
-  await transporter.sendMail({
-    from:    `"Pressfiles by Teacher Ira" <${process.env.EMAIL_USER}>`,
-    to:      order.email,
-    subject: `✅ Your Pressfiles Order is Ready — ${order.id}`,
-    html,
-  });
-
-  console.log(`📨 Files delivered to: ${order.email}`);
+  try {
+    await transporter.sendMail({
+      from:    `"Pressfiles by Teacher Ira" <${process.env.EMAIL_USER}>`,
+      to:      order.email,
+      subject: `✅ Your Pressfiles Order is Ready — ${order.id}`,
+      html,
+    });
+    console.log(`📨 Files delivered successfully to: ${order.email}`);
+  } catch (err) {
+    console.error(`❌ sendFileDelivery FAILED for order ${order.id} to ${order.email}:`, err.message);
+    console.error('   Full error:', err);
+    throw new Error(`File delivery email failed: ${err.message}`);
+  }
 }
 
 module.exports = {
